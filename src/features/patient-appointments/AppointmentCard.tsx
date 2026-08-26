@@ -10,16 +10,30 @@ export interface AppointmentCardProps {
   appointment: Appointment;
   /** גוונים מאופקים לתורים קודמים */
   muted?: boolean;
+  featured?: boolean;
+  featuredLabel?: string;
 }
 
-export function AppointmentCard({ appointment, muted }: AppointmentCardProps) {
+export function AppointmentCard({ appointment, muted, featured, featuredLabel }: AppointmentCardProps) {
   const { day, month } = formatDateBlock(appointment.date);
+  const category = appointment.kind === "test" || appointment.kind === "surgery"
+    ? "בדיקות וניתוחים"
+    : "מומחים ומעקב";
 
   return (
     <Link
       to={`/p/appointment/${appointment.id}`}
-      className="group block rounded-lg border border-line bg-surface p-5 shadow-sm transition-all duration-fast hover:border-primary-300 hover:shadow-md"
+      className={cn(
+        "group block rounded-lg border bg-surface p-5 shadow-sm transition-all duration-fast hover:border-primary-300 hover:shadow-md",
+        featured ? "border-primary-300 bg-gradient-to-l from-primary-50 to-white ring-1 ring-primary-100" : "border-line",
+      )}
     >
+      {featured && (
+        <span className="mb-4 flex items-center justify-between gap-2 border-b border-primary-100 pb-3">
+          <span className="rounded-full bg-primary-700 px-3 py-1 text-caption font-semibold text-white">התור הקרוב</span>
+          {featuredLabel && <span className="text-caption font-semibold text-primary-700">{featuredLabel}</span>}
+        </span>
+      )}
       <div className="flex items-start gap-4">
         {/* בלוק תאריך */}
         <span
@@ -42,11 +56,16 @@ export function AppointmentCard({ appointment, muted }: AppointmentCardProps) {
         </span>
 
         <span className="min-w-0 flex-1">
-          <span className="flex items-start justify-between gap-2">
+          <span className="flex flex-wrap items-start justify-between gap-2">
             <span className={cn("truncate text-h3", muted ? "text-body" : "text-ink")}>
               {appointment.title}
             </span>
-            <KindChip kind={appointment.kind} />
+            <span className="flex flex-wrap items-center gap-1.5">
+              <span className="rounded-full bg-primary-50 px-2.5 py-0.5 text-caption font-semibold text-primary-700">
+                {category}
+              </span>
+              <KindChip kind={appointment.kind} />
+            </span>
           </span>
           <span className="mt-0.5 block truncate text-muted">
             {appointment.doctorName} · {appointment.departmentName}
