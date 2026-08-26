@@ -31,7 +31,8 @@
 
   .clinical-surface {
     background-image:
-      radial-gradient(circle at 85% -20%, rgba(39, 139, 130, 0.08), transparent 34%),
+      radial-gradient(circle at 85% -20%, rgba(18, 203, 202, 0.08), transparent 34%),
+      radial-gradient(circle at 12% 8%, rgba(145, 111, 206, 0.06), transparent 28%),
       linear-gradient(180deg, rgba(255,255,255,0.5), transparent 260px);
   }
 

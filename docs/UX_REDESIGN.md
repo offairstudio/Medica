@@ -7,6 +7,10 @@
 - Further directions should use `design/v2-*`, `design/v3-*`, and so on.
 - A chosen direction returns to `main` only after desktop/mobile QA and a capability parity check.
 
+## Official brand materials
+
+V1 uses the official Medica logo and the hospital logos available on the official Medica, Elisha, RMC and Raphael sites. The product palette is based on the official deep purple (`#462E79`), lavender, turquoise (`#12CBCA`) and blue-grey neutrals. Asset provenance is documented in `public/brand/SOURCES.md`.
+
 ## Capability inventory
 
 ### Doctor
@@ -34,7 +38,7 @@
 
 Design goals:
 
-1. High-trust private medicine: deep teal, warm whites, precise typography and restrained shadows.
+1. High-trust private medicine: official Medica purple, restrained turquoise, warm whites, precise typography and restrained shadows.
 2. Shared product language: the same brand, controls, surfaces and feedback for both audiences.
 3. Audience-specific density: calm guided cards for patients; compact operational information for doctors.
 4. Progressive disclosure: primary tasks stay visible; secondary actions live in drawers and modals.

@@ -1,19 +1,20 @@
 :root {
   /* Brand */
-  --primary-50: #eef8f6;
-  --primary-100: #d9f0eb;
-  --primary-200: #b6dfd7;
-  --primary-300: #84c6bc;
-  --primary-400: #4da89e;
-  --primary-500: #278b82;
-  --primary-600: #156f69;
-  --primary-700: #105954;
-  --primary-800: #0e4643;
-  --primary-900: #0b3433;
+  --primary-50: #f6f3fb;
+  --primary-100: #ede8f7;
+  --primary-200: #dcd1ef;
+  --primary-300: #c3afe2;
+  --primary-400: #a084d2;
+  --primary-500: #8062bd;
+  --primary-600: #63469e;
+  --primary-700: #503680;
+  --primary-800: #462e79;
+  --primary-900: #34205f;
+  --accent: #12cbca;
 
   /* Hospital identity */
-  --hospital-refael: #2b7fc4;
-  --hospital-elisha: #0f9b8e;
+  --hospital-refael: #012d5e;
+  --hospital-elisha: #46348a;
 
   /* Semantic */
   --success: #187b5b;
@@ -22,12 +23,12 @@
   --info: #326d91;
 
   /* Neutral */
-  --ink: #102b2d;
-  --body: #3f5657;
-  --muted: #718284;
-  --line: #dce6e4;
+  --ink: #1d252b;
+  --body: #3f444b;
+  --muted: #69727d;
+  --line: #dde5e6;
   --surface: #ffffff;
-  --canvas: #f4f7f6;
+  --canvas: #f0f4f3;
 
   /* Motion */
   --motion-fast: 120ms ease-out;

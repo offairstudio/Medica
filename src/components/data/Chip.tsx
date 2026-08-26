@@ -52,12 +52,19 @@ export function HospitalChip({ hospital, className }: { hospital: Hospital; clas
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-0.5 text-caption font-semibold text-white",
-        hospital === "refael" ? "bg-hospital-refael" : "bg-hospital-elisha",
+        "inline-flex min-h-7 items-center rounded-full border px-2.5 py-1 text-caption font-semibold",
+        hospital === "refael"
+          ? "border-hospital-refael bg-hospital-refael text-white"
+          : "border-hospital-elisha/20 bg-white text-hospital-elisha",
         className,
       )}
+      title={he.hospitals[hospital]}
     >
-      {he.hospitals[hospital]}
+      <img
+        src={hospital === "refael" ? "/brand/medica-raphael-logo.png" : "/brand/medica-elisha-logo.png"}
+        alt={he.hospitals[hospital]}
+        className={cn("block h-4 w-auto max-w-[78px] object-contain", hospital === "elisha" && "h-[18px]")}
+      />
     </span>
   );
 }
