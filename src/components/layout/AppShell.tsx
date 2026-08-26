@@ -50,8 +50,8 @@ export function DoctorShell({
       </div>
 
       <div className="mx-auto flex w-full max-w-[1760px] flex-1 items-start gap-5 p-4 lg:p-6">
-        <div className="sticky top-[104px] hidden max-h-[calc(100vh-128px)] lg:block">
-          <DoctorSidebar activeDoctorId={sidebarActiveId} section={section} className="max-h-[calc(100vh-128px)]" />
+        <div className="sticky top-[84px] hidden max-h-[calc(100vh-104px)] lg:block">
+          <DoctorSidebar activeDoctorId={sidebarActiveId} section={section} className="max-h-[calc(100vh-104px)]" />
         </div>
         <main className="min-w-0 flex-1">{children}</main>
       </div>

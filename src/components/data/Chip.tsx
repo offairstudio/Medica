@@ -48,7 +48,7 @@ export function Chip({ color = "neutral", onRemove, className, children, ...rest
 
 /* ---------- צ'יפ בית חולים ---------- */
 
-export function HospitalChip({ hospital, className }: { hospital: Hospital; className?: string }) {
+export function HospitalChip({ hospital, compact, className }: { hospital: Hospital; compact?: boolean; className?: string }) {
   return (
     <span
       className={cn(
@@ -56,6 +56,7 @@ export function HospitalChip({ hospital, className }: { hospital: Hospital; clas
         hospital === "refael"
           ? "border-hospital-refael bg-hospital-refael text-white"
           : "border-hospital-elisha/20 bg-white text-hospital-elisha",
+        compact && "min-h-6 px-2 py-0.5",
         className,
       )}
       title={he.hospitals[hospital]}
@@ -63,7 +64,11 @@ export function HospitalChip({ hospital, className }: { hospital: Hospital; clas
       <img
         src={hospital === "refael" ? "/brand/medica-raphael-logo.png" : "/brand/medica-elisha-logo.png"}
         alt={he.hospitals[hospital]}
-        className={cn("block h-4 w-auto max-w-[78px] object-contain", hospital === "elisha" && "h-[18px]")}
+        className={cn(
+          "block h-4 w-auto max-w-[78px] object-contain",
+          hospital === "elisha" && "h-[18px]",
+          compact && "h-3.5 max-w-[68px]",
+        )}
       />
     </span>
   );

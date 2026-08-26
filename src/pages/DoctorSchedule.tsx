@@ -212,7 +212,7 @@ export function DoctorSchedule() {
         <section className="min-w-0 flex-1 rounded-lg border border-line bg-surface shadow-sm">
           {/* כותרת הכרטיס */}
           <header className="rounded-t-[15px] bg-primary-700 px-4 py-3 text-white">
-            <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
               {/* זהות היומן הנצפה - בנפרד מהמשתמש המחובר שב-TopBar */}
               <div className="flex min-w-0 items-center gap-2.5">
                 {isAll ? (
@@ -239,8 +239,11 @@ export function DoctorSchedule() {
                 </span>
               </div>
 
+            </div>
+
+            {/* סרגל בקרה מאוחד: תצוגה, שינוי לו"ז וניווט בזמן */}
+            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-white/15 pt-3">
               <div className="flex items-center gap-2">
-                {/* מתג תצוגה יומי / חודשי */}
                 <div
                   role="group"
                   aria-label="בחירת תצוגה"
@@ -283,10 +286,7 @@ export function DoctorSchedule() {
                   {he.schedule.changeSchedule}
                 </button>
               </div>
-            </div>
 
-            {/* שורת התאריך והסיכום */}
-            <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-white/10 pt-2">
               <div className="flex items-center gap-1">
                 <button
                   type="button"
@@ -315,7 +315,7 @@ export function DoctorSchedule() {
                 </button>
               </div>
 
-              <p className="text-caption text-white/75">
+              <p className="text-caption text-white/75 sm:ms-auto">
                 {view === "day" ? (
                   <>
                     {formatWeekday(selectedDate)}
@@ -444,8 +444,8 @@ export function DoctorSchedule() {
                         </span>
 
                         {/* עמודת בית חולים - מיושרת עם הצ'יפים של הניתוחים */}
-                        <span className="shrink-0 md:w-16">
-                          <HospitalChip hospital={item.slot.hospital} />
+                        <span className="flex shrink-0 items-center md:w-24">
+                          <HospitalChip hospital={item.slot.hospital} compact />
                         </span>
 
                         <span className="min-w-0 flex-1">
@@ -497,7 +497,7 @@ export function DoctorSchedule() {
 
         {/* לוח שנה צדדי - בתצוגה היומית במסכים רחבים */}
         {view === "day" && (
-          <aside className="sticky top-[104px] hidden w-[320px] shrink-0 rounded-lg border border-line bg-surface p-4 shadow-sm xl:block">
+          <aside className="sticky top-[84px] hidden w-[320px] shrink-0 rounded-lg border border-line bg-surface p-4 shadow-sm xl:block">
             {loading ? (
               <div className="flex flex-col gap-3">
                 <Skeleton className="mx-auto w-32" />

@@ -66,8 +66,8 @@ export function SurgeryRow({ surgery, doctorName, highlighted, onView, onEdit, o
       </div>
 
       {/* עמודת בית חולים */}
-      <div className="shrink-0 md:w-16">
-        <HospitalChip hospital={surgery.hospital} />
+      <div className="flex shrink-0 items-center md:w-24">
+        <HospitalChip hospital={surgery.hospital} compact />
       </div>
 
       {/* תיאור הניתוח (+ שם המנתח ביומן הכולל) */}

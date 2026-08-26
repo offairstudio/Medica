@@ -21,6 +21,7 @@ export interface DropdownItem {
 
 export interface DropdownProps {
   trigger: ReactElement;
+  header?: ReactNode;
   items?: DropdownItem[];
   /** תוכן חופשי במקום רשימת פריטים */
   children?: ReactNode;
@@ -35,6 +36,7 @@ export interface DropdownProps {
 
 export function Dropdown({
   trigger,
+  header,
   items,
   children,
   align = "end",
@@ -100,6 +102,7 @@ export function Dropdown({
 
   const menuBody = (
     <>
+      {header}
       {items?.map((item) => (
         <button
           key={item.key}

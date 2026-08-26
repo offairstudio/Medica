@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { AtSign, Smartphone, BadgeCheck, ChevronDown, LogOut, User } from "lucide-react";
+import { AtSign, Smartphone, BadgeCheck, ChevronDown, LogOut } from "lucide-react";
 import { Avatar } from "../data/Avatar";
 import { Dropdown } from "../overlay/Dropdown";
 import { formatPhone } from "../../lib/format";
@@ -29,6 +29,8 @@ export function TopBar({ doctor }: TopBarProps) {
 
         {/* זהות המשתמש - אווטאר, שם ומחלקה, ותפריט */}
         <Dropdown
+          portal
+          menuClassName="w-72 max-w-[calc(100vw-2rem)]"
           trigger={
             <button
               type="button"
@@ -45,13 +47,32 @@ export function TopBar({ doctor }: TopBarProps) {
               <ChevronDown className="hidden h-4 w-4 text-muted sm:block" aria-hidden />
             </button>
           }
+          header={
+            <div className="border-b border-line p-4">
+              <div className="flex items-center gap-3">
+                <Avatar name={doctor.displayName} src={doctor.avatarUrl} size="lg" />
+                <span className="min-w-0 leading-tight">
+                  <span className="block truncate font-semibold text-ink">{doctor.displayName}</span>
+                  <span className="block text-caption text-muted">{departmentName(doctor.departmentId)}</span>
+                </span>
+              </div>
+              <div className="mt-4 space-y-2 text-caption text-muted">
+                <span className="flex min-w-0 items-center gap-2">
+                  <AtSign className="h-3.5 w-3.5" aria-hidden />
+                  <span dir="ltr" className="min-w-0 truncate">{doctor.email}</span>
+                </span>
+                <span className="flex items-center gap-2">
+                  <Smartphone className="h-3.5 w-3.5" aria-hidden />
+                  <span dir="ltr" className="tnum">{formatPhone(doctor.mobile)}</span>
+                </span>
+                <span className="flex items-center gap-2">
+                  <BadgeCheck className="h-3.5 w-3.5" aria-hidden />
+                  מספר רישיון <span dir="ltr" className="tnum">{doctor.licenseNumber}</span>
+                </span>
+              </div>
+            </div>
+          }
           items={[
-            {
-              key: "profile",
-              label: doctor.displayName,
-              icon: <User />,
-              onSelect: () => {},
-            },
             {
               key: "logout",
               label: he.common.logout,
@@ -61,22 +82,6 @@ export function TopBar({ doctor }: TopBarProps) {
             },
           ]}
         />
-      </div>
-
-      {/* שורת מטא מובנית - במקום פרטי הקשר הצפים במערכת הקיימת */}
-      <div className="flex h-9 items-center justify-center gap-5 overflow-x-auto border-t border-line/70 bg-canvas px-4 text-caption text-muted lg:px-6">
-        <span className="flex shrink-0 items-center gap-1.5" dir="ltr">
-          <AtSign className="h-3.5 w-3.5" aria-hidden />
-          {doctor.email}
-        </span>
-        <span className="flex shrink-0 items-center gap-1.5">
-          <Smartphone className="h-3.5 w-3.5" aria-hidden />
-          <span dir="ltr" className="tnum">{formatPhone(doctor.mobile)}</span>
-        </span>
-        <span className="flex shrink-0 items-center gap-1.5">
-          <BadgeCheck className="h-3.5 w-3.5" aria-hidden />
-          מספר רישיון <span dir="ltr" className="tnum">{doctor.licenseNumber}</span>
-        </span>
       </div>
     </header>
   );
