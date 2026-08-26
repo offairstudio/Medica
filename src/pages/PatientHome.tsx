@@ -7,13 +7,15 @@ import {
   MapPin,
   Building2,
   ArrowLeft,
+  FlaskConical,
+  SlidersHorizontal,
+  UserRound,
 } from "lucide-react";
 import { PatientShell } from "../components/layout/AppShell";
 import { EmptyState } from "../components/data/EmptyState";
 import { Skeleton } from "../components/data/Skeleton";
 import { Button } from "../components/primitives/Button";
 import { AppointmentCard } from "../features/patient-appointments/AppointmentCard";
-import { ExternalAction } from "../features/patient-appointments/ExternalAction";
 import {
   AppointmentFilters,
   applyFilters,
@@ -57,6 +59,8 @@ export function PatientHome() {
   const filtered = applyFilters(all, filters);
   const groups = groupUpcoming(filtered, MOCK_TODAY);
   const hasFilter = filters.departments.length > 0 || filters.doctors.length > 0;
+  const careCount = upcomingAll.filter((a) => a.kind === "test" || a.kind === "surgery").length;
+  const specialistsCount = upcomingAll.length - careCount;
 
   const recentDocs = useMemo(
     () => [...documents].sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt)).slice(0, 3),
@@ -87,15 +91,12 @@ export function PatientHome() {
   return (
     <PatientShell>
       <div className="flex flex-col gap-8">
-        {/* ברכה + זימון תור במערכת החיצונית */}
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h1 className="text-display text-ink">
-              {he.patient.greeting(currentPatient.firstName)}
-            </h1>
-            <p className="mt-1 text-muted">{he.patient.upcomingCount(upcomingAll.length)}</p>
-          </div>
-          <ExternalAction label={he.patient.externalBooking} />
+        {/* ברכה */}
+        <div>
+          <h1 className="text-display text-ink">
+            {he.patient.greeting(currentPatient.firstName)}
+          </h1>
+          <p className="mt-1 text-muted">{he.patient.upcomingCount(upcomingAll.length)}</p>
         </div>
 
         {/* כרטיס התור הקרוב */}
@@ -158,46 +159,55 @@ export function PatientHome() {
 
         {/* תורים עתידיים - בדיקות וניתוחים / מומחים */}
         <section aria-label={he.patient.appointmentsTitle}>
-          <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
-            <div>
-              <h2 className="text-h2 text-ink">תורים עתידיים</h2>
-              <p className="mt-1 text-caption text-muted">בדיקות וניתוחים מוצגים יחד; ביקורי מומחים בטאב נפרד</p>
+          <div className="mb-4">
+            <h2 className="text-h2 text-ink">התורים שלי</h2>
+            <p className="mt-1 text-caption text-muted">בחירת סוג התור והצגת התורים הרלוונטיים במקום אחד</p>
+          </div>
+
+          <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
+            <div role="group" aria-label="סוג התורים" className="grid grid-cols-2 gap-1 bg-canvas p-1.5">
+              {(
+                [
+                  { key: "care", label: "בדיקות וניתוחים", count: careCount, icon: FlaskConical },
+                  { key: "specialists", label: "מומחים ומעקב", count: specialistsCount, icon: UserRound },
+                ] as const
+              ).map((seg) => {
+                const Icon = seg.icon;
+                const active = tab === seg.key;
+                return (
+                  <button
+                    key={seg.key}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => switchTab(seg.key)}
+                    className={cn(
+                      "flex min-h-[58px] items-center justify-center gap-2 rounded-lg px-3 text-start font-semibold transition-colors duration-fast",
+                      active
+                        ? "bg-surface text-primary-800 shadow-sm ring-1 ring-primary-100"
+                        : "text-muted hover:bg-white/60 hover:text-body",
+                    )}
+                  >
+                    <Icon className={cn("h-5 w-5", active ? "text-primary-600" : "text-muted")} aria-hidden />
+                    <span>{seg.label}</span>
+                    <span className={cn("tnum rounded-full px-2 py-0.5 text-caption", active ? "bg-primary-100 text-primary-800" : "bg-white text-muted")}>
+                      {seg.count}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-            <Link to="/p/results" className="font-semibold text-primary-600 hover:text-primary-800">לתוצאות וסיכומים</Link>
-          </div>
 
-          <div
-            role="group"
-            aria-label="סוג התורים"
-            className="mb-4 inline-flex items-center rounded-md border border-line bg-canvas p-1"
-          >
-            {(
-              [
-                { key: "care", label: `בדיקות וניתוחים (${upcomingAll.filter((a) => a.kind === "test" || a.kind === "surgery").length})` },
-                { key: "specialists", label: `מומחים (${upcomingAll.filter((a) => a.kind === "consult" || a.kind === "followup").length})` },
-              ] as const
-            ).map((seg) => (
-              <button
-                key={seg.key}
-                type="button"
-                aria-pressed={tab === seg.key}
-                onClick={() => switchTab(seg.key)}
-                className={cn(
-                  "min-h-[44px] rounded px-5 font-semibold transition-colors duration-fast tnum",
-                  tab === seg.key
-                    ? "bg-surface text-primary-700 shadow-sm"
-                    : "text-muted hover:text-body",
-                )}
-              >
-                {seg.label}
-              </button>
-            ))}
+            <div className="flex flex-col gap-3 border-t border-line px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-2 text-caption font-semibold text-body">
+                <SlidersHorizontal className="h-4 w-4 text-primary-600" aria-hidden />
+                סינון התורים
+              </div>
+              <AppointmentFilters appointments={all} value={filters} onChange={setFilters} />
+            </div>
           </div>
-
-          <AppointmentFilters appointments={all} value={filters} onChange={setFilters} />
 
           {hasFilter && (
-            <p className="mt-3 flex items-center gap-3 text-caption text-muted" aria-live="polite">
+            <p className="mt-3 flex items-center gap-3 px-1 text-caption text-muted" aria-live="polite">
               {he.patient.filteredCount(filtered.length, all.length)}
               <button
                 type="button"
@@ -222,7 +232,7 @@ export function PatientHome() {
               }
             />
           ) : (
-            <div className="mt-5 flex flex-col gap-6">
+            <div className="mt-6 flex flex-col gap-6">
               {groups.map((group) => (
                 <section key={group.label} aria-label={group.label}>
                   <h3 className="mb-3 text-h3 text-muted">{group.label}</h3>

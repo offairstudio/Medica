@@ -20,6 +20,7 @@ import { PatientHome } from "./pages/PatientHome";
 import { AppointmentDetails } from "./pages/AppointmentDetails";
 import { PatientDocuments } from "./pages/PatientDocuments";
 import { PatientResults } from "./pages/PatientResults";
+import { PatientSettings } from "./pages/PatientSettings";
 import { KitchenSink } from "./pages/KitchenSink";
 import { NoAccess } from "./pages/NoAccess";
 import { NotFound } from "./pages/NotFound";
@@ -79,6 +80,7 @@ export default function App() {
             <Route path="/p/appointment/:id" element={<AppointmentDetails />} />
             <Route path="/p/results" element={<PatientResults />} />
             <Route path="/p/documents" element={<PatientDocuments />} />
+            <Route path="/p/settings" element={<PatientSettings />} />
 
             {/* פיתוח */}
             <Route path="/kitchen-sink" element={<KitchenSink />} />

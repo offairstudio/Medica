@@ -33,6 +33,8 @@ V1 uses the official Medica logo and the hospital logos available on the officia
 - Results split into tests/imaging and specialist/surgery summaries.
 - Date filtering, unread/new state, document download and MyVue handoff.
 - Medical-document search and type filtering.
+- Unified account menu with personal details, accessibility/language preferences, notification settings, privacy and logout.
+- Persistent appointment-booking action in the patient header.
 
 ## Direction 1 — Clinical Calm
 

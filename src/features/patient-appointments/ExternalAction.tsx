@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { ExternalLink } from "lucide-react";
 import { Modal } from "../../components/overlay/Modal";
 import { Button } from "../../components/primitives/Button";
@@ -10,6 +10,9 @@ export interface ExternalActionProps {
   label: string;
   /** button - כפתור בולט; link - קישור טקסט שקט */
   variant?: "button" | "link";
+  tone?: "outline" | "primary";
+  compactOnMobile?: boolean;
+  icon?: ReactNode;
   className?: string;
 }
 
@@ -18,7 +21,14 @@ export interface ExternalActionProps {
  * מציגה מסך ביניים שמסביר את המעבר בין המערכות לפני היציאה -
  * הטיפול העיצובי במעבר שהוגדר בבריף.
  */
-export function ExternalAction({ label, variant = "button", className }: ExternalActionProps) {
+export function ExternalAction({
+  label,
+  variant = "button",
+  tone = "outline",
+  compactOnMobile,
+  icon,
+  className,
+}: ExternalActionProps) {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
@@ -34,12 +44,17 @@ export function ExternalAction({ label, variant = "button", className }: Externa
           type="button"
           onClick={() => setOpen(true)}
           className={cn(
-            "inline-flex min-h-[44px] items-center gap-2 rounded-md border border-primary-300 bg-surface px-4 font-semibold text-primary-700 transition-colors duration-fast hover:border-primary-500 hover:bg-primary-50",
+            "inline-flex min-h-[44px] items-center gap-2 rounded-md border px-4 font-semibold transition-colors duration-fast",
+            tone === "primary"
+              ? "border-primary-700 bg-primary-700 text-white shadow-sm hover:border-primary-800 hover:bg-primary-800"
+              : "border-primary-300 bg-surface text-primary-700 hover:border-primary-500 hover:bg-primary-50",
+            compactOnMobile && "px-3 sm:px-4",
             className,
           )}
+          aria-label={label}
         >
-          <ExternalLink className="h-4 w-4" aria-hidden />
-          {label}
+          {icon ?? <ExternalLink className="h-4 w-4" aria-hidden />}
+          <span className={cn(compactOnMobile && "hidden sm:inline")}>{label}</span>
         </button>
       ) : (
         <button

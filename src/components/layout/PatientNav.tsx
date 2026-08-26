@@ -1,9 +1,22 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { CalendarClock, FileText, LogOut, ClipboardList } from "lucide-react";
+import {
+  Bell,
+  CalendarPlus,
+  CalendarClock,
+  ChevronDown,
+  ClipboardList,
+  FileText,
+  LogOut,
+  Settings,
+  ShieldCheck,
+  UserRound,
+} from "lucide-react";
 import { cn } from "../../lib/cn";
 import { currentPatient } from "../../mock/patients";
 import { he } from "../../i18n/he";
 import { BrandMark } from "./BrandMark";
+import { Dropdown } from "../overlay/Dropdown";
+import { ExternalAction } from "../../features/patient-appointments/ExternalAction";
 
 /** מסך הבית הוא מסך התורים - הניווט מסתכם ב"תורים" ו"מסמכים" */
 const tabs = [
@@ -14,6 +27,8 @@ const tabs = [
 
 export function PatientNav() {
   const navigate = useNavigate();
+  const initials = `${currentPatient.firstName[0]}${currentPatient.lastName[0]}`;
+
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-line/80 bg-surface/95 backdrop-blur-xl">
@@ -21,19 +36,69 @@ export function PatientNav() {
           <Link to="/p" className="rounded-md" aria-label="Medica - האזור האישי">
             <BrandMark />
           </Link>
-          <div className="flex items-center gap-3">
-            <span className="hidden rounded-full border border-line bg-canvas px-3.5 py-2 text-caption sm:block">
-              <span className="text-muted">שלום, </span>
-              <span className="font-semibold text-ink">{currentPatient.firstName} {currentPatient.lastName}</span>
-            </span>
-            <button
-              type="button"
-              onClick={() => navigate("/p/login")}
-              className="flex min-h-[44px] items-center gap-1.5 rounded-md px-3 text-muted transition-colors duration-fast hover:bg-canvas hover:text-danger"
-            >
-              <LogOut className="h-4 w-4" aria-hidden />
-              {he.common.logout}
-            </button>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <ExternalAction
+              label={he.patient.externalBooking}
+              tone="primary"
+              compactOnMobile
+              icon={<CalendarPlus className="h-4 w-4" aria-hidden />}
+            />
+
+            <Dropdown
+              portal
+              menuClassName="min-w-60"
+              trigger={
+                <button
+                  type="button"
+                  aria-label="פתיחת תפריט משתמש"
+                  className="flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-canvas p-1.5 pe-2.5 text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50"
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-700 text-caption font-bold text-white">
+                    {initials}
+                  </span>
+                  <span className="hidden min-w-0 leading-tight sm:block">
+                    <span className="block text-[11px] text-muted">האזור האישי</span>
+                    <span className="block max-w-32 truncate text-caption font-semibold text-ink">
+                      {currentPatient.firstName} {currentPatient.lastName}
+                    </span>
+                  </span>
+                  <ChevronDown className="hidden h-4 w-4 text-muted sm:block" aria-hidden />
+                </button>
+              }
+              items={[
+                {
+                  key: "profile",
+                  label: "פרטים אישיים",
+                  icon: <UserRound />,
+                  onSelect: () => navigate("/p/settings?section=profile"),
+                },
+                {
+                  key: "preferences",
+                  label: "העדפות נגישות ושפה",
+                  icon: <Settings />,
+                  onSelect: () => navigate("/p/settings?section=preferences"),
+                },
+                {
+                  key: "notifications",
+                  label: "הודעות ותזכורות",
+                  icon: <Bell />,
+                  onSelect: () => navigate("/p/settings?section=notifications"),
+                },
+                {
+                  key: "security",
+                  label: "פרטיות ואבטחה",
+                  icon: <ShieldCheck />,
+                  onSelect: () => navigate("/p/settings?section=security"),
+                },
+                {
+                  key: "logout",
+                  label: he.common.logout,
+                  icon: <LogOut />,
+                  danger: true,
+                  onSelect: () => navigate("/p/login"),
+                },
+              ]}
+            />
           </div>
         </div>
 
