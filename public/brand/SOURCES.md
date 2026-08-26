@@ -8,3 +8,5 @@ Downloaded from the official hospital websites on 2026-08-26.
 - `medica-raphael-logo.png` — https://www.raphaelhospitals.co.il/Content/images/logo.png
 
 The product uses local copies so navigation and hospital identification do not depend on third-party uptime.
+
+- `medica-auth-hero-v1.png` — original image generated for this product with the built-in OpenAI image-generation tool. Prompt: premium abstract medical architecture, translucent H-inspired forms, official Medica purple/lavender/turquoise palette, no text or logos.
