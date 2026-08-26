@@ -74,11 +74,11 @@ export function Modal({ open, onClose, title, size = "md", children, footer }: M
         aria-label={title}
         tabIndex={-1}
         className={cn(
-          "modal-in relative flex max-h-[90vh] w-full flex-col overflow-hidden rounded-xl bg-surface shadow-lg",
+          "modal-in relative flex max-h-[90vh] w-full flex-col overflow-hidden rounded-xl border border-line bg-surface shadow-lg",
           sizes[size],
         )}
       >
-        <div className="flex items-center justify-between border-b border-line px-6 py-4">
+        <div className="flex items-center justify-between border-b border-line bg-canvas/60 px-6 py-4">
           <h2 className="text-h2 text-ink">{title}</h2>
           <button
             type="button"

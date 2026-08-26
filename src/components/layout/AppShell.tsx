@@ -49,7 +49,7 @@ export function DoctorShell({
         </button>
       </div>
 
-      <div className="mx-auto flex w-full max-w-[1600px] flex-1 items-start gap-4 p-4 lg:p-6">
+      <div className="mx-auto flex w-full max-w-[1760px] flex-1 items-start gap-5 p-4 lg:p-6">
         <div className="sticky top-[104px] hidden max-h-[calc(100vh-128px)] lg:block">
           <DoctorSidebar activeDoctorId={sidebarActiveId} section={section} className="max-h-[calc(100vh-128px)]" />
         </div>
@@ -74,9 +74,9 @@ export function DoctorShell({
 /** מסגרת מסכי המטופל: ניווט עליון + עמודה מרכזית */
 export function PatientShell({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="clinical-surface flex min-h-screen flex-col">
       <PatientNav />
-      <main className="mx-auto w-full max-w-[880px] flex-1 px-4 pb-24 pt-6 md:pb-10">
+      <main className="mx-auto w-full max-w-[1120px] flex-1 px-4 pb-24 pt-8 md:pb-12 md:pt-10">
         {children}
       </main>
     </div>

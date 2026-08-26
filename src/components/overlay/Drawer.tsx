@@ -46,14 +46,14 @@ export function Drawer({ open, onClose, title, side = "end", children }: DrawerP
         aria-label={title}
         tabIndex={-1}
         className={cn(
-          "modal-in absolute flex flex-col bg-surface shadow-lg",
+          "modal-in absolute flex flex-col border-line bg-surface shadow-lg",
           side === "end" &&
-            "inset-y-0 start-auto end-0 w-[min(92vw,380px)] rounded-s-xl",
+            "inset-y-0 start-auto end-0 w-[min(94vw,440px)] border-s rounded-s-xl",
           side === "bottom" &&
             "inset-x-0 bottom-0 max-h-[85vh] rounded-t-xl",
         )}
       >
-        <div className="flex items-center justify-between border-b border-line px-5 py-4">
+        <div className="flex items-center justify-between border-b border-line bg-canvas/60 px-5 py-4">
           <h2 className="text-h3 text-ink">{title}</h2>
           <button
             type="button"

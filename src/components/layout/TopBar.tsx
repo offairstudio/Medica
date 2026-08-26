@@ -6,6 +6,7 @@ import { formatPhone } from "../../lib/format";
 import { departmentName } from "../../mock/departments";
 import { he } from "../../i18n/he";
 import type { Doctor } from "../../types";
+import { BrandMark } from "./BrandMark";
 
 export interface TopBarProps {
   /** המשתמש המחובר למערכת - לא המנתח הנצפה */
@@ -16,14 +17,14 @@ export function TopBar({ doctor }: TopBarProps) {
   const navigate = useNavigate();
 
   return (
-    <header className="sticky top-0 z-40 shadow-sm">
-      <div className="flex h-14 items-center justify-between gap-4 bg-primary-700 px-4 text-white lg:px-6">
+    <header className="sticky top-0 z-40 border-b border-line/80 bg-surface/95 backdrop-blur-xl">
+      <div className="flex h-[68px] items-center justify-between gap-4 px-4 lg:px-6">
         <Link
           to={`/doctor/${doctor.id}/schedule`}
-          className="rounded-md text-h2 font-bold tracking-tight"
+          className="rounded-md"
           aria-label="Medica - מסך הבית"
         >
-          Medica
+          <BrandMark />
         </Link>
 
         {/* זהות המשתמש - אווטאר, שם ומחלקה, ותפריט */}
@@ -32,16 +33,16 @@ export function TopBar({ doctor }: TopBarProps) {
             <button
               type="button"
               aria-label="תפריט משתמש"
-              className="flex items-center gap-2.5 rounded-full py-1 ps-1.5 pe-2.5 transition-colors duration-fast hover:bg-white/10"
+              className="flex items-center gap-2.5 rounded-full border border-transparent bg-canvas py-1 ps-1.5 pe-2.5 transition-colors duration-fast hover:border-line hover:bg-primary-50"
             >
               <Avatar name={doctor.displayName} src={doctor.avatarUrl} size="md" />
               <span className="hidden flex-col items-start text-start leading-tight sm:flex">
-                <span className="font-semibold">{doctor.displayName}</span>
-                <span className="text-[11px] text-white/70">
+                <span className="font-semibold text-ink">{doctor.displayName}</span>
+                <span className="text-[11px] text-muted">
                   {departmentName(doctor.departmentId)}
                 </span>
               </span>
-              <ChevronDown className="hidden h-4 w-4 text-white/70 sm:block" aria-hidden />
+              <ChevronDown className="hidden h-4 w-4 text-muted sm:block" aria-hidden />
             </button>
           }
           items={[
@@ -63,7 +64,7 @@ export function TopBar({ doctor }: TopBarProps) {
       </div>
 
       {/* שורת מטא מובנית - במקום פרטי הקשר הצפים במערכת הקיימת */}
-      <div className="flex h-8 items-center justify-center gap-5 overflow-x-auto bg-primary-800 px-4 text-caption text-white/75 lg:px-6">
+      <div className="flex h-9 items-center justify-center gap-5 overflow-x-auto border-t border-line/70 bg-canvas px-4 text-caption text-muted lg:px-6">
         <span className="flex shrink-0 items-center gap-1.5" dir="ltr">
           <AtSign className="h-3.5 w-3.5" aria-hidden />
           {doctor.email}

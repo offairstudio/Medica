@@ -3,6 +3,7 @@ import { CalendarClock, FileText, LogOut, ClipboardList } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { currentPatient } from "../../mock/patients";
 import { he } from "../../i18n/he";
+import { BrandMark } from "./BrandMark";
 
 /** מסך הבית הוא מסך התורים - הניווט מסתכם ב"תורים" ו"מסמכים" */
 const tabs = [
@@ -15,14 +16,15 @@ export function PatientNav() {
   const navigate = useNavigate();
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-line bg-surface shadow-sm">
-        <div className="mx-auto flex h-16 w-full max-w-[880px] items-center justify-between px-4">
-          <Link to="/p" className="rounded-md text-h2 font-bold text-primary-700">
-            Medica
+      <header className="sticky top-0 z-40 border-b border-line/80 bg-surface/95 backdrop-blur-xl">
+        <div className="mx-auto flex h-[72px] w-full max-w-[1120px] items-center justify-between px-4">
+          <Link to="/p" className="rounded-md" aria-label="Medica - האזור האישי">
+            <BrandMark />
           </Link>
           <div className="flex items-center gap-3">
-            <span className="hidden text-body sm:block">
-              {currentPatient.firstName} {currentPatient.lastName}
+            <span className="hidden rounded-full border border-line bg-canvas px-3.5 py-2 text-caption sm:block">
+              <span className="text-muted">שלום, </span>
+              <span className="font-semibold text-ink">{currentPatient.firstName} {currentPatient.lastName}</span>
             </span>
             <button
               type="button"
@@ -36,7 +38,7 @@ export function PatientNav() {
         </div>
 
         {/* לשוניות - Desktop */}
-        <nav className="mx-auto hidden w-full max-w-[880px] items-center gap-1 px-4 md:flex" aria-label="ניווט ראשי">
+        <nav className="mx-auto hidden w-full max-w-[1120px] items-center gap-1 px-4 pb-2 md:flex" aria-label="ניווט ראשי">
           {tabs.map((tab) => (
             <NavLink
               key={tab.to}
@@ -44,17 +46,15 @@ export function PatientNav() {
               end={tab.end}
               className={({ isActive }) =>
                 cn(
-                  "relative flex min-h-[44px] items-center px-4 font-semibold transition-colors duration-fast",
-                  isActive ? "text-primary-700" : "text-muted hover:text-body",
+                  "relative flex min-h-[40px] items-center rounded-full px-4 font-semibold transition-colors duration-fast",
+                  isActive ? "bg-primary-50 text-primary-800" : "text-muted hover:bg-canvas hover:text-body",
                 )
               }
             >
               {({ isActive }) => (
                 <>
                   {tab.label}
-                  {isActive && (
-                    <span aria-hidden className="absolute inset-x-2 bottom-0 h-0.5 rounded-t bg-primary-700" />
-                  )}
+                  {isActive && <span aria-hidden className="absolute inset-x-5 -bottom-2 h-0.5 rounded-full bg-primary-600" />}
                 </>
               )}
             </NavLink>

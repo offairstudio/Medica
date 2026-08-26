@@ -18,9 +18,9 @@ const sizeClasses = {
 
 const variantClasses = {
   primary:
-    "bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-700 active:scale-[.99]",
+    "bg-primary-600 text-white shadow-sm hover:bg-primary-700 hover:shadow-md active:bg-primary-800 active:scale-[.99]",
   secondary:
-    "bg-primary-700 text-white hover:bg-primary-800 active:bg-primary-900 active:scale-[.99]",
+    "bg-primary-900 text-white shadow-sm hover:bg-primary-800 active:bg-primary-900 active:scale-[.99]",
   ghost:
     "bg-transparent text-primary-600 hover:bg-primary-50 active:bg-primary-100 active:scale-[.99]",
   danger:

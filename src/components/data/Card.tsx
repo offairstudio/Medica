@@ -10,7 +10,7 @@ const paddings = { none: "", sm: "p-3", md: "p-4", lg: "p-6" };
 export function Card({ padding = "md", className, ...rest }: CardProps) {
   return (
     <div
-      className={cn("rounded-lg border border-line bg-surface shadow-sm", paddings[padding], className)}
+      className={cn("rounded-xl border border-line/90 bg-surface shadow-sm", paddings[padding], className)}
       {...rest}
     />
   );

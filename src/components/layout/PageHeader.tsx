@@ -15,7 +15,7 @@ export interface PageHeaderProps {
 
 export function PageHeader({ title, subtitle, backTo, actions, display, className }: PageHeaderProps) {
   return (
-    <div className={cn("mb-5 flex flex-col gap-1", className)}>
+    <div className={cn("mb-7 flex flex-col gap-1.5", className)}>
       {backTo && (
         <Link
           to={backTo.to}
@@ -26,10 +26,10 @@ export function PageHeader({ title, subtitle, backTo, actions, display, classNam
         </Link>
       )}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className={cn("text-ink", display ? "text-display" : "text-h1")}>{title}</h1>
+        <h1 className={cn("tracking-[-0.025em] text-ink", display ? "text-display" : "text-h1")}>{title}</h1>
         {actions}
       </div>
-      {subtitle && <p className="text-caption text-muted">{subtitle}</p>}
+      {subtitle && <p className="max-w-2xl text-body text-muted">{subtitle}</p>}
     </div>
   );
 }
