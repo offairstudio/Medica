@@ -43,7 +43,7 @@ export function PatientHome() {
   const next = upcomingAll[0];
   const filtered = applyFilters(upcomingAll, filters);
   const groups = groupUpcoming(filtered, MOCK_TODAY);
-  const hasFilter = filters.category !== "all" || filters.departments.length > 0 || filters.doctors.length > 0;
+  const hasFilter = filters.departments.length > 0 || filters.doctors.length > 0;
 
   const recentDocs = useMemo(
     () => [...documents].sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt)).slice(0, 3),

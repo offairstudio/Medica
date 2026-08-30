@@ -1,27 +1,21 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
-  Bell,
-  CalendarPlus,
+  CalendarCheck,
   CalendarClock,
-  ChevronDown,
   ClipboardList,
   FileText,
   LogOut,
-  Settings,
-  ShieldCheck,
-  UserRound,
 } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { currentPatient } from "../../mock/patients";
 import { he } from "../../i18n/he";
 import { BrandMark } from "./BrandMark";
-import { Dropdown } from "../overlay/Dropdown";
-import { ExternalAction } from "../../features/patient-appointments/ExternalAction";
 
-/** מסך הבית הוא מסך התורים - הניווט מסתכם ב"תורים" ו"מסמכים" */
+/** אפיון 7.8: לוגו, שם המטופל, כפתור יציאה. מתחת - הלשוניות. */
 const tabs = [
-  { to: "/p", label: he.patient.tabs.appointments, icon: CalendarClock, end: true },
-  { to: "/p/results", label: "תוצאות וסיכומים", icon: ClipboardList },
+  { to: "/p", label: he.patient.tabs.upcoming, icon: CalendarClock, end: true },
+  { to: "/p/past", label: he.patient.tabs.past, icon: CalendarCheck },
+  { to: "/p/results", label: he.patient.tabs.results, icon: ClipboardList },
   { to: "/p/documents", label: he.patient.tabs.documents, icon: FileText },
 ];
 
@@ -36,69 +30,28 @@ export function PatientNav() {
           <Link to="/p" className="rounded-md" aria-label="Medica - האזור האישי">
             <BrandMark />
           </Link>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <ExternalAction
-              label={he.patient.externalBooking}
-              tone="primary"
-              compactOnMobile
-              icon={<CalendarPlus className="h-4 w-4" aria-hidden />}
-            />
 
-            <Dropdown
-              portal
-              menuClassName="min-w-60"
-              trigger={
-                <button
-                  type="button"
-                  aria-label="פתיחת תפריט משתמש"
-                  className="flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-canvas p-1.5 pe-2.5 text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50"
-                >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-700 text-caption font-bold text-white">
-                    {initials}
-                  </span>
-                  <span className="hidden min-w-0 leading-tight sm:block">
-                    <span className="block text-[11px] text-muted">האזור האישי</span>
-                    <span className="block max-w-32 truncate text-caption font-semibold text-ink">
-                      {currentPatient.firstName} {currentPatient.lastName}
-                    </span>
-                  </span>
-                  <ChevronDown className="hidden h-4 w-4 text-muted sm:block" aria-hidden />
-                </button>
-              }
-              items={[
-                {
-                  key: "profile",
-                  label: "פרטים אישיים",
-                  icon: <UserRound />,
-                  onSelect: () => navigate("/p/settings?section=profile"),
-                },
-                {
-                  key: "preferences",
-                  label: "העדפות נגישות ושפה",
-                  icon: <Settings />,
-                  onSelect: () => navigate("/p/settings?section=preferences"),
-                },
-                {
-                  key: "notifications",
-                  label: "הודעות ותזכורות",
-                  icon: <Bell />,
-                  onSelect: () => navigate("/p/settings?section=notifications"),
-                },
-                {
-                  key: "security",
-                  label: "פרטיות ואבטחה",
-                  icon: <ShieldCheck />,
-                  onSelect: () => navigate("/p/settings?section=security"),
-                },
-                {
-                  key: "logout",
-                  label: he.common.logout,
-                  icon: <LogOut />,
-                  danger: true,
-                  onSelect: () => navigate("/p/login"),
-                },
-              ]}
-            />
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-canvas p-1.5 pe-3">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-700 text-caption font-bold text-white">
+                {initials}
+              </span>
+              <span className="hidden min-w-0 leading-tight sm:block">
+                <span className="block text-[11px] text-muted">האזור האישי</span>
+                <span className="block max-w-32 truncate text-caption font-semibold text-ink">
+                  {currentPatient.firstName} {currentPatient.lastName}
+                </span>
+              </span>
+            </span>
+
+            <button
+              type="button"
+              onClick={() => navigate("/p/login")}
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-md border border-line bg-surface px-3 font-semibold text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 sm:px-4"
+            >
+              <LogOut className="h-4 w-4" aria-hidden />
+              <span className="hidden sm:inline">{he.common.logout}</span>
+            </button>
           </div>
         </div>
 

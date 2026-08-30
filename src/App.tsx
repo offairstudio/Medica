@@ -18,9 +18,9 @@ import { DoctorAllSurgeries } from "./pages/DoctorAllSurgeries";
 import { SurgeryView } from "./pages/SurgeryView";
 import { PatientHome } from "./pages/PatientHome";
 import { AppointmentDetails } from "./pages/AppointmentDetails";
+import { PatientPast } from "./pages/PatientPast";
 import { PatientDocuments } from "./pages/PatientDocuments";
 import { PatientResults } from "./pages/PatientResults";
-import { PatientSettings } from "./pages/PatientSettings";
 import { KitchenSink } from "./pages/KitchenSink";
 import { NoAccess } from "./pages/NoAccess";
 import { NotFound } from "./pages/NotFound";
@@ -76,11 +76,10 @@ export default function App() {
             {/* קישורים ישנים - מסך הבית הוא מסך התורים */}
             <Route path="/p/appointments" element={<Navigate to="/p" replace />} />
             <Route path="/p/upcoming" element={<Navigate to="/p" replace />} />
-            <Route path="/p/past" element={<Navigate to="/p/results" replace />} />
+            <Route path="/p/past" element={<PatientPast />} />
             <Route path="/p/appointment/:id" element={<AppointmentDetails />} />
             <Route path="/p/results" element={<PatientResults />} />
             <Route path="/p/documents" element={<PatientDocuments />} />
-            <Route path="/p/settings" element={<PatientSettings />} />
 
             {/* פיתוח */}
             <Route path="/kitchen-sink" element={<KitchenSink />} />

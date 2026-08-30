@@ -4,6 +4,15 @@
 
 **אין backend.** כל הנתונים מגיעים מ-`src/mock/`, מצב נשמר ב-React state בלבד.
 
+## גרסאות סקופ
+
+| ענף | סקופ |
+|---|---|
+| `design/v1-spec-baseline` | דרישות עסקיות + MEDICA_SPEC.md בלבד |
+| `design/v1-clinical-calm` | הגרסה המורחבת - כולל 27 יכולות שמעבר לדרישות |
+
+שתי הגרסאות זהות בשפה העיצובית. הפירוט המלא: [docs/SCOPE.md](./docs/SCOPE.md).
+
 ## הרצה
 
 ```bash

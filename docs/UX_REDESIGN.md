@@ -3,15 +3,18 @@
 ## Version workflow
 
 - `main` — protected baseline containing every implemented capability before the redesign.
-- `design/v1-clinical-calm` — first design direction. No business capability may be removed.
+- `design/v1-clinical-calm` — first design direction, and the **extended** scope version.
+- `design/v1-spec-baseline` — **base** scope version: business requirements + `MEDICA_SPEC.md` only. Same design language as v1; scope differs.
 - Further directions should use `design/v2-*`, `design/v3-*`, and so on.
 - A chosen direction returns to `main` only after desktop/mobile QA and a capability parity check.
+
+**Scope rule.** "No business capability may be removed" applies within a scope version, not across them. 27 capabilities in the inventory below were never in the business requirements — see [SCOPE.md](./SCOPE.md) for the item-by-item split and which version each one lives in. Removing them on `design/v1-spec-baseline` is deliberate, not a regression.
 
 ## Official brand materials
 
 V1 uses the official Medica logo and the hospital logos available on the official Medica, Elisha, RMC and Raphael sites. The product palette is based on the official deep purple (`#462E79`), lavender, turquoise (`#12CBCA`) and blue-grey neutrals. Asset provenance is documented in `public/brand/SOURCES.md`.
 
-## Capability inventory
+## Capability inventory (extended version)
 
 ### Doctor
 

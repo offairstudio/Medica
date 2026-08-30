@@ -16,9 +16,6 @@ export interface AppointmentCardProps {
 
 export function AppointmentCard({ appointment, muted, featured, featuredLabel }: AppointmentCardProps) {
   const { day, month } = formatDateBlock(appointment.date);
-  const category = appointment.kind === "test" || appointment.kind === "surgery"
-    ? "בדיקות וניתוחים"
-    : "מומחים ומעקב";
 
   return (
     <Link
@@ -60,12 +57,7 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel }:
             <span className={cn("truncate text-h3", muted ? "text-body" : "text-ink")}>
               {appointment.title}
             </span>
-            <span className="flex flex-wrap items-center gap-1.5">
-              <span className="rounded-full bg-primary-50 px-2.5 py-0.5 text-caption font-semibold text-primary-700">
-                {category}
-              </span>
-              <KindChip kind={appointment.kind} />
-            </span>
+            <KindChip kind={appointment.kind} />
           </span>
           <span className="mt-0.5 block truncate text-muted">
             {appointment.doctorName} · {appointment.departmentName}

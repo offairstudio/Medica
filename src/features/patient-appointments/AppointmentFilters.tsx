@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ChevronDown, FlaskConical, UserRound } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { FilterChip } from "../../components/data/Chip";
 import { Dropdown } from "../../components/overlay/Dropdown";
 import { Checkbox } from "../../components/primitives/Checkbox";
@@ -7,7 +7,6 @@ import { he } from "../../i18n/he";
 import type { Appointment } from "../../types";
 
 export interface AppointmentFiltersState {
-  category: "all" | "care" | "specialists";
   departments: string[];
   doctors: string[];
 }
@@ -19,7 +18,7 @@ export interface AppointmentFiltersProps {
 }
 
 export function emptyFilters(): AppointmentFiltersState {
-  return { category: "all", departments: [], doctors: [] };
+  return { departments: [], doctors: [] };
 }
 
 export function applyFilters(
@@ -27,8 +26,6 @@ export function applyFilters(
   f: AppointmentFiltersState,
 ): Appointment[] {
   return appointments.filter((a) => {
-    if (f.category === "care" && a.kind !== "test" && a.kind !== "surgery") return false;
-    if (f.category === "specialists" && a.kind !== "consult" && a.kind !== "followup") return false;
     if (f.departments.length > 0 && !f.departments.includes(a.departmentId)) return false;
     if (f.doctors.length > 0 && !f.doctors.includes(a.doctorId)) return false;
     return true;
@@ -52,7 +49,7 @@ export function AppointmentFilters({ appointments, value, onChange }: Appointmen
     return [...map.entries()].map(([id, name]) => ({ id, name }));
   }, [appointments]);
 
-  const hasFilter = value.category !== "all" || value.departments.length > 0 || value.doctors.length > 0;
+  const hasFilter = value.departments.length > 0 || value.doctors.length > 0;
 
   function toggle(list: string[], id: string): string[] {
     return list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
@@ -63,18 +60,6 @@ export function AppointmentFilters({ appointments, value, onChange }: Appointmen
       <FilterChip active={!hasFilter} onClick={() => onChange(emptyFilters())}>
         {he.patient.filterAll}
       </FilterChip>
-
-      <FilterChip active={value.category === "care"} onClick={() => onChange({ ...value, category: value.category === "care" ? "all" : "care" })}>
-        <FlaskConical className="h-4 w-4" aria-hidden />
-        בדיקות וניתוחים
-      </FilterChip>
-
-      <FilterChip active={value.category === "specialists"} onClick={() => onChange({ ...value, category: value.category === "specialists" ? "all" : "specialists" })}>
-        <UserRound className="h-4 w-4" aria-hidden />
-        מומחים ומעקב
-      </FilterChip>
-
-      <span className="mx-0.5 h-8 w-px shrink-0 self-center bg-line" aria-hidden />
 
       <Dropdown
         align="start"

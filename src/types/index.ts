@@ -133,8 +133,4 @@ export interface Appointment {
   resultSummary?: string;
   /** האם קיימת הדמיה לצפייה דרך MyVue */
   imagingAvailable?: boolean;
-  /** תוצאה שטרם נפתחה באזור האישי */
-  resultViewed?: boolean;
-  /** תור שמאפשר השלמת שאלון ו-Check-in מהבית */
-  remoteCheckIn?: boolean;
 }

@@ -26,7 +26,6 @@ export const appointments: Appointment[] = [
     time: "14:30",
     location: "בניין A, קומה 2, חדר 214",
     status: "upcoming",
-    remoteCheckIn: true,
     preparation: [
       "יש להביא תוצאות בדיקות דימות קודמות",
       "מומלץ להגיע 15 דקות לפני מועד התור",
@@ -48,7 +47,6 @@ export const appointments: Appointment[] = [
     time: "09:15",
     location: "מכון הדימות, בניין B, קומה 1-",
     status: "upcoming",
-    remoteCheckIn: true,
     preparation: [
       "אין להכניס חפצי מתכת לחדר הבדיקה",
       "יש לעדכן את הצוות על קוצב לב או שתלים מתכתיים",
@@ -70,7 +68,6 @@ export const appointments: Appointment[] = [
     time: "16:00",
     location: "חדרי ניתוח, בניין A, קומה 3",
     status: "upcoming",
-    remoteCheckIn: true,
     preparation: [
       "צום מלא החל מ-8 שעות לפני הניתוח",
       "יש להפסיק תרופות מדללות דם לפי הנחיית הרופא",
@@ -92,7 +89,6 @@ export const appointments: Appointment[] = [
     time: "11:00",
     location: "מרפאות חוץ, בניין C, קומה 2, חדר 18",
     status: "upcoming",
-    remoteCheckIn: true,
     documents: [],
   },
   {
@@ -109,7 +105,6 @@ export const appointments: Appointment[] = [
     time: "10:45",
     location: "מרפאות חוץ, בניין A, קומה 1, חדר 106",
     status: "upcoming",
-    remoteCheckIn: true,
     documents: [],
   },
 
@@ -131,7 +126,6 @@ export const appointments: Appointment[] = [
     documents: [doc("docm-1")],
     resultSummary: "נצפה קרע חלקי במיניסקוס המדיאלי. מומלץ המשך בירור אורתופדי.",
     imagingAvailable: true,
-    resultViewed: false,
   },
   {
     id: "app-7",
@@ -149,7 +143,6 @@ export const appointments: Appointment[] = [
     status: "completed",
     documents: [doc("docm-3")],
     resultSummary: "כלל הערכים בטווח התקין. המוגלובין 13.2, תפקודי כליה תקינים.",
-    resultViewed: true,
   },
   {
     id: "app-8",
@@ -167,7 +160,6 @@ export const appointments: Appointment[] = [
     status: "completed",
     documents: [doc("docm-4")],
     resultSummary: "הומלץ על ניתוח מיני מעקף קיבה. הופנתה להשלמת בדיקות טרום ניתוח.",
-    resultViewed: false,
   },
   {
     id: "app-9",
@@ -185,7 +177,6 @@ export const appointments: Appointment[] = [
     status: "completed",
     documents: [doc("docm-2"), doc("docm-8")],
     resultSummary: "הניתוח עבר ללא סיבוכים. שוחררה למחרת עם הנחיות להמשך מעקב.",
-    resultViewed: true,
   },
   {
     id: "app-10",
@@ -203,7 +194,6 @@ export const appointments: Appointment[] = [
     status: "completed",
     documents: [doc("docm-5")],
     resultSummary: "קצב סינוס תקין, ללא ממצאים איסכמיים.",
-    resultViewed: true,
   },
   {
     id: "app-11",
@@ -221,7 +211,6 @@ export const appointments: Appointment[] = [
     status: "completed",
     documents: [doc("docm-8")],
     resultSummary: "אין מניעה קרדיאלית לניתוח בהרדמה כללית.",
-    resultViewed: false,
   },
   {
     id: "app-12",
@@ -240,7 +229,6 @@ export const appointments: Appointment[] = [
     documents: [doc("docm-7")],
     resultSummary: "אבנים מרובות בכיס המרה. הופנתה לייעוץ כירורגי.",
     imagingAvailable: true,
-    resultViewed: true,
   },
   {
     id: "app-13",
@@ -258,6 +246,5 @@ export const appointments: Appointment[] = [
     status: "completed",
     documents: [doc("docm-12")],
     resultSummary: "כאבי ברך מתמשכים. הופנתה לבדיקת MRI.",
-    resultViewed: true,
   },
 ];

@@ -1,12 +1,11 @@
-import { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import {
   CalendarDays,
   Clock,
   Stethoscope,
   Building2,
-  Download,
   MapPin,
+  MessageSquareText,
   Hospital as HospitalIcon,
   Info,
 } from "lucide-react";
@@ -14,11 +13,10 @@ import { PatientShell } from "../components/layout/AppShell";
 import { PageHeader } from "../components/layout/PageHeader";
 import { Card } from "../components/data/Card";
 import { Chip, HospitalChip, KindChip } from "../components/data/Chip";
-import { Checkbox } from "../components/primitives/Checkbox";
+import { Button } from "../components/primitives/Button";
 import { EmptyState } from "../components/data/EmptyState";
+import { useToast } from "../components/overlay/Toast";
 import { DocumentRow } from "../features/patient-documents/DocumentRow";
-import { ExternalAction } from "../features/patient-appointments/ExternalAction";
-import { AppointmentActionCenter } from "../features/patient-appointments/AppointmentActionCenter";
 import { appointments } from "../mock/appointments";
 import { formatFullDate } from "../lib/date";
 import { he } from "../i18n/he";
@@ -27,9 +25,8 @@ const statusColor = { upcoming: "info", completed: "success", cancelled: "danger
 
 export function AppointmentDetails() {
   const { id } = useParams();
+  const { toast } = useToast();
   const appointment = appointments.find((a) => a.id === id);
-  // צ'ק-ליסט הכנה לתור - מצב מקומי בלבד
-  const [checked, setChecked] = useState<number[]>([]);
 
   if (!appointment) return <Navigate to="/p" replace />;
 
@@ -58,7 +55,7 @@ export function AppointmentDetails() {
       <PageHeader
         title={appointment.title}
         display
-        backTo={{ to: isUpcoming ? "/p" : "/p?tab=past", label: he.patient.backToAppointments }}
+        backTo={{ to: isUpcoming ? "/p" : "/p/results", label: he.patient.backToAppointments }}
         actions={
           <span className="flex items-center gap-2">
             <KindChip kind={appointment.kind} />
@@ -70,7 +67,7 @@ export function AppointmentDetails() {
       />
 
       <div className="flex flex-col gap-5">
-        {/* כרטיס פרטים */}
+        {/* כרטיס פרטים - אפיון 7.11 סעיף 3 */}
         <Card padding="lg">
           <dl>
             {rows.map((row) => (
@@ -84,69 +81,33 @@ export function AppointmentDetails() {
               </div>
             ))}
           </dl>
-
-          {/* מסמך זימון + ניהול התור במערכת החיצונית - לתור עתידי */}
-          {isUpcoming && (
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <a
-                href="/mock-files/referral.pdf"
-                download={`מסמך-זימון-${appointment.title}.pdf`}
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-md border border-line px-4 font-semibold text-primary-600 transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50"
-              >
-                <Download className="h-4 w-4" aria-hidden />
-                {he.patient.summonsDocument}
-              </a>
-              <ExternalAction label={he.patient.externalManage} variant="link" />
-            </div>
-          )}
         </Card>
 
-        {isUpcoming && <AppointmentActionCenter appointment={appointment} />}
-
-        {/* הנחיות הכנה - עם צ'ק-ליסט אינטראקטיבי */}
-        {prep.length > 0 && isUpcoming && (
+        {/* הנחיות הכנה - רשימת נקודות; שליחה ב-SMS לתור עתידי */}
+        {prep.length > 0 && (
           <section
             aria-label={he.patient.preparation}
             className="rounded-lg border border-primary-200 bg-primary-50 p-5"
           >
-            <div className="mb-1 flex items-center justify-between gap-2">
-              <h2 className="flex items-center gap-2 text-h3 text-primary-800">
-                <Info className="h-4 w-4 text-primary-500" aria-hidden />
-                {he.patient.preparation}
-              </h2>
-              <span className="text-caption font-semibold text-primary-600 tnum">
-                {checked.length}/{prep.length} הושלמו
-              </span>
-            </div>
-            <ul>
-              {prep.map((p, i) => (
-                <li key={i}>
-                  <Checkbox
-                    label={p}
-                    checked={checked.includes(i)}
-                    onChange={(e) =>
-                      setChecked((list) =>
-                        e.target.checked ? [...list, i] : list.filter((x) => x !== i),
-                      )
-                    }
-                  />
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {prep.length > 0 && !isUpcoming && (
-          <section className="rounded-lg border border-primary-200 bg-primary-50 p-5">
             <h2 className="mb-2 flex items-center gap-2 text-h3 text-primary-800">
               <Info className="h-4 w-4 text-primary-500" aria-hidden />
               {he.patient.preparation}
             </h2>
             <ul className="list-inside list-disc text-primary-800">
-              {prep.map((p, i) => (
-                <li key={i}>{p}</li>
+              {prep.map((p) => (
+                <li key={p}>{p}</li>
               ))}
             </ul>
+            {isUpcoming && (
+              <Button
+                variant="secondary"
+                className="mt-4"
+                icon={<MessageSquareText className="h-4 w-4" />}
+                onClick={() => toast("success", he.patient.instructionsSent)}
+              >
+                {he.patient.sendInstructionsSms}
+              </Button>
+            )}
           </section>
         )}
 

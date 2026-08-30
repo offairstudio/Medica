@@ -2,15 +2,12 @@ import { useMemo, useState } from "react";
 import {
   CalendarRange,
   Eye,
-  FileText,
   Image as ImageIcon,
-  Share2,
   Stethoscope,
 } from "lucide-react";
 import { PatientShell } from "../components/layout/AppShell";
 import { PageHeader } from "../components/layout/PageHeader";
 import { EmptyState } from "../components/data/EmptyState";
-import { Chip } from "../components/data/Chip";
 import { Button } from "../components/primitives/Button";
 import { useToast } from "../components/overlay/Toast";
 import { appointments } from "../mock/appointments";
@@ -20,12 +17,15 @@ import type { Appointment } from "../types";
 
 type ResultsTab = "tests" | "specialists";
 
+/**
+ * תוצאות וסיכומים - שתי קטגוריות בלבד לפי הדרישות: בדיקות ורופאים מומחים.
+ * לכל תוצאה: תאריך, שם הבדיקה ואפשרויות צפייה (תוצאה / צילום). ללא הורדה.
+ */
 export function PatientResults() {
   const { toast } = useToast();
   const [tab, setTab] = useState<ResultsTab>("tests");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [viewed, setViewed] = useState(() => new Set(appointments.filter((item) => item.resultViewed).map((item) => item.id)));
 
   const allResults = useMemo(
     () => appointments.filter((item) => item.status === "completed" && item.resultSummary),
@@ -35,7 +35,7 @@ export function PatientResults() {
   const filtered = useMemo(
     () =>
       allResults
-        .filter((item) => (tab === "tests" ? item.kind === "test" : item.kind !== "test"))
+        .filter((item) => (tab === "tests" ? item.kind === "test" : item.kind === "consult" || item.kind === "followup"))
         .filter((item) => !from || item.date >= from)
         .filter((item) => !to || item.date <= to)
         .sort((a, b) => b.date.localeCompare(a.date)),
@@ -43,14 +43,12 @@ export function PatientResults() {
   );
 
   function openResult(item: Appointment) {
-    setViewed((current) => new Set(current).add(item.id));
     window.open(item.documents[0]?.fileUrl ?? "/mock-files/mri-result.pdf", "_blank", "noopener,noreferrer");
   }
 
-  function openImaging(item: Appointment, share = false) {
-    setViewed((current) => new Set(current).add(item.id));
+  function openImaging() {
     window.open("/mock-files/mri-result.pdf", "_blank", "noopener,noreferrer");
-    toast("info", share ? "חלון השיתוף של MyVue נפתח בטאב חדש (מדומה בפרוטוטייפ)" : "MyVue נפתח בטאב חדש (מדומה בפרוטוטייפ)");
+    toast("info", "MyVue נפתח בטאב חדש (מדומה בפרוטוטייפ)");
   }
 
   return (
@@ -59,7 +57,7 @@ export function PatientResults() {
 
       <div className="mb-5 flex gap-1 rounded-lg border border-line bg-canvas p-1" role="tablist" aria-label="סוג תוצאה">
         <TabButton active={tab === "tests"} onClick={() => setTab("tests")} icon={ImageIcon}>בדיקות וצילומים</TabButton>
-        <TabButton active={tab === "specialists"} onClick={() => setTab("specialists")} icon={Stethoscope}>סיכומי מומחים וניתוחים</TabButton>
+        <TabButton active={tab === "specialists"} onClick={() => setTab("specialists")} icon={Stethoscope}>סיכומי מומחים</TabButton>
       </div>
 
       <section className="mb-6 rounded-lg border border-line bg-surface p-4 shadow-sm" aria-label="סינון לפי תאריכים">
@@ -77,41 +75,26 @@ export function PatientResults() {
         <EmptyState illustration="file" title="לא נמצאו תוצאות בטווח שנבחר" />
       ) : (
         <div className="space-y-3">
-          {filtered.map((item) => {
-            const isNew = !viewed.has(item.id);
-            return (
-              <article key={item.id} className="rounded-lg border border-line bg-surface p-5 shadow-sm">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-                  <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-md bg-primary-100 text-primary-700">
-                    <span className="text-caption font-semibold">{new Date(`${item.date}T12:00:00`).toLocaleDateString("he-IL", { month: "short" })}</span>
-                    <span className="text-h2 font-bold leading-none tnum">{item.date.slice(-2)}</span>
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="text-h3 text-ink">{item.title}</h2>
-                      {isNew && <Chip color="success">חדש</Chip>}
-                    </div>
-                    <p className="mt-1 text-caption text-muted">{formatFullDate(item.date)} · {item.departmentName}</p>
-                    <p className="mt-3 text-body">{item.resultSummary}</p>
-                    <div className="mt-4 flex flex-wrap gap-2 border-t border-line pt-4">
-                      <Button size="sm" icon={<Eye className="h-4 w-4" />} onClick={() => openResult(item)}>צפייה בתוצאה</Button>
-                      {item.imagingAvailable && (
-                        <>
-                          <Button size="sm" variant="ghost" icon={<ImageIcon className="h-4 w-4" />} onClick={() => openImaging(item)}>צפייה בצילום</Button>
-                          <Button size="sm" variant="ghost" icon={<Share2 className="h-4 w-4" />} onClick={() => openImaging(item, true)}>שיתוף צילום</Button>
-                        </>
-                      )}
-                      {!item.imagingAvailable && item.documents[0] && (
-                        <a href={item.documents[0].fileUrl} download className="inline-flex h-9 items-center gap-1.5 rounded-md px-3 text-caption font-semibold text-primary-600 hover:bg-primary-50">
-                          <FileText className="h-4 w-4" /> הורדת מסמך
-                        </a>
-                      )}
-                    </div>
+          {filtered.map((item) => (
+            <article key={item.id} className="rounded-lg border border-line bg-surface p-5 shadow-sm">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-md bg-primary-100 text-primary-700">
+                  <span className="text-caption font-semibold">{new Date(`${item.date}T12:00:00`).toLocaleDateString("he-IL", { month: "short" })}</span>
+                  <span className="text-h2 font-bold leading-none tnum">{item.date.slice(-2)}</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-h3 text-ink">{item.title}</h2>
+                  <p className="mt-1 text-caption text-muted">{formatFullDate(item.date)}</p>
+                  <div className="mt-4 flex flex-wrap gap-2 border-t border-line pt-4">
+                    <Button size="sm" icon={<Eye className="h-4 w-4" />} onClick={() => openResult(item)}>צפייה בתוצאה</Button>
+                    {item.imagingAvailable && (
+                      <Button size="sm" variant="ghost" icon={<ImageIcon className="h-4 w-4" />} onClick={openImaging}>צפייה בצילום</Button>
+                    )}
                   </div>
                 </div>
-              </article>
-            );
-          })}
+              </div>
+            </article>
+          ))}
         </div>
       )}
     </PatientShell>
