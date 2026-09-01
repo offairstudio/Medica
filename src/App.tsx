@@ -17,7 +17,6 @@ import { Verify } from "./pages/Verify";
 import { DoctorSchedule } from "./pages/DoctorSchedule";
 import { DoctorAllSurgeries } from "./pages/DoctorAllSurgeries";
 import { SurgeryView } from "./pages/SurgeryView";
-import { PatientDashboard } from "./pages/PatientDashboard";
 import { PatientAppointments } from "./pages/PatientAppointments";
 import { AppointmentDetails } from "./pages/AppointmentDetails";
 import { AppointmentDetailsSheet } from "./features/patient-appointments/AppointmentDetailsSheet";
@@ -87,7 +86,8 @@ function AppRoutes() {
         {/* מטופל */}
         <Route path="/p/login" element={<LoginPatient />} />
         <Route path="/p/verify" element={<Verify audience="patient" />} />
-        <Route path="/p" element={<PatientDashboard />} />
+        {/* הדשבורד מוסתר לפי החלטת הלקוח - מסך התורים הוא מסך הנחיתה */}
+        <Route path="/p" element={<Navigate to="/p/appointments" replace />} />
         <Route path="/p/appointments" element={<PatientAppointments mode="upcoming" />} />
         <Route path="/p/appointments/past" element={<PatientAppointments mode="past" />} />
         {/* קישורים ישנים */}

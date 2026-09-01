@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { CalendarDays, Clock, MapPin, MessageSquareText, Info } from "lucide-react";
-import { Card } from "../../components/data/Card";
 import { Button } from "../../components/primitives/Button";
 import { FileUpload, type UploadedFile } from "../../components/form/FileUpload";
-import { EmptyState } from "../../components/data/EmptyState";
 import { useToast } from "../../components/overlay/Toast";
 import { DocumentRow } from "../patient-documents/DocumentRow";
 import { formatFullDate } from "../../lib/date";
@@ -34,7 +32,11 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
   return (
     <div className="flex flex-col gap-5">
       {/* כרטיס פרטים - אפיון 7.11 סעיף 3 */}
-      <Card padding="lg">
+      <section
+        aria-label={he.patient.detailsTitle}
+        className="rounded-lg border border-line bg-surface p-5 shadow-sm"
+      >
+        <h3 className="mb-2 text-h3 text-ink">{he.patient.detailsTitle}</h3>
         <dl>
           {rows.map((row) => (
             <div
@@ -47,7 +49,7 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
             </div>
           ))}
         </dl>
-      </Card>
+      </section>
 
       {/* הנחיות הכנה */}
       {prep.length > 0 && (
@@ -93,12 +95,15 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
       )}
 
       {/* מסמכים רפואיים */}
-      <section aria-label={he.patient.documentsSection}>
-        <h3 className="mb-3 text-h3 text-ink">{he.patient.documentsSection}</h3>
+      <section
+        aria-label={he.patient.documentsSection}
+        className="rounded-lg border border-line bg-surface p-5 shadow-sm"
+      >
+        <h3 className="text-h3 text-ink">{he.patient.documentsSection}</h3>
         {appointment.documents.length === 0 ? (
-          <EmptyState illustration="file" title={he.patient.noAppointmentDocuments} />
+          <p className="mt-2 text-muted">{he.patient.noAppointmentDocuments}</p>
         ) : (
-          <ul className="rounded-lg border border-line bg-surface px-4 shadow-sm">
+          <ul className="mt-1">
             {appointment.documents.map((d) => (
               <DocumentRow key={d.id} doc={d} />
             ))}
@@ -108,10 +113,13 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
 
       {/* תקציר תוצאה */}
       {appointment.status === "completed" && appointment.resultSummary && (
-        <Card padding="lg">
-          <h3 className="mb-2 text-h3 text-ink">{he.patient.resultSummary}</h3>
-          <p className="text-body">{appointment.resultSummary}</p>
-        </Card>
+        <section
+          aria-label={he.patient.resultSummary}
+          className="rounded-lg border border-line bg-surface p-5 shadow-sm"
+        >
+          <h3 className="text-h3 text-ink">{he.patient.resultSummary}</h3>
+          <p className="mt-2 text-body">{appointment.resultSummary}</p>
+        </section>
       )}
     </div>
   );

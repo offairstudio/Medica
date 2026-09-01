@@ -78,15 +78,22 @@ export function Dropdown({
       const gap = 4;
       const margin = 8;
       const menuH = menuRef.current?.offsetHeight ?? 0;
-      const spaceBelow = window.innerHeight - rect.bottom;
+      const menuW = menuRef.current?.offsetWidth ?? 0;
+
       // אין מקום מתחת (למשל כפתור בתחתית סרגל הצד) - נפתח כלפי מעלה
+      const spaceBelow = window.innerHeight - rect.bottom;
       const openUp = menuH > 0 && spaceBelow < menuH + gap + margin && rect.top > spaceBelow;
       const rawTop = openUp ? rect.top - menuH - gap : rect.bottom + gap;
       const maxTop = Math.max(margin, window.innerHeight - menuH - margin);
+
+      // ב-RTL הצמדה לקצה ההתחלה (ימין) נמדדת מקצה החלון.
+      // חסימה משני הצדדים כדי שהתפריט לא ייחתך בקצה הנגדי.
+      const maxInset = Math.max(margin, window.innerWidth - menuW - margin);
+      const rawInset = window.innerWidth - rect.right;
+
       setPosition({
         top: Math.min(Math.max(margin, rawTop), maxTop),
-        // ב-RTL הצמדה לקצה ההתחלה (ימין) נמדדת מקצה החלון
-        inset: Math.max(margin, window.innerWidth - rect.right),
+        inset: Math.min(Math.max(margin, rawInset), maxInset),
       });
     }
     place();

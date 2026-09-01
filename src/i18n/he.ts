@@ -264,6 +264,7 @@ export const he = {
       hospital: "בית חולים",
       location: "מיקום",
     },
+    detailsTitle: "פרטי התור",
     preparation: "הנחיות הכנה",
     documentsSection: "מסמכים רפואיים",
     uploadTitle: "העלאת מסמכים לקראת התור",
