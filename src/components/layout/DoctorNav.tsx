@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   AtSign,
@@ -7,7 +7,9 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  CalendarRange,
   LogOut,
+  Search,
   Smartphone,
   Table as TableIcon,
 } from "lucide-react";
@@ -15,7 +17,7 @@ import { cn } from "../../lib/cn";
 import { Avatar } from "../data/Avatar";
 import { Dropdown } from "../overlay/Dropdown";
 import { BrandMark } from "./BrandMark";
-import { currentDoctor, MOCK_TODAY } from "../../mock/doctors";
+import { currentDoctor, doctors, MOCK_TODAY } from "../../mock/doctors";
 import { departmentName } from "../../mock/departments";
 import { useData } from "../../state/data";
 import { formatPhone } from "../../lib/format";
@@ -104,8 +106,40 @@ function AccountMenu({ collapsed }: { collapsed?: boolean }) {
 /** ניווט ראשי למסכי המנתח - אותו מבנה כמו באזור המטופל */
 export function DoctorNav({ doctorId }: { doctorId: string }) {
   const [collapsed, setCollapsed] = useState(readCollapsed);
+  const [query, setQuery] = useState("");
   const { pathname } = useLocation();
   const { surgeries } = useData();
+
+  /** בחירת מנתח שומרת על המסך שבו נמצאים */
+  const section = pathname.endsWith("/all") ? "all" : "schedule";
+
+  const managed = useMemo(
+    () =>
+      doctors
+        .filter((d) => d.managedByMe)
+        .sort(
+          (a, b) =>
+            a.lastName.localeCompare(b.lastName, "he") ||
+            a.firstName.localeCompare(b.firstName, "he"),
+        ),
+    [],
+  );
+  // רוב המשתמשים מנהלים מנתחים בודדים; חיפוש נחוץ רק ברשימה ארוכה
+  const showSearch = managed.length > 6;
+  const visibleDoctors = useMemo(() => {
+    const q = query.trim();
+    return q ? managed.filter((d) => d.displayName.includes(q)) : managed;
+  }, [managed, query]);
+
+  const todayByDoctor = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const s of surgeries) {
+      if (s.date === MOCK_TODAY && s.status === "scheduled") {
+        map[s.doctorId] = (map[s.doctorId] ?? 0) + 1;
+      }
+    }
+    return map;
+  }, [surgeries]);
 
   useEffect(() => {
     try {
@@ -229,6 +263,73 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
               </Link>
             );
           })}
+
+          {/* מנתחים בניהולי - בחירת ההקשר, בתוך אותו תפריט */}
+          {!collapsed && (
+            <div className="mt-5">
+              <p className="px-3 pb-1 text-caption font-semibold text-muted">
+                {he.schedule.managedDoctors}
+              </p>
+
+              {showSearch && (
+                <div className="relative px-1 pb-1">
+                  <Search
+                    className="pointer-events-none absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+                    aria-hidden
+                  />
+                  <input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder={he.schedule.searchDoctor}
+                    aria-label={he.schedule.searchDoctor}
+                    className="h-10 w-full rounded-md border border-line bg-surface ps-9 pe-3 text-caption text-ink placeholder:text-muted focus:border-primary-500"
+                  />
+                </div>
+              )}
+
+              <Link
+                to={`/doctor/all/${section}`}
+                aria-current={doctorId === "all" ? "page" : undefined}
+                className={cn(
+                  "flex min-h-[44px] items-center gap-2.5 rounded-md px-3 transition-colors duration-fast",
+                  doctorId === "all"
+                    ? "bg-primary-50 font-semibold text-primary-800"
+                    : "text-body hover:bg-canvas",
+                )}
+              >
+                <CalendarRange className="h-4 w-4 shrink-0 text-primary-600" aria-hidden />
+                <span className="min-w-0 flex-1 truncate">{he.schedule.allDoctors}</span>
+              </Link>
+
+              {visibleDoctors.length === 0 ? (
+                <p className="px-3 py-2 text-caption text-muted">{he.schedule.noDoctorsFound}</p>
+              ) : (
+                visibleDoctors.map((d) => {
+                  const isActive = d.id === doctorId;
+                  const count = todayByDoctor[d.id] ?? 0;
+                  return (
+                    <Link
+                      key={d.id}
+                      to={`/doctor/${d.id}/${section}`}
+                      aria-current={isActive ? "page" : undefined}
+                      className={cn(
+                        "flex min-h-[44px] items-center gap-2.5 rounded-md px-3 transition-colors duration-fast",
+                        isActive
+                          ? "bg-primary-50 font-semibold text-primary-800"
+                          : "text-body hover:bg-canvas",
+                      )}
+                    >
+                      <Avatar name={d.displayName} src={d.avatarUrl} size="sm" />
+                      <span className="min-w-0 flex-1 truncate">{d.displayName}</span>
+                      {count > 0 && (
+                        <span className="tnum shrink-0 text-caption text-muted">{count}</span>
+                      )}
+                    </Link>
+                  );
+                })
+              )}
+            </div>
+          )}
         </nav>
 
         <div className={cn("border-t border-line", collapsed ? "flex justify-center p-2" : "p-3")}>

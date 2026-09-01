@@ -1,17 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams, Navigate } from "react-router-dom";
-import { addDays, addMonths, startOfMonth } from "date-fns";
+import { addDays } from "date-fns";
 import {
   ChevronRight,
   ChevronLeft,
   Info,
-  CalendarDays,
-  List,
   Plus,
 } from "lucide-react";
 import { DoctorShell } from "../components/layout/AppShell";
-import { ScreenHeader, tabClass } from "../components/layout/ScreenHeader";
-import { DoctorPicker } from "../features/doctor-schedule/DoctorPicker";
+import { ScreenHeader } from "../components/layout/ScreenHeader";
 import { Button } from "../components/primitives/Button";
 import { EmptyState } from "../components/data/EmptyState";
 import { Skeleton } from "../components/data/Skeleton";
@@ -21,7 +18,6 @@ import { MonthCalendar } from "../components/calendar/MonthCalendar";
 import { BlockLegend } from "../components/calendar/BlockLegend";
 import { SurgeryRow } from "../features/doctor-schedule/SurgeryRow";
 import { DayStrip } from "../features/doctor-schedule/DayStrip";
-import { MonthGrid } from "../features/doctor-schedule/MonthGrid";
 import { SwapModal } from "../features/surgery-swap/SwapModal";
 import { SurgeryDetailsModal } from "../features/surgery-details/SurgeryDetailsModal";
 import {
@@ -38,7 +34,6 @@ import { doctorById, MOCK_TODAY } from "../mock/doctors";
 import { useData } from "../state/data";
 import { useFakeLoading } from "../lib/useFakeLoading";
 import {
-  formatMonthYear,
   formatShortDate,
   formatWeekday,
   formatTotalHours,
@@ -67,15 +62,13 @@ export function DoctorSchedule() {
   const { surgeries, deleteSurgery, restoreSurgery, highlightId } = useData();
   const { toast } = useToast();
 
-  const [view, setView] = useState<"day" | "month">("day");
   const [selectedDate, setSelectedDate] = useState<ISODate>(MOCK_TODAY);
-  const [viewMonth, setViewMonth] = useState<Date>(() => startOfMonth(toDate(MOCK_TODAY)));
   const [swapTarget, setSwapTarget] = useState<Surgery | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Surgery | null>(null);
   const [wizardPrefill, setWizardPrefill] = useState<WizardPrefill | null>(null);
   const [detailsTarget, setDetailsTarget] = useState<{ id: string; edit: boolean } | null>(null);
 
-  const loading = useFakeLoading(500, `${doctorId}-${view}-${selectedDate}`);
+  const loading = useFakeLoading(500, `${doctorId}-${selectedDate}`);
 
   // כניסה מ-URL של יצירת ניתוח (/surgery/new מפנה לכאן עם ?new=1)
   useEffect(() => {
@@ -148,17 +141,6 @@ export function DoctorSchedule() {
 
   const totalMinutes = daySurgeries.reduce((sum, s) => sum + s.durationMinutes, 0);
 
-  const monthSurgeryCount = useMemo(
-    () =>
-      surgeries.filter(
-        (s) =>
-          (isAll || s.doctorId === doctorId) &&
-          s.status !== "cancelled" &&
-          toDate(s.date).getMonth() === viewMonth.getMonth() &&
-          toDate(s.date).getFullYear() === viewMonth.getFullYear(),
-      ).length,
-    [surgeries, doctorId, isAll, viewMonth],
-  );
 
   const { markedDates, loadBadges } = useMemo(() => {
     const marked: Record<ISODate, Hospital> = {};
@@ -190,17 +172,14 @@ export function DoctorSchedule() {
 
   function openDay(date: ISODate) {
     setSelectedDate(date);
-    setView("day");
   }
 
   function navPrev() {
-    if (view === "day") setSelectedDate(toISO(addDays(toDate(selectedDate), -1)));
-    else setViewMonth((m) => addMonths(m, -1));
+    setSelectedDate(toISO(addDays(toDate(selectedDate), -1)));
   }
 
   function navNext() {
-    if (view === "day") setSelectedDate(toISO(addDays(toDate(selectedDate), 1)));
-    else setViewMonth((m) => addMonths(m, 1));
+    setSelectedDate(toISO(addDays(toDate(selectedDate), 1)));
   }
 
   return (
@@ -209,38 +188,7 @@ export function DoctorSchedule() {
       header={
         <ScreenHeader
           title={he.schedule.title}
-          start={
-            <div className="flex items-center gap-1" role="tablist" aria-label="בחירת תצוגה">
-              <button
-                type="button"
-                role="tab"
-                aria-selected={view === "day"}
-                onClick={() => setView("day")}
-                className={tabClass(view === "day")}
-              >
-                <List className="h-4 w-4" aria-hidden />
-                {he.schedule.viewDay}
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={view === "month"}
-                onClick={() => {
-                  setViewMonth(startOfMonth(toDate(selectedDate)));
-                  setView("month");
-                }}
-                className={tabClass(view === "month")}
-              >
-                <CalendarDays className="h-4 w-4" aria-hidden />
-                {he.schedule.viewMonth}
-              </button>
-            </div>
-          }
-          end={
-            <div className="pb-2">
-              <DoctorPicker activeDoctorId={doctorId} section="schedule" />
-            </div>
-          }
+          subtitle={isAll ? he.schedule.allDoctors : doctor.displayName}
         />
       }
     >
@@ -263,24 +211,18 @@ export function DoctorSchedule() {
               <div className="flex items-center gap-1">
                 <button
                   type="button"
-                  aria-label={view === "day" ? "יום קודם" : "חודש קודם"}
+                  aria-label="יום קודם"
                   onClick={navPrev}
                   className="rounded-md p-1.5 transition-colors duration-fast hover:bg-white/10"
                 >
                   <ChevronRight className="h-5 w-5" />
                 </button>
-                {view === "day" ? (
-                  <span dir="ltr" className="min-w-[84px] text-center text-h3 font-semibold tnum">
-                    {formatShortDate(selectedDate)}
-                  </span>
-                ) : (
-                  <span className="min-w-[100px] text-center text-h3 font-semibold">
-                    {formatMonthYear(viewMonth)}
-                  </span>
-                )}
+                <span dir="ltr" className="min-w-[84px] text-center text-h3 font-semibold tnum">
+                  {formatShortDate(selectedDate)}
+                </span>
                 <button
                   type="button"
-                  aria-label={view === "day" ? "יום הבא" : "חודש הבא"}
+                  aria-label="יום הבא"
                   onClick={navNext}
                   className="rounded-md p-1.5 transition-colors duration-fast hover:bg-white/10"
                 >
@@ -289,43 +231,19 @@ export function DoctorSchedule() {
               </div>
 
               <p className="text-caption text-white/90 sm:ms-auto">
-                {view === "day" ? (
+                {formatWeekday(selectedDate)}
+                {daySurgeries.length > 0 && (
                   <>
-                    {formatWeekday(selectedDate)}
-                    {daySurgeries.length > 0 && (
-                      <>
-                        {" "}
-                        · {he.schedule.daySummary(daySurgeries.length, formatTotalHours(totalMinutes))}
-                      </>
-                    )}
+                    {" "}
+                    · {he.schedule.daySummary(daySurgeries.length, formatTotalHours(totalMinutes))}
                   </>
-                ) : (
-                  <>{monthSurgeryCount} ניתוחים החודש</>
                 )}
               </p>
             </div>
           </header>
 
-          {/* ===== תצוגה חודשית ===== */}
-          {view === "month" ? (
-            loading ? (
-              <div className="grid grid-cols-7 gap-px p-2">
-                {Array.from({ length: 35 }, (_, i) => (
-                  <Skeleton key={i} variant="block" className="h-24 rounded-none" />
-                ))}
-              </div>
-            ) : (
-              <MonthGrid
-                month={viewMonth}
-                doctorId={doctorId}
-                onOpenDay={openDay}
-                onCreate={(date) => setWizardPrefill({ date })}
-                onOpenSurgery={(s) => setDetailsTarget({ id: s.id, edit: false })}
-              />
-            )
-          ) : (
-            /* ===== תצוגה יומית ===== */
-            <>
+          {/* ===== תצוגה יומית ===== */}
+          <>
               {/* פס ימים - ניווט מהיר כשהלוח החודשי אינו מוצג בצד */}
               <div className="border-b border-line xl:hidden">
                 <DayStrip doctorId={doctorId} selectedDate={selectedDate} onSelect={setSelectedDate} />
@@ -464,13 +382,11 @@ export function DoctorSchedule() {
                   </p>
                 </div>
               )}
-            </>
-          )}
+          </>
         </section>
 
-        {/* לוח שנה צדדי - בתצוגה היומית במסכים רחבים */}
-        {view === "day" && (
-          <aside className="sticky top-[84px] hidden w-[320px] shrink-0 rounded-lg border border-line bg-surface p-4 shadow-sm xl:block">
+        {/* לוח שנה צדדי - בורר תאריך במסכים רחבים */}
+        <aside className="hidden w-[320px] shrink-0 rounded-lg border border-line bg-surface p-4 shadow-sm xl:block">
             {loading ? (
               <div className="flex flex-col gap-3">
                 <Skeleton className="mx-auto w-32" />
@@ -492,8 +408,7 @@ export function DoctorSchedule() {
                 </div>
               </>
             )}
-          </aside>
-        )}
+        </aside>
       </div>
 
       {/* אשף יצירת ניתוח - פופאפ מעל היומן */}
