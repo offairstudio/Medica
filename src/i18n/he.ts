@@ -61,6 +61,8 @@ export const he = {
 
   schedule: {
     title: "יומן ניתוחים",
+    /** displayName כולל כבר את התואר, ולכן "ל" נצמדת אליו: "לד\"ר", "לפרופ'" */
+    titleFor: (displayName: string) => `יומן הניתוחים ל${displayName}`,
     allDoctors: "כל המנתחים",
     noDoctorsFound: "לא נמצא מנתח תואם",
     combinedSchedule: "יומן כולל",

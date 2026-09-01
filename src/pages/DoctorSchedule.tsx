@@ -187,8 +187,9 @@ export function DoctorSchedule() {
       doctorId={doctorId}
       header={
         <ScreenHeader
-          title={he.schedule.title}
-          subtitle={isAll ? he.schedule.allDoctors : doctor.displayName}
+          title={
+            isAll ? he.schedule.combinedSchedule : he.schedule.titleFor(doctor.displayName)
+          }
         />
       }
     >
