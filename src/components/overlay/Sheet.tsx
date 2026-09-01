@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { X } from "lucide-react";
 import { cn } from "../../lib/cn";
 
@@ -21,9 +21,25 @@ const sizes = { md: "md:w-[min(94vw,460px)]", lg: "md:w-[min(94vw,560px)]" };
  * במובייל מגירה תחתונה ברוחב מלא, בדסקטופ מגירת צד בגובה מלא בקצה המסך.
  * סגירה: כפתור ה-X, לחיצה על הרקע או Esc.
  */
+const EXIT_MS = 240;
+
 export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, footer }: SheetProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
+  // נשארים mounted עד שאנימציית היציאה מסתיימת, ורק אז מודיעים להורה
+  const [closing, setClosing] = useState(false);
+
+  useEffect(() => {
+    if (open) setClosing(false);
+  }, [open]);
+
+  const requestClose = useCallback(() => setClosing(true), []);
+
+  useEffect(() => {
+    if (!closing) return;
+    const timer = window.setTimeout(onClose, EXIT_MS);
+    return () => window.clearTimeout(timer);
+  }, [closing, onClose]);
 
   useEffect(() => {
     if (!open) return;
@@ -33,7 +49,7 @@ export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, 
 
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
-        onClose();
+        requestClose();
         return;
       }
       if (e.key === "Tab" && panel) {
@@ -60,7 +76,7 @@ export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, 
       document.body.style.overflow = "";
       restoreFocusRef.current?.focus();
     };
-  }, [open, onClose]);
+  }, [open, requestClose]);
 
   if (!open) return null;
 
@@ -69,10 +85,14 @@ export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, 
       className="fixed inset-0 z-50 flex items-end justify-center md:items-stretch md:justify-end"
       role="presentation"
       onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) requestClose();
       }}
     >
-      <div aria-hidden className="absolute inset-0 bg-ink/50" />
+      <div
+        aria-hidden
+        className={cn("absolute inset-0 bg-ink/50", closing ? "overlay-out" : "overlay-in")}
+        onMouseDown={requestClose}
+      />
 
       <div
         ref={panelRef}
@@ -81,9 +101,10 @@ export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, 
         aria-label={title}
         tabIndex={-1}
         className={cn(
-          "sheet-in relative flex max-h-[92vh] w-full flex-col overflow-hidden border border-line bg-surface shadow-lg",
+          "relative flex max-h-[92vh] w-full flex-col overflow-hidden border border-line bg-surface shadow-lg",
+          closing ? "sheet-out md:drawer-out" : "sheet-in md:drawer-in",
           "rounded-t-xl border-b-0 pb-[env(safe-area-inset-bottom)]",
-          "md:drawer-in md:h-full md:max-h-none md:rounded-none md:rounded-s-xl md:border-b-0 md:border-e-0 md:pb-0",
+          "md:h-full md:max-h-none md:rounded-none md:rounded-s-xl md:border-b-0 md:border-e-0 md:pb-0",
           sizes[size],
         )}
       >
@@ -98,7 +119,7 @@ export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, 
           </div>
           <button
             type="button"
-            onClick={onClose}
+            onClick={requestClose}
             aria-label="סגירה וחזרה לרשימה"
             className="-me-1 shrink-0 rounded-md p-2 text-muted transition-colors duration-fast hover:bg-canvas hover:text-ink"
           >

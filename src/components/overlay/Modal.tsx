@@ -66,7 +66,7 @@ export function Modal({ open, onClose, title, size = "md", children, footer }: M
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div aria-hidden className="absolute inset-0 bg-ink/50" />
+      <div aria-hidden className="absolute inset-0 bg-ink/50" onMouseDown={onClose} />
       <div
         ref={panelRef}
         role="dialog"

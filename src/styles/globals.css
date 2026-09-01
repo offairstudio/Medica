@@ -110,6 +110,72 @@
     animation: drawer-in 320ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  /* אנימציות יציאה - היפוך של הכניסה, מעט מהיר יותר */
+  @keyframes sheet-out {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+
+  .sheet-out {
+    animation: sheet-out 240ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+
+  @keyframes drawer-out {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  .drawer-out {
+    animation: drawer-out 240ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+
+  @keyframes overlay-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .overlay-in {
+    animation: overlay-in 200ms ease-out;
+  }
+
+  @keyframes overlay-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  .overlay-out {
+    animation: overlay-out 240ms ease-out forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sheet-in,
+    .sheet-out,
+    .drawer-in,
+    .drawer-out,
+    .overlay-in,
+    .overlay-out,
+    .modal-in,
+    .toast-in {
+      animation-duration: 1ms;
+    }
+  }
+
   @keyframes skeleton-pulse {
     0%,
     100% {

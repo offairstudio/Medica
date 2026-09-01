@@ -15,7 +15,7 @@ function typeIcon(doc: MedicalDocument) {
  * שורת מסמך רפואי עם מיקרו-אינטראקציית הורדה:
  * כפתור ← ספינר ← וי, בליווי הורדת הקובץ בפועל.
  */
-export function DocumentRow({ doc }: { doc: MedicalDocument }) {
+export function DocumentRow({ doc, compact }: { doc: MedicalDocument; compact?: boolean }) {
   const [phase, setPhase] = useState<"idle" | "loading" | "done">("idle");
   const Icon = typeIcon(doc);
 
@@ -53,10 +53,10 @@ export function DocumentRow({ doc }: { doc: MedicalDocument }) {
           target="_blank"
           rel="noreferrer"
           aria-label={`${he.patient.viewImaging}: ${doc.fileName}`}
-          className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-md px-3 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50"
+          className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-md px-2.5 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50"
         >
           <Eye className="h-4 w-4" aria-hidden />
-          <span className="max-sm:hidden">{he.patient.viewImaging}</span>
+          <span className={cn(compact ? "hidden" : "max-sm:hidden")}>{he.patient.viewImaging}</span>
         </a>
       )}
       <button
@@ -64,7 +64,7 @@ export function DocumentRow({ doc }: { doc: MedicalDocument }) {
         onClick={download}
         aria-label={`הורדת ${doc.fileName}`}
         className={cn(
-          "inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-md px-3 font-semibold transition-colors duration-fast",
+          "inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-md px-2.5 font-semibold transition-colors duration-fast",
           phase === "done"
             ? "text-success"
             : "text-primary-600 hover:bg-primary-50",
@@ -77,7 +77,7 @@ export function DocumentRow({ doc }: { doc: MedicalDocument }) {
         ) : (
           <Download className="h-4 w-4" aria-hidden />
         )}
-        <span className="max-sm:hidden">{he.common.download}</span>
+        <span className={cn(compact ? "hidden" : "max-sm:hidden")}>{he.common.download}</span>
       </button>
     </li>
   );

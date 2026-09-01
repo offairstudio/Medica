@@ -4,6 +4,7 @@ import { TopBar } from "./TopBar";
 import { DoctorSidebar } from "./DoctorSidebar";
 import { PatientNav } from "./PatientNav";
 import { Drawer } from "../overlay/Drawer";
+import { cn } from "../../lib/cn";
 import { he } from "../../i18n/he";
 import { currentDoctor } from "../../mock/doctors";
 import type { Doctor } from "../../types";
@@ -71,14 +72,38 @@ export function DoctorShell({
   );
 }
 
-/** מסגרת מסכי המטופל: סרגל צד אנכי + עמודת תוכן */
-export function PatientShell({ children }: { children: ReactNode }) {
+/**
+ * מסגרת מסכי המטופל: סרגל צד אנכי + עמודת תוכן.
+ * העמוד עצמו אינו נגלל - הגלילה מתבצעת בתוך אזור התוכן בלבד,
+ * כך ש-`header` נשאר קבוע בראש המסך והתוכן נחתך בקצה שלו ולא עובר מתחתיו.
+ */
+export function PatientShell({
+  header,
+  children,
+}: {
+  /** כותרת קבועה מעל אזור הגלילה */
+  header?: ReactNode;
+  children: ReactNode;
+}) {
   return (
-    <div className="clinical-surface flex min-h-screen flex-col md:flex-row">
+    <div className="clinical-surface flex h-dvh flex-col overflow-hidden md:flex-row">
       <PatientNav />
-      <main className="min-w-0 flex-1 px-4 pb-24 pt-6 md:px-8 md:pb-12 md:pt-10">
-        <div className="mx-auto w-full max-w-[1000px]">{children}</div>
-      </main>
+
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+        {header && (
+          <div className="shrink-0 px-4 pt-4 md:px-8 md:pt-6">
+            <div className="mx-auto w-full max-w-[1000px]">{header}</div>
+          </div>
+        )}
+        <main
+          className={cn(
+            "min-h-0 flex-1 overflow-y-auto px-4 pb-24 md:px-8 md:pb-12",
+            header ? "pt-6" : "pt-6 md:pt-10",
+          )}
+        >
+          <div className="mx-auto w-full max-w-[1000px]">{children}</div>
+        </main>
+      </div>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Clock, MapPin, ArrowLeft, Paperclip } from "lucide-react";
 import { cn } from "../../lib/cn";
@@ -11,10 +12,15 @@ export interface AppointmentCardProps {
   /** גוונים מאופקים לתורים קודמים */
   muted?: boolean;
   featured?: boolean;
+  /** טקסט בקצה שורת ההדגשה - למשל "בעוד 3 ימים" */
   featuredLabel?: string;
+  /** תגית בתחילת שורת ההדגשה. יש להשמיט כשהכותרת שמעל הכרטיס כבר אומרת זאת */
+  featuredBadge?: string;
+  /** תוכן נוסף בתוך הכרטיס, מעל שורת הפעולה - למשל הנחיות הכנה */
+  extra?: ReactNode;
 }
 
-export function AppointmentCard({ appointment, muted, featured, featuredLabel }: AppointmentCardProps) {
+export function AppointmentCard({ appointment, muted, featured, featuredLabel, featuredBadge, extra }: AppointmentCardProps) {
   const location = useLocation();
   const { day, month } = formatDateBlock(appointment.date);
 
@@ -27,10 +33,16 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel }:
         featured ? "border-primary-300 bg-gradient-to-l from-primary-50 to-white ring-1 ring-primary-100" : "border-line",
       )}
     >
-      {featured && (
+      {featured && (featuredBadge || featuredLabel) && (
         <span className="mb-4 flex items-center justify-between gap-2 border-b border-primary-100 pb-3">
-          <span className="rounded-full bg-primary-700 px-3 py-1 text-caption font-semibold text-white">התור הקרוב</span>
-          {featuredLabel && <span className="text-caption font-semibold text-primary-700">{featuredLabel}</span>}
+          {featuredBadge && (
+            <span className="rounded-full bg-primary-700 px-3 py-1 text-caption font-semibold text-white">
+              {featuredBadge}
+            </span>
+          )}
+          {featuredLabel && (
+            <span className="text-caption font-semibold text-primary-700">{featuredLabel}</span>
+          )}
         </span>
       )}
       <div className="flex items-start gap-4">
@@ -91,6 +103,17 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel }:
           )}
         </span>
       </div>
+
+      {extra && (
+        <span
+          className={cn(
+            "mt-4 block border-t pt-4",
+            featured ? "border-primary-100" : "border-line",
+          )}
+        >
+          {extra}
+        </span>
+      )}
 
       <span className="mt-3 flex items-center justify-end gap-1 border-t border-line pt-3 text-caption font-semibold text-primary-600 transition-colors duration-fast group-hover:text-primary-800">
         {he.patient.toAppointment}

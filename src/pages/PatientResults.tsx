@@ -1,21 +1,45 @@
 import { useMemo, useState } from "react";
 import {
   CalendarRange,
+  Check,
+  ChevronDown,
   Eye,
   Image as ImageIcon,
   Stethoscope,
 } from "lucide-react";
 import { PatientShell } from "../components/layout/AppShell";
-import { PageHeader } from "../components/layout/PageHeader";
+import {
+  PatientPageHeader,
+  tabClass,
+  tabCountClass,
+} from "../components/layout/PatientPageHeader";
 import { EmptyState } from "../components/data/EmptyState";
+import { FilterChip } from "../components/data/Chip";
+import { Dropdown } from "../components/overlay/Dropdown";
 import { Button } from "../components/primitives/Button";
 import { useToast } from "../components/overlay/Toast";
 import { appointments } from "../mock/appointments";
-import { formatFullDate } from "../lib/date";
-import { cn } from "../lib/cn";
+import { MOCK_TODAY } from "../mock/doctors";
+import { daysUntil, formatFullDate } from "../lib/date";
 import type { Appointment } from "../types";
 
 type ResultsTab = "tests" | "specialists";
+
+const TABS: { key: ResultsTab; label: string; icon: typeof ImageIcon }[] = [
+  { key: "tests", label: "בדיקות וצילומים", icon: ImageIcon },
+  { key: "specialists", label: "סיכומי מומחים", icon: Stethoscope },
+];
+
+/** טווחים מוכנים - קריאים יותר משני שדות תאריך, ולא תלויים בפורמט של הדפדפן */
+const PERIODS = [
+  { key: "all", label: "כל התקופות", chip: "כל התקופות", days: null },
+  { key: "30", label: "החודש האחרון", chip: "החודש האחרון", days: 30 },
+  { key: "90", label: "3 החודשים האחרונים", chip: "3 חודשים אחרונים", days: 90 },
+  { key: "180", label: "חצי השנה האחרונה", chip: "חצי שנה אחרונה", days: 180 },
+  { key: "365", label: "השנה האחרונה", chip: "שנה אחרונה", days: 365 },
+] as const;
+
+type PeriodKey = (typeof PERIODS)[number]["key"];
 
 /**
  * תוצאות וסיכומים - שתי קטגוריות בלבד לפי הדרישות: בדיקות ורופאים מומחים.
@@ -24,22 +48,31 @@ type ResultsTab = "tests" | "specialists";
 export function PatientResults() {
   const { toast } = useToast();
   const [tab, setTab] = useState<ResultsTab>("tests");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [period, setPeriod] = useState<PeriodKey>("all");
 
   const allResults = useMemo(
     () => appointments.filter((item) => item.status === "completed" && item.resultSummary),
     [],
   );
 
+  const counts = useMemo(
+    () => ({
+      tests: allResults.filter((i) => i.kind === "test").length,
+      specialists: allResults.filter((i) => i.kind === "consult" || i.kind === "followup").length,
+    }),
+    [allResults],
+  );
+
   const filtered = useMemo(
     () =>
       allResults
         .filter((item) => (tab === "tests" ? item.kind === "test" : item.kind === "consult" || item.kind === "followup"))
-        .filter((item) => !from || item.date >= from)
-        .filter((item) => !to || item.date <= to)
+        .filter((item) => {
+          const days = PERIODS.find((p) => p.key === period)!.days;
+          return days === null || daysUntil(MOCK_TODAY, item.date) <= days;
+        })
         .sort((a, b) => b.date.localeCompare(a.date)),
-    [allResults, from, tab, to],
+    [allResults, period, tab],
   );
 
   function openResult(item: Appointment) {
@@ -51,28 +84,65 @@ export function PatientResults() {
     toast("info", "MyVue נפתח בטאב חדש (מדומה בפרוטוטייפ)");
   }
 
+  const header = (
+    <PatientPageHeader
+      title="תוצאות וסיכומים"
+      subtitle="כל המידע הרפואי שהתקבל לאחר הביקורים והבדיקות"
+      start={
+        <div className="flex items-center gap-1" role="tablist" aria-label="סוג תוצאה">
+          {TABS.map((t) => {
+            const active = tab === t.key;
+            const Icon = t.icon;
+            return (
+              <button
+                key={t.key}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setTab(t.key)}
+                className={tabClass(active)}
+              >
+                <Icon className="h-4 w-4" aria-hidden />
+                {t.label}
+                <span className={tabCountClass(active)}>{counts[t.key]}</span>
+              </button>
+            );
+          })}
+        </div>
+      }
+      end={
+        <div className="pb-2">
+          <Dropdown
+            align="start"
+            portal
+            menuClassName="min-w-56"
+            trigger={
+              <FilterChip
+                active={period !== "all"}
+                ariaHasPopup
+                onClear={period !== "all" ? () => setPeriod("all") : undefined}
+              >
+                <CalendarRange className="h-4 w-4" aria-hidden />
+                {PERIODS.find((p) => p.key === period)!.chip}
+                <ChevronDown className="h-4 w-4" aria-hidden />
+              </FilterChip>
+            }
+            items={PERIODS.map((p) => ({
+              key: p.key,
+              label: p.label,
+              icon: <Check className={period === p.key ? "text-primary-600" : "opacity-0"} />,
+              onSelect: () => setPeriod(p.key),
+            }))}
+          />
+        </div>
+      }
+    />
+  );
+
   return (
-    <PatientShell>
-      <PageHeader title="תוצאות וסיכומים" subtitle="כל המידע הרפואי שהתקבל לאחר הביקורים והבדיקות" display />
-
-      <div className="mb-5 flex gap-1 rounded-lg border border-line bg-canvas p-1" role="tablist" aria-label="סוג תוצאה">
-        <TabButton active={tab === "tests"} onClick={() => setTab("tests")} icon={ImageIcon}>בדיקות וצילומים</TabButton>
-        <TabButton active={tab === "specialists"} onClick={() => setTab("specialists")} icon={Stethoscope}>סיכומי מומחים</TabButton>
-      </div>
-
-      <section className="mb-6 rounded-lg border border-line bg-surface p-4 shadow-sm" aria-label="סינון לפי תאריכים">
-        <div className="mb-3 flex items-center gap-2 font-semibold text-ink">
-          <CalendarRange className="h-4 w-4 text-primary-500" /> סינון לפי תאריכים
-        </div>
-        <div className="flex flex-wrap items-end gap-3">
-          <DateField label="מתאריך" value={from} onChange={setFrom} />
-          <DateField label="עד תאריך" value={to} onChange={setTo} />
-          {(from || to) && <Button variant="ghost" onClick={() => { setFrom(""); setTo(""); }}>ניקוי הסינון</Button>}
-        </div>
-      </section>
-
+    <PatientShell header={header}>
       {filtered.length === 0 ? (
-        <EmptyState illustration="file" title="לא נמצאו תוצאות בטווח שנבחר" />
+        <EmptyState illustration="file" title="לא נמצאו תוצאות בתקופה שנבחרה" />
       ) : (
         <div className="space-y-3">
           {filtered.map((item) => (
@@ -101,25 +171,4 @@ export function PatientResults() {
   );
 }
 
-function TabButton({ active, onClick, icon: Icon, children }: { active: boolean; onClick: () => void; icon: typeof ImageIcon; children: string }) {
-  return (
-    <button
-      type="button"
-      role="tab"
-      aria-selected={active}
-      onClick={onClick}
-      className={cn("flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-md px-3 font-semibold transition-colors", active ? "bg-surface text-primary-700 shadow-sm" : "text-muted hover:text-body")}
-    >
-      <Icon className="h-4 w-4" /> {children}
-    </button>
-  );
-}
 
-function DateField({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
-  return (
-    <label className="block min-w-[170px] flex-1">
-      <span className="mb-1 block text-caption font-semibold text-body">{label}</span>
-      <input type="date" value={value} onChange={(event) => onChange(event.target.value)} className="h-11 w-full rounded-md border border-line bg-surface px-3 text-ink focus:border-primary-500" />
-    </label>
-  );
-}

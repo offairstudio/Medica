@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { ArrowLeft, SlidersHorizontal } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { PatientShell } from "../components/layout/AppShell";
 import { EmptyState } from "../components/data/EmptyState";
 import { Skeleton } from "../components/data/Skeleton";
@@ -16,8 +16,12 @@ import { DocumentRow } from "../features/patient-documents/DocumentRow";
 import { appointments } from "../mock/appointments";
 import { documents } from "../mock/documents";
 import { MOCK_TODAY } from "../mock/doctors";
+import {
+  PatientPageHeader,
+  tabClass,
+  tabCountClass,
+} from "../components/layout/PatientPageHeader";
 import { useFakeLoading } from "../lib/useFakeLoading";
-import { cn } from "../lib/cn";
 import { he } from "../i18n/he";
 
 export type AppointmentsMode = "upcoming" | "past";
@@ -32,7 +36,7 @@ const TABS: { to: string; label: string; count: number; end: boolean }[] = [
 
 /**
  * מסך התורים - עתידיים וקודמים תחת טאבים.
- * הכותרת והטאבים דביקים בראש העמוד; רק התוכן שמתחת לקו נגלל.
+ * הכותרת, הטאבים והסינון יושבים בסרגל קבוע בראש המסך; רק הרשימה נגללת.
  */
 export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
   const loading = useFakeLoading(450);
@@ -62,67 +66,44 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
     [],
   );
 
-  return (
-    <PatientShell>
-      {/* ===== אזור קבוע ===== */}
-      <div className="sticky top-[64px] z-30 -mx-4 border-b border-line bg-canvas/90 px-4 pt-1 backdrop-blur-xl md:top-0 md:-mx-8 md:px-8 md:pt-6">
-        <h1 className="text-display text-ink">{he.patient.tabs.appointments}</h1>
-
-        <nav className="mt-4 flex items-center gap-1" aria-label="סוג התורים">
+  const header = (
+    <PatientPageHeader
+      title={he.patient.tabs.appointments}
+      start={
+        <nav className="flex items-center gap-1" aria-label="סוג התורים">
           {TABS.map((tab) => (
-            <NavLink
-              key={tab.to}
-              to={tab.to}
-              end={tab.end}
-              className={({ isActive }) =>
-                cn(
-                  "-mb-px flex min-h-[44px] items-center gap-2 border-b-2 px-3 font-semibold transition-colors duration-fast",
-                  isActive
-                    ? "border-primary-700 text-ink"
-                    : "border-transparent text-muted hover:text-body",
-                )
-              }
-            >
+            <NavLink key={tab.to} to={tab.to} end={tab.end} className={({ isActive }) => tabClass(isActive)}>
               {({ isActive }) => (
                 <>
                   {tab.label}
-                  <span
-                    className={cn(
-                      "tnum rounded-full px-1.5 py-0.5 text-[11px] font-bold",
-                      isActive ? "bg-primary-100 text-primary-800" : "bg-canvas text-muted",
-                    )}
-                  >
-                    {tab.count}
-                  </span>
+                  <span className={tabCountClass(isActive)}>{tab.count}</span>
                 </>
               )}
             </NavLink>
           ))}
         </nav>
-      </div>
+      }
+      end={
+        <div className="pb-2">
+          <AppointmentFilters appointments={all} value={filters} onChange={setFilters} />
+        </div>
+      }
+    />
+  );
 
-      {/* ===== תוכן נגלל ===== */}
+  return (
+    <PatientShell header={header}>
       {loading ? (
-        <div className="flex flex-col gap-4 pt-6">
-          <Skeleton variant="block" className="h-20 rounded-xl" />
+        <div className="flex flex-col gap-4">
+          <Skeleton variant="block" className="h-32" />
           <Skeleton variant="block" className="h-32" />
           <Skeleton variant="block" className="h-32" />
         </div>
       ) : (
-        <div className="flex flex-col gap-8 pt-6">
+        <div className="flex flex-col gap-8">
           <section aria-label={he.patient.appointmentsTitle}>
-            <div className="rounded-xl border border-line bg-surface px-4 py-4 shadow-sm">
-              <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-                <div className="flex items-center gap-2 text-caption font-semibold text-body">
-                  <SlidersHorizontal className="h-4 w-4 text-primary-600" aria-hidden />
-                  סינון התורים
-                </div>
-                <AppointmentFilters appointments={all} value={filters} onChange={setFilters} />
-              </div>
-            </div>
-
             {hasFilter && (
-              <p className="mt-3 flex items-center gap-3 px-1 text-caption text-muted" aria-live="polite">
+              <p className="mb-4 flex items-center gap-3 px-1 text-caption text-muted" aria-live="polite">
                 {he.patient.filteredCount(filtered.length, all.length)}
                 <button
                   type="button"
@@ -153,7 +134,7 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
                 }
               />
             ) : (
-              <div className="mt-6 flex flex-col gap-6">
+              <div className="flex flex-col gap-6">
                 {groups.map((group) => (
                   <section key={group.date} aria-label={group.full}>
                     <h2 className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
@@ -167,6 +148,7 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
                           appointment={a}
                           muted={mode === "past"}
                           featured={a.id === next?.id}
+                          featuredBadge={a.id === next?.id ? he.patient.nextAppointment : undefined}
                         />
                       ))}
                     </div>

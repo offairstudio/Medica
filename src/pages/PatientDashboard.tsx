@@ -9,6 +9,7 @@ import {
   Info,
 } from "lucide-react";
 import { PatientShell } from "../components/layout/AppShell";
+import { PatientPageHeader } from "../components/layout/PatientPageHeader";
 import { Skeleton } from "../components/data/Skeleton";
 import { EmptyState } from "../components/data/EmptyState";
 import { AppointmentCard } from "../features/patient-appointments/AppointmentCard";
@@ -115,21 +116,20 @@ export function PatientDashboard() {
     );
   }
 
-  return (
-    <PatientShell>
-      <div className="flex flex-col gap-8">
-        {/* ברכה */}
-        <div>
-          <h1 className="text-display text-ink">
-            {he.patient.greeting(currentPatient.firstName)}
-          </h1>
-          <p className="mt-1 text-muted">
-            {next
-              ? `התור הקרוב שלך ${relativeDayLabel(next.date, MOCK_TODAY)} · ${next.title}`
-              : he.patient.emptyUpcoming}
-          </p>
-        </div>
+  const header = (
+    <PatientPageHeader
+      title={he.patient.greeting(currentPatient.firstName)}
+      subtitle={
+        next
+          ? `התור הקרוב שלך ${relativeDayLabel(next.date, MOCK_TODAY)} · ${next.title}`
+          : he.patient.emptyUpcoming
+      }
+    />
+  );
 
+  return (
+    <PatientShell header={header}>
+      <div className="flex flex-col gap-8">
         {/* סיכומים */}
         <div className="grid gap-3 sm:grid-cols-3">
           <StatTile to="/p/appointments" icon={CalendarClock} value={upcoming.length} label="תורים עתידיים" />
@@ -145,20 +145,28 @@ export function PatientDashboard() {
               appointment={next}
               featured
               featuredLabel={relativeDayLabel(next.date, MOCK_TODAY)}
+              extra={
+                prep.length > 0 && (
+                  <>
+                    <span className="flex items-center gap-2 text-caption font-semibold text-primary-800">
+                      <Info className="h-4 w-4 shrink-0 text-primary-500" aria-hidden />
+                      {he.patient.preparation} · {prep.length}
+                    </span>
+                    <span className="mt-2 flex flex-col gap-1">
+                      {prep.map((p) => (
+                        <span key={p} className="flex gap-2 text-caption text-primary-800">
+                          <span
+                            aria-hidden
+                            className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-primary-400"
+                          />
+                          {p}
+                        </span>
+                      ))}
+                    </span>
+                  </>
+                )
+              }
             />
-            {prep.length > 0 && (
-              <div className="mt-3 rounded-lg border border-primary-200 bg-primary-50 p-4">
-                <h3 className="flex items-center gap-2 text-caption font-semibold text-primary-800">
-                  <Info className="h-4 w-4 shrink-0 text-primary-500" aria-hidden />
-                  {he.patient.preparation} · {prep.length}
-                </h3>
-                <ul className="mt-2 list-inside list-disc text-caption text-primary-800">
-                  {prep.map((p) => (
-                    <li key={p}>{p}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </section>
         ) : (
           <EmptyState illustration="calendar" title={he.patient.emptyUpcoming} />
@@ -213,7 +221,7 @@ export function PatientDashboard() {
               <SectionHeader title={he.patient.recentDocuments} to="/p/documents" />
               <ul className="rounded-lg border border-line bg-surface px-4 shadow-sm">
                 {recentDocs.map((d) => (
-                  <DocumentRow key={d.id} doc={d} />
+                  <DocumentRow key={d.id} doc={d} compact />
                 ))}
               </ul>
             </section>

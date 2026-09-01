@@ -112,14 +112,14 @@ export function PatientNav() {
   return (
     <>
       {/* ===== סרגל צד אנכי - דסקטופ ===== */}
-      <aside className="sticky top-0 hidden h-screen w-[264px] shrink-0 flex-col border-e border-line bg-surface md:flex">
+      <aside className="hidden h-full w-[264px] shrink-0 flex-col border-e border-line bg-surface md:flex">
         <div className="px-5 py-6">
           <Link to="/p" className="rounded-md" aria-label="Medica - האזור האישי">
             <BrandMark />
           </Link>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-1 px-3" aria-label="ניווט ראשי">
+        <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto px-3" aria-label="ניווט ראשי">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = tab.match(pathname);
@@ -161,7 +161,7 @@ export function PatientNav() {
       </aside>
 
       {/* ===== סרגל עליון - מובייל ===== */}
-      <header className="sticky top-0 z-40 flex h-[64px] items-center justify-between border-b border-line bg-surface px-4 md:hidden">
+      <header className="flex h-[64px] shrink-0 items-center justify-between border-b border-line bg-surface px-4 md:hidden">
         <Link to="/p" className="rounded-md" aria-label="Medica - האזור האישי">
           <BrandMark />
         </Link>

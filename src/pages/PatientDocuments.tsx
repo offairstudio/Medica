@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react";
 import { format } from "date-fns";
 import { he as heLocale } from "date-fns/locale/he";
-import { Search } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import { PatientShell } from "../components/layout/AppShell";
-import { PageHeader } from "../components/layout/PageHeader";
+import { PatientPageHeader } from "../components/layout/PatientPageHeader";
 import { FilterChip } from "../components/data/Chip";
+import { Dropdown } from "../components/overlay/Dropdown";
+import { Checkbox } from "../components/primitives/Checkbox";
 import { EmptyState } from "../components/data/EmptyState";
 import { Skeleton } from "../components/data/Skeleton";
 import { DocumentRow } from "../features/patient-documents/DocumentRow";
@@ -15,7 +17,7 @@ import { he } from "../i18n/he";
 
 export function PatientDocuments() {
   const loading = useFakeLoading(450);
-  const [typeFilter, setTypeFilter] = useState<string | null>(null);
+  const [typeFilter, setTypeFilter] = useState<string[]>([]);
   const [query, setQuery] = useState("");
 
   const types = useMemo(() => {
@@ -27,7 +29,7 @@ export function PatientDocuments() {
   const filtered = useMemo(() => {
     return documents
       .filter((d) => {
-        if (typeFilter && d.typeKey !== typeFilter) return false;
+        if (typeFilter.length > 0 && !typeFilter.includes(d.typeKey)) return false;
         const q = query.trim();
         if (q && !d.fileName.includes(q) && !d.typeLabel.includes(q)) return false;
         return true;
@@ -47,44 +49,69 @@ export function PatientDocuments() {
     return [...map.entries()];
   }, [filtered]);
 
-  return (
-    <PatientShell>
-      <PageHeader
-        title={he.patient.documentsTitle}
-        subtitle={`${documents.length} מסמכים`}
-        display
-      />
-
-      {/* חיפוש חופשי */}
-      <div className="relative mb-3 max-w-md">
-        <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={he.patient.searchDocuments}
-          aria-label={he.patient.searchDocuments}
-          className="h-[52px] w-full rounded-md border border-line bg-surface ps-10 pe-3 text-ink placeholder:text-muted transition-colors duration-fast hover:border-primary-300 focus:border-primary-500"
-        />
-      </div>
-
-      {/* סינון לפי סוג מסמך */}
-      <div className="flex gap-2 overflow-x-auto pb-1" role="group" aria-label="סינון לפי סוג מסמך">
-        <FilterChip active={!typeFilter} onClick={() => setTypeFilter(null)}>
-          {he.patient.filterAll}
-        </FilterChip>
-        {types.map((t) => (
-          <FilterChip
-            key={t.key}
-            active={typeFilter === t.key}
-            onClick={() => setTypeFilter(typeFilter === t.key ? null : t.key)}
-          >
-            {t.label}
+  const header = (
+    <PatientPageHeader
+      title={he.patient.documentsTitle}
+      subtitle={`${documents.length} מסמכים`}
+      start={
+        <div className="relative w-full pb-2 md:w-72">
+          <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={he.patient.searchDocuments}
+            aria-label={he.patient.searchDocuments}
+            className="h-10 w-full rounded-md border border-line bg-surface ps-9 pe-3 text-ink placeholder:text-muted transition-colors duration-fast hover:border-primary-300 focus:border-primary-500"
+          />
+        </div>
+      }
+      end={
+        <div className="flex gap-2 pb-2" role="group" aria-label="סינון לפי סוג מסמך">
+          <FilterChip active={typeFilter.length === 0} onClick={() => setTypeFilter([])}>
+            {he.patient.filterAll}
           </FilterChip>
-        ))}
-      </div>
 
+          {/* 11 סוגי מסמך - רשימה נפתחת במקום שורת צ'יפים נגללת */}
+          <Dropdown
+            align="start"
+            portal
+            menuClassName="min-w-72 p-2"
+            trigger={
+              <FilterChip
+                active={typeFilter.length > 0}
+                ariaHasPopup
+                onClear={typeFilter.length > 0 ? () => setTypeFilter([]) : undefined}
+              >
+                {he.patient.filterDocumentType}
+                {typeFilter.length > 0 && ` (${typeFilter.length})`}
+                <ChevronDown className="h-4 w-4" aria-hidden />
+              </FilterChip>
+            }
+          >
+            {types.map((t) => (
+              <Checkbox
+                key={t.key}
+                label={t.label}
+                checked={typeFilter.includes(t.key)}
+                onChange={() =>
+                  setTypeFilter((current) =>
+                    current.includes(t.key)
+                      ? current.filter((k) => k !== t.key)
+                      : [...current, t.key],
+                  )
+                }
+              />
+            ))}
+          </Dropdown>
+        </div>
+      }
+    />
+  );
+
+  return (
+    <PatientShell header={header}>
       {loading ? (
-        <div className="mt-5 flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           {[0, 1, 2, 3].map((i) => (
             <Skeleton key={i} variant="block" className="h-16" />
           ))}
@@ -93,11 +120,11 @@ export function PatientDocuments() {
         <EmptyState
           illustration="file"
           title={
-            typeFilter || query ? "לא נמצאו מסמכים תואמים" : he.patient.emptyDocuments
+            typeFilter.length > 0 || query ? "לא נמצאו מסמכים תואמים" : he.patient.emptyDocuments
           }
         />
       ) : (
-        <div className="mt-5 flex flex-col gap-6">
+        <div className="flex flex-col gap-6">
           {groups.map(([label, docs]) => (
             <section key={label} aria-label={label}>
               <h2 className="mb-2 text-h3 text-muted">{label}</h2>

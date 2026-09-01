@@ -225,6 +225,7 @@ export const he = {
     filterAll: "הכל",
     filterDepartment: "מחלקה",
     filterDoctor: "רופא",
+    filterDocumentType: "סוג מסמך",
     emptyUpcoming: "אין לך תורים עתידיים כרגע",
     emptyFiltered: "אין תורים עתידיים התואמים לסינון",
     emptyPastFiltered: "אין תורים קודמים התואמים לסינון",

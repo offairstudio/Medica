@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { X } from "lucide-react";
 import { cn } from "../../lib/cn";
 
@@ -11,14 +11,29 @@ export interface DrawerProps {
   children: ReactNode;
 }
 
+const EXIT_MS = 240;
+
 export function Drawer({ open, onClose, title, side = "end", children }: DrawerProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const [closing, setClosing] = useState(false);
+
+  useEffect(() => {
+    if (open) setClosing(false);
+  }, [open]);
+
+  const requestClose = useCallback(() => setClosing(true), []);
+
+  useEffect(() => {
+    if (!closing) return;
+    const timer = window.setTimeout(onClose, EXIT_MS);
+    return () => window.clearTimeout(timer);
+  }, [closing, onClose]);
 
   useEffect(() => {
     if (!open) return;
     panelRef.current?.focus();
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") requestClose();
     }
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -26,7 +41,7 @@ export function Drawer({ open, onClose, title, side = "end", children }: DrawerP
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [open, onClose]);
+  }, [open, requestClose]);
 
   if (!open) return null;
 
@@ -35,10 +50,14 @@ export function Drawer({ open, onClose, title, side = "end", children }: DrawerP
       className="fixed inset-0 z-50"
       role="presentation"
       onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) requestClose();
       }}
     >
-      <div aria-hidden className="absolute inset-0 bg-ink/50" onMouseDown={onClose} />
+      <div
+        aria-hidden
+        className={cn("absolute inset-0 bg-ink/50", closing ? "overlay-out" : "overlay-in")}
+        onMouseDown={requestClose}
+      />
       <div
         ref={panelRef}
         role="dialog"
@@ -46,18 +65,22 @@ export function Drawer({ open, onClose, title, side = "end", children }: DrawerP
         aria-label={title}
         tabIndex={-1}
         className={cn(
-          "modal-in absolute flex flex-col border-line bg-surface shadow-lg",
-          side === "end" &&
+          "absolute flex flex-col border-line bg-surface shadow-lg",
+          side === "end" && [
             "inset-y-0 start-auto end-0 w-[min(94vw,440px)] border-s rounded-s-xl",
-          side === "bottom" &&
+            closing ? "drawer-out" : "drawer-in",
+          ],
+          side === "bottom" && [
             "inset-x-0 bottom-0 max-h-[85vh] rounded-t-xl",
+            closing ? "sheet-out" : "sheet-in",
+          ],
         )}
       >
         <div className="flex items-center justify-between border-b border-line bg-canvas/60 px-5 py-4">
           <h2 className="text-h3 text-ink">{title}</h2>
           <button
             type="button"
-            onClick={onClose}
+            onClick={requestClose}
             aria-label="סגירה"
             className="rounded-md p-2 text-muted transition-colors duration-fast hover:bg-canvas hover:text-ink"
           >
