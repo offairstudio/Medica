@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pencil } from "lucide-react";
-import { Modal } from "../../components/overlay/Modal";
+import { Sheet } from "../../components/overlay/Sheet";
 import { Button } from "../../components/primitives/Button";
 import { useToast } from "../../components/overlay/Toast";
 import { useData } from "../../state/data";
@@ -84,11 +84,11 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
   const title = `${surgery.procedures.map((p) => p.name).join(" + ")} · ${he.swap.codeLabel} ${surgery.code}`;
 
   return (
-    <Modal
+    <Sheet
       open
       onClose={onClose}
       title={title}
-      size="lg"
+      size="xl"
       footer={
         editing && draft ? (
           <>
@@ -120,6 +120,6 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
       ) : (
         <SurgeryViewContent surgery={surgery} />
       )}
-    </Modal>
+    </Sheet>
   );
 }

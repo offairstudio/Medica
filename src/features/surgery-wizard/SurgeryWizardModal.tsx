@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
-import { Modal } from "../../components/overlay/Modal";
+import { Sheet } from "../../components/overlay/Sheet";
 import { Stepper } from "../../components/form/Stepper";
 import { Button } from "../../components/primitives/Button";
 import { useToast } from "../../components/overlay/Toast";
@@ -167,11 +167,11 @@ function WizardInner({
   ];
 
   return (
-    <Modal
+    <Sheet
       open
       onClose={onClose}
       title={he.schedule.createSurgery}
-      size="lg"
+      size="xl"
       footer={
         <div className="flex w-full items-center justify-between">
           {step > 0 ? (
@@ -207,6 +207,6 @@ function WizardInner({
         />
         {stepContent[step]}
       </div>
-    </Modal>
+    </Sheet>
   );
 }

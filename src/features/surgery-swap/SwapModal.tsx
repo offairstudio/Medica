@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Hash, User, CalendarDays, Clock, CreditCard } from "lucide-react";
-import { Modal } from "../../components/overlay/Modal";
+import { Sheet } from "../../components/overlay/Sheet";
 import { Button } from "../../components/primitives/Button";
 import { MonthCalendar } from "../../components/calendar/MonthCalendar";
 import { BlockLegend } from "../../components/calendar/BlockLegend";
@@ -67,7 +67,7 @@ export function SwapModal({ surgery, onClose }: SwapModalProps) {
   ];
 
   return (
-    <Modal open onClose={onClose} title={he.swap.title} size="lg"
+    <Sheet open onClose={onClose} title={he.swap.title} size="xl"
       footer={
         <>
           <Button variant="ghost" onClick={onClose}>{he.common.cancel}</Button>
@@ -149,6 +149,6 @@ export function SwapModal({ surgery, onClose }: SwapModalProps) {
       <div className="mt-6 border-t border-line pt-4">
         <BlockLegend />
       </div>
-    </Modal>
+    </Sheet>
   );
 }

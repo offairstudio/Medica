@@ -9,12 +9,16 @@ export interface SheetProps {
   title: string;
   /** אזור כותרת עשיר - למשל כותרת + צ'יפים */
   titleSlot?: ReactNode;
-  size?: "md" | "lg";
+  size?: "md" | "lg" | "xl";
   children: ReactNode;
   footer?: ReactNode;
 }
 
-const sizes = { md: "md:w-[min(94vw,460px)]", lg: "md:w-[min(94vw,560px)]" };
+const sizes = {
+  md: "md:w-[min(94vw,460px)]",
+  lg: "md:w-[min(94vw,560px)]",
+  xl: "md:w-[min(94vw,720px)]",
+};
 
 /**
  * שכבת-על רספונסיבית:
