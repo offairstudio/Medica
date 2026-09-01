@@ -25,7 +25,7 @@ export function AppointmentDetails() {
       <PageHeader
         title={appointment.title}
         display
-        backTo={{ to: isUpcoming ? "/p" : "/p/results", label: he.patient.backToAppointments }}
+        backTo={{ to: isUpcoming ? "/p/appointments" : "/p/appointments/past", label: he.patient.backToAppointments }}
         actions={
           <span className="flex items-center gap-2">
             <KindChip kind={appointment.kind} />

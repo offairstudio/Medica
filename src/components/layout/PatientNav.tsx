@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  CalendarCheck,
   CalendarClock,
   ChevronDown,
   ClipboardList,
   FileText,
+  LayoutGrid,
   LogOut,
   UserRound,
 } from "lucide-react";
@@ -19,16 +19,40 @@ import { Dropdown } from "../overlay/Dropdown";
 import { ProfileDrawer } from "../../features/patient-profile/ProfileDrawer";
 
 const upcomingCount = appointments.filter((a) => a.status === "upcoming").length;
-const pastCount = appointments.filter((a) => a.status !== "upcoming").length;
 const resultsCount = appointments.filter(
   (a) => a.status === "completed" && a.resultSummary,
 ).length;
 
+/** פריטי הניווט; `match` נדרש כי "תורים" פעיל גם בטאב הקודמים ובפרטי תור */
 const tabs = [
-  { to: "/p", label: he.patient.tabs.upcoming, icon: CalendarClock, end: true, count: upcomingCount },
-  { to: "/p/past", label: he.patient.tabs.past, icon: CalendarCheck, count: pastCount },
-  { to: "/p/results", label: he.patient.tabs.results, icon: ClipboardList, count: resultsCount },
-  { to: "/p/documents", label: he.patient.tabs.documents, icon: FileText, count: documents.length },
+  {
+    to: "/p",
+    label: he.patient.tabs.home,
+    icon: LayoutGrid,
+    count: 0,
+    match: (p: string) => p === "/p",
+  },
+  {
+    to: "/p/appointments",
+    label: he.patient.tabs.appointments,
+    icon: CalendarClock,
+    count: upcomingCount,
+    match: (p: string) => p.startsWith("/p/appointments") || p.startsWith("/p/appointment/"),
+  },
+  {
+    to: "/p/results",
+    label: he.patient.tabs.results,
+    icon: ClipboardList,
+    count: resultsCount,
+    match: (p: string) => p.startsWith("/p/results"),
+  },
+  {
+    to: "/p/documents",
+    label: he.patient.tabs.documents,
+    icon: FileText,
+    count: documents.length,
+    match: (p: string) => p.startsWith("/p/documents"),
+  },
 ];
 
 /** תפריט החשבון - משותף לסרגל הצד ולסרגל המובייל */
@@ -83,6 +107,7 @@ function AccountMenu({ onProfile, compact }: { onProfile: () => void; compact?: 
 
 export function PatientNav() {
   const [profileOpen, setProfileOpen] = useState(false);
+  const { pathname } = useLocation();
 
   return (
     <>
@@ -97,40 +122,35 @@ export function PatientNav() {
         <nav className="flex flex-1 flex-col gap-1 px-3" aria-label="ניווט ראשי">
           {tabs.map((tab) => {
             const Icon = tab.icon;
+            const isActive = tab.match(pathname);
             return (
-              <NavLink
+              <Link
                 key={tab.to}
                 to={tab.to}
-                end={tab.end}
-                className={({ isActive }) =>
-                  cn(
-                    "flex min-h-[46px] items-center gap-3 rounded-md px-3 font-semibold transition-colors duration-fast",
-                    isActive
-                      ? "bg-primary-50 text-primary-800"
-                      : "text-muted hover:bg-canvas hover:text-body",
-                  )
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    <Icon
-                      className={cn("h-[18px] w-[18px] shrink-0", isActive ? "text-primary-600" : "text-muted")}
-                      aria-hidden
-                    />
-                    <span className="min-w-0 flex-1 truncate">{tab.label}</span>
-                    {tab.count > 0 && (
-                      <span
-                        className={cn(
-                          "tnum shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold",
-                          isActive ? "bg-primary-700 text-white" : "bg-canvas text-muted",
-                        )}
-                      >
-                        {tab.count}
-                      </span>
-                    )}
-                  </>
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "flex min-h-[46px] items-center gap-3 rounded-md px-3 font-semibold transition-colors duration-fast",
+                  isActive
+                    ? "bg-primary-50 text-primary-800"
+                    : "text-muted hover:bg-canvas hover:text-body",
                 )}
-              </NavLink>
+              >
+                <Icon
+                  className={cn("h-[18px] w-[18px] shrink-0", isActive ? "text-primary-600" : "text-muted")}
+                  aria-hidden
+                />
+                <span className="min-w-0 flex-1 truncate">{tab.label}</span>
+                {tab.count > 0 && (
+                  <span
+                    className={cn(
+                      "tnum shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold",
+                      isActive ? "bg-primary-700 text-white" : "bg-canvas text-muted",
+                    )}
+                  >
+                    {tab.count}
+                  </span>
+                )}
+              </Link>
             );
           })}
         </nav>
@@ -155,21 +175,20 @@ export function PatientNav() {
       >
         {tabs.map((tab) => {
           const Icon = tab.icon;
+          const isActive = tab.match(pathname);
           return (
-            <NavLink
+            <Link
               key={tab.to}
               to={tab.to}
-              end={tab.end}
-              className={({ isActive }) =>
-                cn(
-                  "flex min-h-[56px] flex-1 flex-col items-center justify-center gap-0.5 text-[11px] font-semibold transition-colors duration-fast",
-                  isActive ? "text-primary-700" : "text-muted",
-                )
-              }
+              aria-current={isActive ? "page" : undefined}
+              className={cn(
+                "flex min-h-[56px] flex-1 flex-col items-center justify-center gap-0.5 text-[11px] font-semibold transition-colors duration-fast",
+                isActive ? "text-primary-700" : "text-muted",
+              )}
             >
               <Icon className="h-5 w-5" aria-hidden />
               {tab.label}
-            </NavLink>
+            </Link>
           );
         })}
       </nav>
