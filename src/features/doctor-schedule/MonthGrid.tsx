@@ -170,7 +170,7 @@ export function MonthGrid({ month, doctorId, onOpenDay, onCreate, onOpenSurgery 
                   type="button"
                   onClick={() => onOpenDay(iso)}
                   title={freeHospitals.map((h) => `שעות פנויות ב${he.hospitals[h]}`).join(", ")}
-                  className="flex items-center gap-1 rounded px-1 text-start text-[10px] font-semibold text-success transition-colors duration-fast hover:bg-success/10"
+                  className="flex items-center gap-1 rounded px-1 text-start text-[11px] font-semibold text-success transition-colors duration-fast hover:bg-success/10"
                 >
                   {he.schedule.free}
                   {freeHospitals.map((h) => (

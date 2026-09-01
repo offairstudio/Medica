@@ -156,9 +156,9 @@ export function PatientResults() {
                   <h2 className="text-h3 text-ink">{item.title}</h2>
                   <p className="mt-1 text-caption text-muted">{formatFullDate(item.date)}</p>
                   <div className="mt-4 flex flex-wrap gap-2 border-t border-line pt-4">
-                    <Button size="sm" icon={<Eye className="h-4 w-4" />} onClick={() => openResult(item)}>צפייה בתוצאה</Button>
+                    <Button icon={<Eye className="h-4 w-4" />} onClick={() => openResult(item)}>צפייה בתוצאה</Button>
                     {item.imagingAvailable && (
-                      <Button size="sm" variant="ghost" icon={<ImageIcon className="h-4 w-4" />} onClick={openImaging}>צפייה בצילום</Button>
+                      <Button variant="ghost" icon={<ImageIcon className="h-4 w-4" />} onClick={openImaging}>צפייה בצילום</Button>
                     )}
                   </div>
                 </div>

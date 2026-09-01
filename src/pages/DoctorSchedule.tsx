@@ -226,7 +226,7 @@ export function DoctorSchedule() {
                   <span className="block truncate font-semibold">
                     {isAll ? he.schedule.allDoctors : doctor.displayName}
                   </span>
-                  <span className="block truncate text-[11px] text-white/70">
+                  <span className="block truncate text-[12px] text-white/80">
                     {isAll ? (
                       `${doctors.filter((d) => d.managedByMe).length} מנתחים`
                     ) : (
@@ -315,7 +315,7 @@ export function DoctorSchedule() {
                 </button>
               </div>
 
-              <p className="text-caption text-white/75 sm:ms-auto">
+              <p className="text-caption text-white/90 sm:ms-auto">
                 {view === "day" ? (
                   <>
                     {formatWeekday(selectedDate)}
@@ -435,10 +435,10 @@ export function DoctorSchedule() {
                           <span dir="ltr" className="text-mono-num font-semibold text-success tnum">
                             {item.slot.start}
                           </span>
-                          <span aria-hidden className="text-caption text-success/70 md:hidden">
+                          <span aria-hidden className="text-caption text-success md:hidden">
                             -
                           </span>
-                          <span dir="ltr" className="text-caption text-success/70 tnum">
+                          <span dir="ltr" className="text-caption text-success tnum">
                             {item.slot.end}
                           </span>
                         </span>
@@ -452,7 +452,7 @@ export function DoctorSchedule() {
                           <span className="text-body-strong font-semibold text-success">
                             {he.schedule.free}
                           </span>
-                          <span className="text-caption text-success/80">
+                          <span className="text-caption text-success">
                             {" "}
                             · {freeDurationLabel(item.slot)}
                           </span>

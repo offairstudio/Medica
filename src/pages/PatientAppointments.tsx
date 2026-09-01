@@ -108,7 +108,7 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
                 <button
                   type="button"
                   onClick={() => setFilters(emptyFilters())}
-                  className="rounded font-semibold text-primary-600 transition-colors duration-fast hover:text-primary-800"
+                  className="inline-flex min-h-[44px] items-center rounded-md px-2 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50 hover:text-primary-800"
                 >
                   {he.common.clearFilter}
                 </button>
@@ -165,7 +165,7 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
                 <h2 className="text-h2 text-ink">{he.patient.recentDocuments}</h2>
                 <Link
                   to="/p/documents"
-                  className="flex items-center gap-1 rounded font-semibold text-primary-600 transition-colors duration-fast hover:text-primary-800"
+                  className="-me-2 inline-flex min-h-[44px] items-center gap-1 rounded-md px-2 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50 hover:text-primary-800"
                 >
                   {he.common.showAll}
                   <ArrowLeft className="h-4 w-4" aria-hidden />

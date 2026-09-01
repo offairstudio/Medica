@@ -40,7 +40,7 @@ export function TopBar({ doctor }: TopBarProps) {
               <Avatar name={doctor.displayName} src={doctor.avatarUrl} size="md" />
               <span className="hidden flex-col items-start text-start leading-tight sm:flex">
                 <span className="font-semibold text-ink">{doctor.displayName}</span>
-                <span className="text-[11px] text-muted">
+                <span className="text-[12px] text-muted">
                   {departmentName(doctor.departmentId)}
                 </span>
               </span>

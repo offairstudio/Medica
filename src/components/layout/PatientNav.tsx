@@ -65,23 +65,26 @@ function AccountMenu({ onProfile, compact }: { onProfile: () => void; compact?: 
       portal
       align="start"
       menuClassName="min-w-56"
+      className={compact ? undefined : "w-full"}
       trigger={
         <button
           type="button"
           aria-label="תפריט המשתמש"
           className={cn(
-            "flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-canvas p-1.5 text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50",
-            compact ? "pe-2.5" : "w-full pe-3",
+            "flex min-h-[52px] items-center gap-2.5 rounded-md border border-line bg-canvas p-2 text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50",
+            compact ? "rounded-full pe-2.5" : "w-full pe-3",
           )}
         >
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-700 text-caption font-bold text-white">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-700 font-bold text-white">
             {initials}
           </span>
-          <span className={cn("min-w-0 flex-1 leading-tight", compact && "hidden sm:block")}>
-            <span className="block text-[11px] text-muted">האזור האישי</span>
-            <span className="block max-w-32 truncate text-caption font-semibold text-ink">
-              {currentPatient.firstName} {currentPatient.lastName}
-            </span>
+          <span
+            className={cn(
+              "min-w-0 flex-1 truncate font-semibold text-ink",
+              compact && "hidden sm:block",
+            )}
+          >
+            {currentPatient.firstName} {currentPatient.lastName}
           </span>
           <ChevronDown className="h-4 w-4 shrink-0 text-muted" aria-hidden />
         </button>
@@ -114,7 +117,7 @@ export function PatientNav() {
       {/* ===== סרגל צד אנכי - דסקטופ ===== */}
       <aside className="hidden h-full w-[264px] shrink-0 flex-col border-e border-line bg-surface md:flex">
         <div className="px-5 py-6">
-          <Link to="/p" className="rounded-md" aria-label="Medica - האזור האישי">
+          <Link to="/p" className="inline-flex min-h-[44px] items-center rounded-md" aria-label="Medica - האזור האישי">
             <BrandMark />
           </Link>
         </div>
@@ -143,7 +146,7 @@ export function PatientNav() {
                 {tab.count > 0 && (
                   <span
                     className={cn(
-                      "tnum shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold",
+                      "tnum shrink-0 rounded-full px-2 py-0.5 text-[12px] font-bold",
                       isActive ? "bg-primary-700 text-white" : "bg-canvas text-muted",
                     )}
                   >
@@ -162,7 +165,7 @@ export function PatientNav() {
 
       {/* ===== סרגל עליון - מובייל ===== */}
       <header className="flex h-[64px] shrink-0 items-center justify-between border-b border-line bg-surface px-4 md:hidden">
-        <Link to="/p" className="rounded-md" aria-label="Medica - האזור האישי">
+        <Link to="/p" className="inline-flex min-h-[44px] items-center rounded-md" aria-label="Medica - האזור האישי">
           <BrandMark />
         </Link>
         <AccountMenu onProfile={() => setProfileOpen(true)} compact />
@@ -182,7 +185,7 @@ export function PatientNav() {
               to={tab.to}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex min-h-[56px] flex-1 flex-col items-center justify-center gap-0.5 text-[11px] font-semibold transition-colors duration-fast",
+                "flex min-h-[56px] flex-1 flex-col items-center justify-center gap-0.5 text-[12px] font-semibold transition-colors duration-fast",
                 isActive ? "text-primary-700" : "text-muted",
               )}
             >

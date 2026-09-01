@@ -61,7 +61,7 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel, f
           >
             {day}
           </span>
-          <span className={cn("text-[11px] font-semibold", muted ? "text-muted" : "text-primary-600")}>
+          <span className={cn("text-[12px] font-semibold", muted ? "text-muted" : "text-primary-600")}>
             {month}
           </span>
         </span>

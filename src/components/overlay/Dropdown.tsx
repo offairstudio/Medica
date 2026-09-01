@@ -27,6 +27,8 @@ export interface DropdownProps {
   children?: ReactNode;
   align?: "start" | "end";
   menuClassName?: string;
+  /** מחלקות לשורש - למשל w-full כדי שה-trigger ימלא את הרוחב */
+  className?: string;
   /**
    * רינדור התפריט מעל כל העמוד (portal).
    * נדרש כשה-Dropdown יושב בתוך אזור עם overflow - למשל סרגל סינון נגלל.
@@ -41,6 +43,7 @@ export function Dropdown({
   children,
   align = "end",
   menuClassName,
+  className,
   portal,
 }: DropdownProps) {
   const [open, setOpen] = useState(false);
@@ -72,10 +75,18 @@ export function Dropdown({
     function place() {
       const rect = rootRef.current?.getBoundingClientRect();
       if (!rect) return;
+      const gap = 4;
+      const margin = 8;
+      const menuH = menuRef.current?.offsetHeight ?? 0;
+      const spaceBelow = window.innerHeight - rect.bottom;
+      // אין מקום מתחת (למשל כפתור בתחתית סרגל הצד) - נפתח כלפי מעלה
+      const openUp = menuH > 0 && spaceBelow < menuH + gap + margin && rect.top > spaceBelow;
+      const rawTop = openUp ? rect.top - menuH - gap : rect.bottom + gap;
+      const maxTop = Math.max(margin, window.innerHeight - menuH - margin);
       setPosition({
-        top: rect.bottom + 4,
+        top: Math.min(Math.max(margin, rawTop), maxTop),
         // ב-RTL הצמדה לקצה ההתחלה (ימין) נמדדת מקצה החלון
-        inset: window.innerWidth - rect.right,
+        inset: Math.max(margin, window.innerWidth - rect.right),
       });
     }
     place();
@@ -127,7 +138,7 @@ export function Dropdown({
   );
 
   return (
-    <div ref={rootRef} className="relative inline-flex">
+    <div ref={rootRef} className={cn("relative inline-flex", className)}>
       {triggerEl}
 
       {open &&

@@ -58,7 +58,7 @@ function SectionHeader({ title, to }: { title: string; to?: string }) {
       {to && (
         <Link
           to={to}
-          className="flex shrink-0 items-center gap-1 rounded text-caption font-semibold text-primary-600 transition-colors duration-fast hover:text-primary-800"
+          className="-me-2 inline-flex min-h-[44px] shrink-0 items-center gap-1 rounded-md px-2 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50 hover:text-primary-800"
         >
           {he.common.showAll}
           <ArrowLeft className="h-4 w-4" aria-hidden />
@@ -207,7 +207,7 @@ export function PatientDashboard() {
                     <Link
                       to="/p/results"
                       aria-label={`צפייה בתוצאה: ${r.title}`}
-                      className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-md px-3 text-caption font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50"
+                      className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-md px-3 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50"
                     >
                       <Eye className="h-4 w-4" aria-hidden />
                       צפייה

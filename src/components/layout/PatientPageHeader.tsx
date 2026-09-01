@@ -11,7 +11,7 @@ export function tabClass(isActive: boolean) {
 
 export function tabCountClass(isActive: boolean) {
   return cn(
-    "tnum rounded-full px-1.5 py-0.5 text-[11px] font-bold",
+    "tnum rounded-full px-1.5 py-0.5 text-[12px] font-bold",
     isActive ? "bg-primary-100 text-primary-800" : "bg-canvas text-muted",
   );
 }

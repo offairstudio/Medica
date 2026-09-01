@@ -52,11 +52,11 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
           {rows.map((row) => (
             <div
               key={row.label}
-              className="flex items-center gap-3 border-b border-line py-3 last:border-b-0"
+              className="flex min-h-[52px] items-center gap-3 border-b border-line py-3 last:border-b-0"
             >
-              <row.icon className="h-4 w-4 shrink-0 text-primary-400" aria-hidden />
-              <dt className="w-24 shrink-0 text-caption text-muted">{row.label}</dt>
-              <dd className="text-ink">{row.value}</dd>
+              <row.icon className="h-5 w-5 shrink-0 text-primary-600" aria-hidden />
+              <dt className="w-28 shrink-0 font-semibold text-body">{row.label}</dt>
+              <dd className="font-semibold text-ink">{row.value}</dd>
             </div>
           ))}
         </dl>

@@ -110,7 +110,7 @@ export function DayStrip({ doctorId, selectedDate, onSelect }: DayStripProps) {
                     : "border-line bg-surface text-body hover:border-primary-300 hover:bg-primary-50",
               )}
             >
-              <span className={cn("text-[11px] leading-none", selected ? "text-white/75" : "text-muted")}>
+              <span className={cn("text-[11px] leading-none", selected ? "text-white/90" : "text-muted")}>
                 {d.weekday}
               </span>
               <span className="text-[15px] font-semibold leading-tight tnum">{d.dayNum}</span>
@@ -118,7 +118,7 @@ export function DayStrip({ doctorId, selectedDate, onSelect }: DayStripProps) {
                 {count > 0 && (
                   <span
                     className={cn(
-                      "rounded-full px-1.5 text-[10px] font-bold leading-[14px] tnum",
+                      "rounded-full px-1.5 text-[11px] font-bold leading-[15px] tnum",
                       selected ? "bg-white/25 text-white" : "bg-primary-200 text-primary-800",
                     )}
                   >
@@ -148,7 +148,7 @@ export function DayStrip({ doctorId, selectedDate, onSelect }: DayStripProps) {
       {/* מקרא קצר - מה אומרים הסימנים */}
       <p className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 pb-2 text-[11px] text-muted">
         <span className="flex items-center gap-1">
-          <span aria-hidden className="inline-flex h-[14px] items-center rounded-full bg-primary-200 px-1.5 text-[10px] font-bold text-primary-800 tnum">3</span>
+          <span aria-hidden className="inline-flex h-[15px] items-center rounded-full bg-primary-200 px-1.5 text-[11px] font-bold text-primary-800 tnum">3</span>
           ניתוחים ביום
         </span>
         <span className="flex items-center gap-1">

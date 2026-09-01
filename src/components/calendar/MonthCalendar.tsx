@@ -113,7 +113,7 @@ export function MonthCalendar({
                 {day.getDate()}
               </span>
               {badge ? (
-                <span className="mt-px rounded-full bg-primary-200 px-1 text-[10px] font-semibold leading-tight text-primary-800 tnum">
+                <span className="mt-px rounded-full bg-primary-200 px-1 text-[11px] font-semibold leading-tight text-primary-800 tnum">
                   {badge}
                 </span>
               ) : mark ? (
