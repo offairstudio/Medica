@@ -14,14 +14,13 @@ import {
   applyFilters,
   emptyFilters,
 } from "../features/patient-appointments/AppointmentFilters";
-import { groupUpcoming } from "../features/patient-appointments/grouping";
+import { groupByDate } from "../features/patient-appointments/grouping";
 import { DocumentRow } from "../features/patient-documents/DocumentRow";
 import { appointments } from "../mock/appointments";
 import { documents } from "../mock/documents";
 import { currentPatient } from "../mock/patients";
 import { MOCK_TODAY } from "../mock/doctors";
 import { useFakeLoading } from "../lib/useFakeLoading";
-import { relativeDayLabel } from "../lib/date";
 import { he } from "../i18n/he";
 
 /**
@@ -42,7 +41,7 @@ export function PatientHome() {
   );
   const next = upcomingAll[0];
   const filtered = applyFilters(upcomingAll, filters);
-  const groups = groupUpcoming(filtered, MOCK_TODAY);
+  const groups = groupByDate(filtered, MOCK_TODAY);
   const hasFilter = filters.departments.length > 0 || filters.doctors.length > 0;
 
   const recentDocs = useMemo(
@@ -122,15 +121,17 @@ export function PatientHome() {
           ) : (
             <div className="mt-6 flex flex-col gap-6">
               {groups.map((group) => (
-                <section key={group.label} aria-label={group.label}>
-                  <h3 className="mb-3 text-h3 text-muted">{group.label}</h3>
+                <section key={group.date} aria-label={group.full}>
+                  <h3 className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                    <span className="text-h3 text-ink">{group.relative}</span>
+                    <span className="text-caption text-muted">{group.full}</span>
+                  </h3>
                   <div className="flex flex-col gap-3">
                     {group.items.map((a) => (
                       <AppointmentCard
                         key={a.id}
                         appointment={a}
                         featured={a.id === next?.id}
-                        featuredLabel={a.id === next?.id ? relativeDayLabel(a.date, MOCK_TODAY) : undefined}
                       />
                     ))}
                   </div>

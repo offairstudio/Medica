@@ -11,7 +11,7 @@ import {
   applyFilters,
   emptyFilters,
 } from "../features/patient-appointments/AppointmentFilters";
-import { groupPast } from "../features/patient-appointments/grouping";
+import { groupByDate } from "../features/patient-appointments/grouping";
 import { appointments } from "../mock/appointments";
 import { MOCK_TODAY } from "../mock/doctors";
 import { useFakeLoading } from "../lib/useFakeLoading";
@@ -31,7 +31,7 @@ export function PatientPast() {
   );
 
   const filtered = applyFilters(pastAll, filters);
-  const groups = groupPast(filtered, MOCK_TODAY);
+  const groups = groupByDate(filtered, MOCK_TODAY);
   const hasFilter = filters.departments.length > 0 || filters.doctors.length > 0;
 
   if (loading) {
@@ -90,8 +90,11 @@ export function PatientPast() {
       ) : (
         <div className="mt-6 flex flex-col gap-6">
           {groups.map((group) => (
-            <section key={group.label} aria-label={group.label}>
-              <h2 className="mb-3 text-h3 text-muted">{group.label}</h2>
+            <section key={group.date} aria-label={group.full}>
+              <h2 className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                <span className="text-h3 text-ink">{group.relative}</span>
+                <span className="text-caption text-muted">{group.full}</span>
+              </h2>
               <div className="flex flex-col gap-3">
                 {group.items.map((a) => (
                   <AppointmentCard key={a.id} appointment={a} muted />

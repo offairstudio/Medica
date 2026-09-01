@@ -71,13 +71,13 @@ export function DoctorShell({
   );
 }
 
-/** מסגרת מסכי המטופל: ניווט עליון + עמודה מרכזית */
+/** מסגרת מסכי המטופל: סרגל צד אנכי + עמודת תוכן */
 export function PatientShell({ children }: { children: ReactNode }) {
   return (
-    <div className="clinical-surface flex min-h-screen flex-col">
+    <div className="clinical-surface flex min-h-screen flex-col md:flex-row">
       <PatientNav />
-      <main className="mx-auto w-full max-w-[1120px] flex-1 px-4 pb-24 pt-8 md:pb-12 md:pt-10">
-        {children}
+      <main className="min-w-0 flex-1 px-4 pb-24 pt-6 md:px-8 md:pb-12 md:pt-10">
+        <div className="mx-auto w-full max-w-[1000px]">{children}</div>
       </main>
     </div>
   );

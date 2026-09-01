@@ -5,6 +5,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useNavigate,
   useParams,
   useSearchParams,
 } from "react-router-dom";
@@ -18,6 +19,8 @@ import { DoctorAllSurgeries } from "./pages/DoctorAllSurgeries";
 import { SurgeryView } from "./pages/SurgeryView";
 import { PatientHome } from "./pages/PatientHome";
 import { AppointmentDetails } from "./pages/AppointmentDetails";
+import { AppointmentDetailsSheet } from "./features/patient-appointments/AppointmentDetailsSheet";
+import { appointments } from "./mock/appointments";
 import { PatientPast } from "./pages/PatientPast";
 import { PatientDocuments } from "./pages/PatientDocuments";
 import { PatientResults } from "./pages/PatientResults";
@@ -27,10 +30,13 @@ import { NotFound } from "./pages/NotFound";
 
 /** איפוס גלילה במעבר בין מסכים */
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const overlay = Boolean((location.state as { background?: unknown } | null)?.background);
   useEffect(() => {
+    // שכבת-על נפתחת מעל הרשימה - אין לאפס את הגלילה שמאחוריה
+    if (overlay) return;
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [location.pathname, overlay]);
   return null;
 }
 
@@ -51,42 +57,69 @@ function EditSurgeryRedirect() {
   return <Navigate to={`/surgery/${surgeryId}?edit=1`} replace />;
 }
 
+/** פרטי תור כשכבת-על מעל הרשימה; סגירה מחזירה לרשימה שממנה נכנסו */
+function AppointmentOverlay() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const appointment = appointments.find((a) => a.id === id);
+  if (!appointment) return null;
+  return <AppointmentDetailsSheet appointment={appointment} onClose={() => navigate(-1)} />;
+}
+
+function AppRoutes() {
+  const location = useLocation();
+  // ניווט מתוך רשימה שולח את המיקום הקודם ב-state; הרשימה נשארת מאחורי השכבה
+  const background = (location.state as { background?: typeof location } | null)?.background;
+
+  return (
+    <>
+      <Routes location={background ?? location}>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
+        {/* מנתח */}
+        <Route path="/login" element={<LoginDoctor />} />
+        <Route path="/verify" element={<Verify audience="doctor" />} />
+        <Route path="/doctor/:doctorId/schedule" element={<DoctorSchedule />} />
+        <Route path="/doctor/:doctorId/all" element={<DoctorAllSurgeries />} />
+        <Route path="/surgery/new" element={<NewSurgeryRedirect />} />
+        <Route path="/surgery/:surgeryId/edit" element={<EditSurgeryRedirect />} />
+        <Route path="/surgery/:surgeryId" element={<SurgeryView />} />
+
+        {/* מטופל */}
+        <Route path="/p/login" element={<LoginPatient />} />
+        <Route path="/p/verify" element={<Verify audience="patient" />} />
+        <Route path="/p" element={<PatientHome />} />
+        {/* קישורים ישנים - מסך הבית הוא מסך התורים */}
+        <Route path="/p/appointments" element={<Navigate to="/p" replace />} />
+        <Route path="/p/upcoming" element={<Navigate to="/p" replace />} />
+        <Route path="/p/past" element={<PatientPast />} />
+        <Route path="/p/appointment/:id" element={<AppointmentDetails />} />
+        <Route path="/p/results" element={<PatientResults />} />
+        <Route path="/p/documents" element={<PatientDocuments />} />
+
+        {/* פיתוח */}
+        <Route path="/kitchen-sink" element={<KitchenSink />} />
+        <Route path="/no-access" element={<NoAccess />} />
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      {background && (
+        <Routes>
+          <Route path="/p/appointment/:id" element={<AppointmentOverlay />} />
+        </Routes>
+      )}
+    </>
+  );
+}
+
 export default function App() {
   return (
     <DataProvider>
       <ToastProvider>
         <BrowserRouter>
           <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
-
-            {/* מנתח */}
-            <Route path="/login" element={<LoginDoctor />} />
-            <Route path="/verify" element={<Verify audience="doctor" />} />
-            <Route path="/doctor/:doctorId/schedule" element={<DoctorSchedule />} />
-            <Route path="/doctor/:doctorId/all" element={<DoctorAllSurgeries />} />
-            <Route path="/surgery/new" element={<NewSurgeryRedirect />} />
-            <Route path="/surgery/:surgeryId/edit" element={<EditSurgeryRedirect />} />
-            <Route path="/surgery/:surgeryId" element={<SurgeryView />} />
-
-            {/* מטופל */}
-            <Route path="/p/login" element={<LoginPatient />} />
-            <Route path="/p/verify" element={<Verify audience="patient" />} />
-            <Route path="/p" element={<PatientHome />} />
-            {/* קישורים ישנים - מסך הבית הוא מסך התורים */}
-            <Route path="/p/appointments" element={<Navigate to="/p" replace />} />
-            <Route path="/p/upcoming" element={<Navigate to="/p" replace />} />
-            <Route path="/p/past" element={<PatientPast />} />
-            <Route path="/p/appointment/:id" element={<AppointmentDetails />} />
-            <Route path="/p/results" element={<PatientResults />} />
-            <Route path="/p/documents" element={<PatientDocuments />} />
-
-            {/* פיתוח */}
-            <Route path="/kitchen-sink" element={<KitchenSink />} />
-            <Route path="/no-access" element={<NoAccess />} />
-
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
       </ToastProvider>
     </DataProvider>

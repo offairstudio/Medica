@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Clock, MapPin, ArrowLeft, Paperclip } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { KindChip } from "../../components/data/Chip";
@@ -15,11 +15,13 @@ export interface AppointmentCardProps {
 }
 
 export function AppointmentCard({ appointment, muted, featured, featuredLabel }: AppointmentCardProps) {
+  const location = useLocation();
   const { day, month } = formatDateBlock(appointment.date);
 
   return (
     <Link
       to={`/p/appointment/${appointment.id}`}
+      state={{ background: location }}
       className={cn(
         "group block rounded-lg border bg-surface p-5 shadow-sm transition-all duration-fast hover:border-primary-300 hover:shadow-md",
         featured ? "border-primary-300 bg-gradient-to-l from-primary-50 to-white ring-1 ring-primary-100" : "border-line",
