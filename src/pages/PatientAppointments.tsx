@@ -8,10 +8,10 @@ import { groupByDate } from "../features/patient-appointments/grouping";
 import { appointments } from "../mock/appointments";
 import { MOCK_TODAY } from "../mock/doctors";
 import {
-  PatientPageHeader,
+  ScreenHeader,
   tabClass,
   tabCountClass,
-} from "../components/layout/PatientPageHeader";
+} from "../components/layout/ScreenHeader";
 import { useFakeLoading } from "../lib/useFakeLoading";
 import { he } from "../i18n/he";
 
@@ -47,7 +47,7 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
   const groups = groupByDate(all, MOCK_TODAY);
 
   const header = (
-    <PatientPageHeader
+    <ScreenHeader
       title={he.patient.tabs.appointments}
       start={
         <nav className="flex items-center gap-1" aria-label="סוג התורים">

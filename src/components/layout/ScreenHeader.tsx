@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "../../lib/cn";
 
-/** מחלקות הטאב - זהות בכל מסכי המטופל */
+/** מחלקות הטאב - זהות בכל המסכים */
 export function tabClass(isActive: boolean) {
   return cn(
     "-mb-px flex min-h-[44px] items-center gap-2 border-b-2 px-3 font-semibold transition-colors duration-fast",
@@ -16,7 +16,7 @@ export function tabCountClass(isActive: boolean) {
   );
 }
 
-export interface PatientPageHeaderProps {
+export interface ScreenHeaderProps {
   title: string;
   subtitle?: string;
   /** בקרות בתחילת השורה - בדרך כלל טאבים */
@@ -26,11 +26,12 @@ export interface PatientPageHeaderProps {
 }
 
 /**
- * כותרת אחידה למסכי המטופל: כותרת, ומתחתיה שורת בקרות עם קו תחתון.
- * הכותרת מוזרקת ל-PatientShell ולכן נשארת קבועה בראש המסך;
+ * כותרת אחידה לכל מסכי המערכת - מטופל ומנתח כאחד:
+ * כותרת, ומתחתיה שורת בקרות עם קו תחתון.
+ * הכותרת מוזרקת ל-shell ולכן נשארת קבועה בראש המסך;
  * הקו התחתון הוא הגבול שבו תוכן הגלילה נחתך.
  */
-export function PatientPageHeader({ title, subtitle, start, end }: PatientPageHeaderProps) {
+export function ScreenHeader({ title, subtitle, start, end }: ScreenHeaderProps) {
   const hasControls = Boolean(start || end);
 
   return (

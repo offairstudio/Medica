@@ -11,7 +11,8 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { DoctorShell } from "../components/layout/AppShell";
-import { PageHeader } from "../components/layout/PageHeader";
+import { ScreenHeader } from "../components/layout/ScreenHeader";
+import { DoctorPicker } from "../features/doctor-schedule/DoctorPicker";
 import { Button } from "../components/primitives/Button";
 import { Select } from "../components/primitives/Select";
 import { DatePicker } from "../components/form/DatePicker";
@@ -195,12 +196,15 @@ export function DoctorAllSurgeries() {
   );
 
   return (
-    <DoctorShell doctor={doctor} section="all" activeDoctorId={doctorId}>
-      <PageHeader
-        title={he.allSurgeries.title}
-        subtitle={isAll ? he.schedule.allDoctors : doctor.displayName}
-        backTo={{ to: `/doctor/${doctorId}/schedule`, label: he.allSurgeries.backToSchedule }}
-      />
+    <DoctorShell
+      doctorId={doctorId}
+      header={
+        <ScreenHeader
+          title={he.allSurgeries.title}
+          end={<DoctorPicker activeDoctorId={doctorId} section="all" />}
+        />
+      }
+    >
 
       {/* שורת סינון - מוחל אוטומטית בשינוי */}
       <div className="mb-4 rounded-md border border-line bg-surface p-4 shadow-sm">

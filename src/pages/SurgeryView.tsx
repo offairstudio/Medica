@@ -84,11 +84,7 @@ export function SurgeryView() {
   }
 
   return (
-    <DoctorShell
-      doctor={doctor}
-      screenTitle={editing ? he.schedule.actions.edit : he.surgeryView.title}
-      section="schedule"
-    >
+    <DoctorShell doctorId={doctor.id}>
       <div className="mx-auto w-full max-w-[880px]">
         <PageHeader
           title={surgery.procedures.map((p) => p.name).join(" + ")}

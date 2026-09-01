@@ -6,15 +6,12 @@ import {
   ChevronLeft,
   Info,
   CalendarDays,
-  CalendarRange,
   List,
   Plus,
 } from "lucide-react";
-import { Avatar } from "../components/data/Avatar";
-import { departmentName } from "../mock/departments";
-import { formatPhone } from "../lib/format";
-import { doctors } from "../mock/doctors";
 import { DoctorShell } from "../components/layout/AppShell";
+import { ScreenHeader, tabClass } from "../components/layout/ScreenHeader";
+import { DoctorPicker } from "../features/doctor-schedule/DoctorPicker";
 import { Button } from "../components/primitives/Button";
 import { EmptyState } from "../components/data/EmptyState";
 import { Skeleton } from "../components/data/Skeleton";
@@ -207,77 +204,53 @@ export function DoctorSchedule() {
   }
 
   return (
-    <DoctorShell doctor={doctor} section="schedule" activeDoctorId={doctorId}>
+    <DoctorShell
+      doctorId={doctorId}
+      header={
+        <ScreenHeader
+          title={he.schedule.title}
+          start={
+            <div className="flex items-center gap-1" role="tablist" aria-label="בחירת תצוגה">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={view === "day"}
+                onClick={() => setView("day")}
+                className={tabClass(view === "day")}
+              >
+                <List className="h-4 w-4" aria-hidden />
+                {he.schedule.viewDay}
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={view === "month"}
+                onClick={() => {
+                  setViewMonth(startOfMonth(toDate(selectedDate)));
+                  setView("month");
+                }}
+                className={tabClass(view === "month")}
+              >
+                <CalendarDays className="h-4 w-4" aria-hidden />
+                {he.schedule.viewMonth}
+              </button>
+            </div>
+          }
+          end={
+            <div className="pb-2">
+              <DoctorPicker activeDoctorId={doctorId} section="schedule" />
+            </div>
+          }
+        />
+      }
+    >
       <div className="flex items-start gap-4">
         <section className="min-w-0 flex-1 rounded-lg border border-line bg-surface shadow-sm">
           {/* כותרת הכרטיס */}
           <header className="rounded-t-[15px] bg-primary-700 px-4 py-3 text-white">
-            <div className="flex items-center gap-2">
-              {/* זהות היומן הנצפה - בנפרד מהמשתמש המחובר שב-TopBar */}
-              <div className="flex min-w-0 items-center gap-2.5">
-                {isAll ? (
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15">
-                    <CalendarRange className="h-4 w-4" aria-hidden />
-                  </span>
-                ) : (
-                  <Avatar name={doctor.displayName} src={doctor.avatarUrl} size="md" />
-                )}
-                <span className="min-w-0 leading-tight">
-                  <span className="block truncate font-semibold">
-                    {isAll ? he.schedule.allDoctors : doctor.displayName}
-                  </span>
-                  <span className="block truncate text-[12px] text-white/80">
-                    {isAll ? (
-                      `${doctors.filter((d) => d.managedByMe).length} מנתחים`
-                    ) : (
-                      <>
-                        {departmentName(doctor.departmentId)} ·{" "}
-                        <span dir="ltr" className="tnum">{formatPhone(doctor.mobile)}</span>
-                      </>
-                    )}
-                  </span>
-                </span>
-              </div>
-
-            </div>
-
             {/* סרגל בקרה מאוחד: תצוגה, שינוי לו"ז וניווט בזמן */}
             <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-white/15 pt-3">
               <div className="flex items-center gap-2">
-                <div
-                  role="group"
-                  aria-label="בחירת תצוגה"
-                  className="flex items-center rounded-md bg-white/10 p-0.5"
-                >
-                  <button
-                    type="button"
-                    aria-pressed={view === "day"}
-                    onClick={() => setView("day")}
-                    className={cn(
-                      "flex items-center gap-1 rounded px-2.5 py-1 text-caption font-semibold transition-colors duration-fast",
-                      view === "day" ? "bg-white text-primary-700" : "text-white/80 hover:text-white",
-                    )}
-                  >
-                    <List className="h-3.5 w-3.5" aria-hidden />
-                    {he.schedule.viewDay}
-                  </button>
-                  <button
-                    type="button"
-                    aria-pressed={view === "month"}
-                    onClick={() => {
-                      setViewMonth(startOfMonth(toDate(selectedDate)));
-                      setView("month");
-                    }}
-                    className={cn(
-                      "flex items-center gap-1 rounded px-2.5 py-1 text-caption font-semibold transition-colors duration-fast",
-                      view === "month" ? "bg-white text-primary-700" : "text-white/80 hover:text-white",
-                    )}
-                  >
-                    <CalendarDays className="h-3.5 w-3.5" aria-hidden />
-                    {he.schedule.viewMonth}
-                  </button>
-                </div>
-
                 <button
                   type="button"
                   onClick={() => toast("info", "שינוי הל\"ז אינו חלק מהפרוטוטייפ")}

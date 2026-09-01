@@ -62,6 +62,7 @@ export const he = {
   schedule: {
     title: "יומן ניתוחים",
     allDoctors: "כל המנתחים",
+    noDoctorsFound: "לא נמצא מנתח תואם",
     combinedSchedule: "יומן כולל",
     managedDoctors: "מנתחים בניהולי",
     searchDoctor: "חיפוש מנתח",

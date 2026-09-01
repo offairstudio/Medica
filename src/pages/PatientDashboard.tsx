@@ -8,7 +8,7 @@ import {
   Info,
 } from "lucide-react";
 import { PatientShell } from "../components/layout/AppShell";
-import { PatientPageHeader } from "../components/layout/PatientPageHeader";
+import { ScreenHeader } from "../components/layout/ScreenHeader";
 import { Skeleton } from "../components/data/Skeleton";
 import { EmptyState } from "../components/data/EmptyState";
 import { AppointmentCard } from "../features/patient-appointments/AppointmentCard";
@@ -110,7 +110,7 @@ export function PatientDashboard() {
   }
 
   const header = (
-    <PatientPageHeader
+    <ScreenHeader
       title={he.patient.greeting(currentPatient.firstName)}
       subtitle={
         next

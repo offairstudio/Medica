@@ -57,8 +57,8 @@ export function Table<T>({ columns, rows, rowKey, caption, onRowClick, empty }: 
                   sort?.key === col.key ? (sort.dir === "asc" ? "ascending" : "descending") : undefined
                 }
                 className={cn(
-                  // top-[88px] = גובה ה-TopBar הדביק, כדי שהכותרת לא תוסתר מאחוריו
-                  "sticky top-[88px] z-10 whitespace-nowrap bg-primary-700 px-3 py-3 text-start text-caption font-semibold text-white first:rounded-ss-lg last:rounded-se-lg",
+                  // הגלילה מתבצעת בתוך אזור התוכן, ולכן הכותרת נדבקת לראש המיכל
+                  "sticky top-0 z-10 whitespace-nowrap bg-primary-700 px-3 py-3 text-start text-caption font-semibold text-white first:rounded-ss-lg last:rounded-se-lg",
                   col.className,
                 )}
               >

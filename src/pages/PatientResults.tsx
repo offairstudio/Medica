@@ -9,10 +9,10 @@ import {
 } from "lucide-react";
 import { PatientShell } from "../components/layout/AppShell";
 import {
-  PatientPageHeader,
+  ScreenHeader,
   tabClass,
   tabCountClass,
-} from "../components/layout/PatientPageHeader";
+} from "../components/layout/ScreenHeader";
 import { EmptyState } from "../components/data/EmptyState";
 import { FilterChip } from "../components/data/Chip";
 import { Dropdown } from "../components/overlay/Dropdown";
@@ -85,7 +85,7 @@ export function PatientResults() {
   }
 
   const header = (
-    <PatientPageHeader
+    <ScreenHeader
       title="תוצאות וסיכומים"
       subtitle="כל המידע הרפואי שהתקבל לאחר הביקורים והבדיקות"
       start={
