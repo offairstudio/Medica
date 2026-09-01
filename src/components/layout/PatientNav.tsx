@@ -4,7 +4,6 @@ import {
   CalendarClock,
   ChevronDown,
   ClipboardList,
-  FileText,
   LayoutGrid,
   LogOut,
   UserRound,
@@ -12,7 +11,6 @@ import {
 import { cn } from "../../lib/cn";
 import { currentPatient } from "../../mock/patients";
 import { appointments } from "../../mock/appointments";
-import { documents } from "../../mock/documents";
 import { he } from "../../i18n/he";
 import { BrandMark } from "./BrandMark";
 import { Dropdown } from "../overlay/Dropdown";
@@ -45,13 +43,6 @@ const tabs = [
     icon: ClipboardList,
     count: resultsCount,
     match: (p: string) => p.startsWith("/p/results"),
-  },
-  {
-    to: "/p/documents",
-    label: he.patient.tabs.documents,
-    icon: FileText,
-    count: documents.length,
-    match: (p: string) => p.startsWith("/p/documents"),
   },
 ];
 

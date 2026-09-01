@@ -22,7 +22,6 @@ import { PatientAppointments } from "./pages/PatientAppointments";
 import { AppointmentDetails } from "./pages/AppointmentDetails";
 import { AppointmentDetailsSheet } from "./features/patient-appointments/AppointmentDetailsSheet";
 import { appointments } from "./mock/appointments";
-import { PatientDocuments } from "./pages/PatientDocuments";
 import { PatientResults } from "./pages/PatientResults";
 import { KitchenSink } from "./pages/KitchenSink";
 import { NoAccess } from "./pages/NoAccess";
@@ -96,7 +95,7 @@ function AppRoutes() {
         <Route path="/p/past" element={<Navigate to="/p/appointments/past" replace />} />
         <Route path="/p/appointment/:id" element={<AppointmentDetails />} />
         <Route path="/p/results" element={<PatientResults />} />
-        <Route path="/p/documents" element={<PatientDocuments />} />
+        <Route path="/p/documents" element={<Navigate to="/p" replace />} />
 
         {/* פיתוח */}
         <Route path="/kitchen-sink" element={<KitchenSink />} />

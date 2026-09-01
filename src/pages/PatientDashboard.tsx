@@ -5,7 +5,6 @@ import {
   CalendarClock,
   ClipboardList,
   Eye,
-  FileText,
   Info,
 } from "lucide-react";
 import { PatientShell } from "../components/layout/AppShell";
@@ -13,9 +12,7 @@ import { PatientPageHeader } from "../components/layout/PatientPageHeader";
 import { Skeleton } from "../components/data/Skeleton";
 import { EmptyState } from "../components/data/EmptyState";
 import { AppointmentCard } from "../features/patient-appointments/AppointmentCard";
-import { DocumentRow } from "../features/patient-documents/DocumentRow";
 import { appointments } from "../mock/appointments";
-import { documents } from "../mock/documents";
 import { currentPatient } from "../mock/patients";
 import { MOCK_TODAY } from "../mock/doctors";
 import { useFakeLoading } from "../lib/useFakeLoading";
@@ -90,10 +87,6 @@ export function PatientDashboard() {
         .sort((a, b) => b.date.localeCompare(a.date)),
     [],
   );
-  const recentDocs = useMemo(
-    () => [...documents].sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt)).slice(0, 3),
-    [],
-  );
 
   const next = upcoming[0];
   const following = upcoming.slice(1, 4);
@@ -131,10 +124,9 @@ export function PatientDashboard() {
     <PatientShell header={header}>
       <div className="flex flex-col gap-8">
         {/* סיכומים */}
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2">
           <StatTile to="/p/appointments" icon={CalendarClock} value={upcoming.length} label="תורים עתידיים" />
           <StatTile to="/p/results" icon={ClipboardList} value={results.length} label="תוצאות וסיכומים" />
-          <StatTile to="/p/documents" icon={FileText} value={documents.length} label="מסמכים רפואיים" />
         </div>
 
         {/* התור הקרוב + הכנות */}
@@ -217,14 +209,6 @@ export function PatientDashboard() {
               </ul>
             </section>
 
-            <section className="min-w-0" aria-label={he.patient.recentDocuments}>
-              <SectionHeader title={he.patient.recentDocuments} to="/p/documents" />
-              <ul className="rounded-lg border border-line bg-surface px-4 shadow-sm">
-                {recentDocs.map((d) => (
-                  <DocumentRow key={d.id} doc={d} compact />
-                ))}
-              </ul>
-            </section>
           </div>
         </div>
       </div>

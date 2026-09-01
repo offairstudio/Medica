@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Clock, MapPin, ArrowLeft, Paperclip } from "lucide-react";
 import { cn } from "../../lib/cn";
-import { KindChip } from "../../components/data/Chip";
 import { formatDateBlock } from "../../lib/date";
 import { he } from "../../i18n/he";
 import type { Appointment } from "../../types";
@@ -67,16 +66,10 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel, f
         </span>
 
         <span className="min-w-0 flex-1">
-          <span className="flex flex-wrap items-start justify-between gap-2">
-            <span className={cn("truncate text-h3", muted ? "text-body" : "text-ink")}>
-              {appointment.title}
-            </span>
-            <KindChip kind={appointment.kind} />
+          <span className={cn("block truncate text-h3", muted ? "text-body" : "text-ink")}>
+            {appointment.title}
           </span>
-          <span className="mt-0.5 block truncate text-muted">
-            {appointment.doctorName} · {appointment.departmentName}
-          </span>
-          <span className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-muted">
+          <span className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-muted">
             <span className="flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" aria-hidden />
               <span className="tnum">{appointment.time}</span>
@@ -93,12 +86,6 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel, f
               <Paperclip className="h-3.5 w-3.5 text-muted" aria-hidden />
               {he.patient.documentsAttached(appointment.documents.length)}
               <span className="font-semibold text-primary-600">{he.common.download}</span>
-            </span>
-          )}
-
-          {muted && appointment.resultSummary && (
-            <span className="mt-1.5 block truncate text-caption text-muted">
-              {appointment.resultSummary}
             </span>
           )}
         </span>

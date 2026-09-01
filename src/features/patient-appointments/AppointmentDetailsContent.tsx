@@ -1,16 +1,8 @@
-import {
-  CalendarDays,
-  Clock,
-  Stethoscope,
-  Building2,
-  MapPin,
-  MessageSquareText,
-  Hospital as HospitalIcon,
-  Info,
-} from "lucide-react";
+import { useState } from "react";
+import { CalendarDays, Clock, MapPin, MessageSquareText, Info } from "lucide-react";
 import { Card } from "../../components/data/Card";
-import { HospitalChip } from "../../components/data/Chip";
 import { Button } from "../../components/primitives/Button";
+import { FileUpload, type UploadedFile } from "../../components/form/FileUpload";
 import { EmptyState } from "../../components/data/EmptyState";
 import { useToast } from "../../components/overlay/Toast";
 import { DocumentRow } from "../patient-documents/DocumentRow";
@@ -23,20 +15,15 @@ import type { Appointment } from "../../types";
  */
 export function AppointmentDetailsContent({ appointment }: { appointment: Appointment }) {
   const { toast } = useToast();
+  const [upload, setUpload] = useState<UploadedFile | null>(null);
 
+  // הדרישות מגדירות לבדיקה: תאריך, שעה, שם שיווקי (הכותרת) וכתובת המכון בלבד
   const rows = [
     { icon: CalendarDays, label: he.patient.details.date, value: formatFullDate(appointment.date) },
     {
       icon: Clock,
       label: he.patient.details.time,
       value: <span className="tnum">{appointment.time}</span>,
-    },
-    { icon: Stethoscope, label: he.patient.details.doctor, value: appointment.doctorName },
-    { icon: Building2, label: he.patient.details.department, value: appointment.departmentName },
-    {
-      icon: HospitalIcon,
-      label: he.patient.details.hospital,
-      value: <HospitalChip hospital={appointment.hospital} />,
     },
     { icon: MapPin, label: he.patient.details.location, value: appointment.location },
   ];
@@ -87,6 +74,21 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
               {he.patient.sendInstructionsSms}
             </Button>
           )}
+        </section>
+      )}
+
+      {/* העלאת מסמכים לקראת התור */}
+      {isUpcoming && (
+        <section aria-label={he.patient.uploadTitle} className="rounded-lg border border-line bg-surface p-5 shadow-sm">
+          <h3 className="text-h3 text-ink">{he.patient.uploadTitle}</h3>
+          <p className="mb-4 mt-1 text-muted">{he.patient.uploadHint}</p>
+          <FileUpload
+            value={upload}
+            onChange={(file) => {
+              setUpload(file);
+              if (file) toast("success", he.patient.uploadDone);
+            }}
+          />
         </section>
       )}
 
