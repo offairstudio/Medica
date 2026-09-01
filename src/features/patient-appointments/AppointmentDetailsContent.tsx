@@ -79,27 +79,13 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
         </section>
       )}
 
-      {/* העלאת מסמכים לקראת התור */}
-      {isUpcoming && (
-        <section aria-label={he.patient.uploadTitle} className="rounded-lg border border-line bg-surface p-5 shadow-sm">
-          <h3 className="text-h3 text-ink">{he.patient.uploadTitle}</h3>
-          <p className="mb-4 mt-1 text-muted">{he.patient.uploadHint}</p>
-          <FileUpload
-            value={upload}
-            onChange={(file) => {
-              setUpload(file);
-              if (file) toast("success", he.patient.uploadDone);
-            }}
-          />
-        </section>
-      )}
-
-      {/* מסמכים רפואיים */}
+      {/* מסמכים - הקיימים והעלאה חדשה, אותו נושא באותה מסגרת */}
       <section
         aria-label={he.patient.documentsSection}
         className="rounded-lg border border-line bg-surface p-5 shadow-sm"
       >
         <h3 className="text-h3 text-ink">{he.patient.documentsSection}</h3>
+
         {appointment.documents.length === 0 ? (
           <p className="mt-2 text-muted">{he.patient.noAppointmentDocuments}</p>
         ) : (
@@ -108,6 +94,20 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
               <DocumentRow key={d.id} doc={d} />
             ))}
           </ul>
+        )}
+
+        {isUpcoming && (
+          <div className="mt-4 border-t border-line pt-4">
+            <p className="font-semibold text-ink">{he.patient.uploadTitle}</p>
+            <p className="mb-3 mt-0.5 text-caption text-muted">{he.patient.uploadHint}</p>
+            <FileUpload
+              value={upload}
+              onChange={(file) => {
+                setUpload(file);
+                if (file) toast("success", he.patient.uploadDone);
+              }}
+            />
+          </div>
         )}
       </section>
 

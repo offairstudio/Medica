@@ -267,7 +267,7 @@ export const he = {
     detailsTitle: "פרטי התור",
     preparation: "הנחיות הכנה",
     documentsSection: "מסמכים רפואיים",
-    uploadTitle: "העלאת מסמכים לקראת התור",
+    uploadTitle: "העלאת מסמך לקראת התור",
     uploadHint: "אפשר לצרף הפניה, תוצאות קודמות או כל מסמך שנדרש להכנה",
     uploadDone: "המסמך צורף לתור בהצלחה",
     noAppointmentDocuments: "טרם צורפו מסמכים לתור זה",
