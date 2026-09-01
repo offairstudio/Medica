@@ -121,7 +121,7 @@ export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, 
             type="button"
             onClick={requestClose}
             aria-label="סגירה וחזרה לרשימה"
-            className="-me-1 shrink-0 rounded-md p-2 text-muted transition-colors duration-fast hover:bg-canvas hover:text-ink"
+            className="-me-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-canvas hover:text-ink"
           >
             <X className="h-5 w-5" />
           </button>

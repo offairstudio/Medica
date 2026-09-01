@@ -99,7 +99,8 @@ export interface MedicalDocument {
   fileUrl: string;
   sizeKb: number;
   uploadedAt: ISODate;
-  source: "doctor" | "hospital";
+  /** מי הנפיק את המסמך. patient = מסמך שהמטופל העלה בעצמו */
+  source: "doctor" | "hospital" | "patient";
 }
 
 // ---------- בלוק ניתוחים (ליומן) ----------
