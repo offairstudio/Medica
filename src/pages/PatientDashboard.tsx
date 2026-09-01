@@ -114,7 +114,7 @@ export function PatientDashboard() {
       title={he.patient.greeting(currentPatient.firstName)}
       subtitle={
         next
-          ? `התור הקרוב שלך ${relativeDayLabel(next.date, MOCK_TODAY)} · ${next.title}`
+          ? `התור הקרוב שלך ${relativeDayLabel(next.date, MOCK_TODAY)} · ${next.doctorName}`
           : he.patient.emptyUpcoming
       }
     />

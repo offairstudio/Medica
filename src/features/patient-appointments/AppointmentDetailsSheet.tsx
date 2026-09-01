@@ -18,11 +18,12 @@ export function AppointmentDetailsSheet({
     <Sheet
       open
       onClose={onClose}
-      title={appointment.title}
+      title={appointment.doctorName}
       titleSlot={
-        <div className="flex flex-col gap-1">
-          <h2 className="text-h2 text-ink">{appointment.title}</h2>
-          <span className="text-muted">
+        <div className="flex flex-col gap-0.5">
+          <h2 className="text-h2 text-ink">{appointment.doctorName}</h2>
+          <span className="text-muted">{appointment.title}</span>
+          <span className="mt-1 text-caption text-muted">
             {formatFullDate(appointment.date)} · <span className="tnum">{appointment.time}</span>
           </span>
         </div>

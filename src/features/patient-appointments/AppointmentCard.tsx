@@ -67,8 +67,9 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel, f
 
         <span className="min-w-0 flex-1">
           <span className={cn("block truncate text-h3", muted ? "text-body" : "text-ink")}>
-            {appointment.title}
+            {appointment.doctorName}
           </span>
+          <span className="mt-0.5 block truncate text-muted">{appointment.title}</span>
           <span className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-muted">
             <span className="flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" aria-hidden />

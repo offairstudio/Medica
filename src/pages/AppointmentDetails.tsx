@@ -20,7 +20,8 @@ export function AppointmentDetails() {
   return (
     <PatientShell>
       <PageHeader
-        title={appointment.title}
+        title={appointment.doctorName}
+        subtitle={appointment.title}
         display
         backTo={{ to: isUpcoming ? "/p/appointments" : "/p/appointments/past", label: he.patient.backToAppointments }}
       />
