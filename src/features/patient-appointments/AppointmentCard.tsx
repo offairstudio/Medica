@@ -70,15 +70,6 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel, f
             {appointment.doctorName}
           </span>
           <span className="mt-0.5 block truncate text-muted">{appointment.title}</span>
-          {/* שורת מסמכים - לתורים קודמים עם קבצים */}
-          {muted && appointment.documents.length > 0 && (
-            <span className="mt-1.5 flex items-center gap-1.5 text-caption text-body">
-              <Paperclip className="h-3.5 w-3.5 text-muted" aria-hidden />
-              {he.patient.documentsAttached(appointment.documents.length)}
-              <span className="font-semibold text-primary-600">{he.common.download}</span>
-            </span>
-          )}
-
           <span className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-muted">
             <span className="flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" aria-hidden />
@@ -88,6 +79,13 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel, f
               <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden />
               <span className="truncate">{appointment.location}</span>
             </span>
+            {/* חיווי בלבד - הקבצים עצמם נפתחים בפרטי התור */}
+            {appointment.documents.length > 0 && (
+              <span className="flex shrink-0 items-center gap-1">
+                <Paperclip className="h-3.5 w-3.5" aria-hidden />
+                {he.patient.documentsAttached(appointment.documents.length)}
+              </span>
+            )}
             <span className="ms-auto flex shrink-0 items-center gap-1 font-semibold text-primary-600 transition-colors duration-fast group-hover:text-primary-800">
               {he.patient.toAppointment}
               <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-fast group-hover:-translate-x-0.5" aria-hidden />
