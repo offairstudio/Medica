@@ -15,7 +15,6 @@ import { LoginDoctor } from "./pages/LoginDoctor";
 import { LoginPatient } from "./pages/LoginPatient";
 import { Verify } from "./pages/Verify";
 import { DoctorSchedule } from "./pages/DoctorSchedule";
-import { DoctorAllSurgeries } from "./pages/DoctorAllSurgeries";
 import { SurgeryView } from "./pages/SurgeryView";
 import { PatientAppointments } from "./pages/PatientAppointments";
 import { AppointmentDetails } from "./pages/AppointmentDetails";
@@ -78,7 +77,8 @@ function AppRoutes() {
         <Route path="/login" element={<LoginDoctor />} />
         <Route path="/verify" element={<Verify audience="doctor" />} />
         <Route path="/doctor/:doctorId/schedule" element={<DoctorSchedule />} />
-        <Route path="/doctor/:doctorId/all" element={<DoctorAllSurgeries />} />
+        {/* אין מסך "כל הניתוחים" - הפניה ליומן */}
+        <Route path="/doctor/:doctorId/all" element={<Navigate to="/doctor/doc-1/schedule" replace />} />
         <Route path="/surgery/new" element={<NewSurgeryRedirect />} />
         <Route path="/surgery/:surgeryId/edit" element={<EditSurgeryRedirect />} />
         <Route path="/surgery/:surgeryId" element={<SurgeryView />} />

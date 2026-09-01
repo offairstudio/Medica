@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AtSign,
   BadgeCheck,
-  CalendarDays,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -11,7 +10,6 @@ import {
   LogOut,
   Search,
   Smartphone,
-  Table as TableIcon,
 } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { Avatar } from "../data/Avatar";
@@ -107,11 +105,7 @@ function AccountMenu({ collapsed }: { collapsed?: boolean }) {
 export function DoctorNav({ doctorId }: { doctorId: string }) {
   const [collapsed, setCollapsed] = useState(readCollapsed);
   const [query, setQuery] = useState("");
-  const { pathname } = useLocation();
   const { surgeries } = useData();
-
-  /** בחירת מנתח שומרת על המסך שבו נמצאים */
-  const section = pathname.endsWith("/all") ? "all" : "schedule";
 
   const managed = useMemo(
     () =>
@@ -126,6 +120,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
   );
   // רוב המשתמשים מנהלים מנתחים בודדים; חיפוש נחוץ רק ברשימה ארוכה
   const showSearch = managed.length > 6;
+  const activeDoctor = managed.find((d) => d.id === doctorId);
   const visibleDoctors = useMemo(() => {
     const q = query.trim();
     return q ? managed.filter((d) => d.displayName.includes(q)) : managed;
@@ -149,27 +144,6 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
     }
   }, [collapsed]);
 
-  const todayCount = surgeries.filter(
-    (s) => s.doctorId === doctorId && s.date === MOCK_TODAY && s.status === "scheduled",
-  ).length;
-  const allCount = surgeries.filter((s) => s.doctorId === doctorId).length;
-
-  const tabs = [
-    {
-      to: `/doctor/${doctorId}/schedule`,
-      label: he.schedule.title,
-      icon: CalendarDays,
-      count: todayCount,
-      match: (p: string) => p.includes("/schedule") || p.startsWith("/surgery/"),
-    },
-    {
-      to: `/doctor/${doctorId}/all`,
-      label: he.allSurgeries.title,
-      icon: TableIcon,
-      count: allCount,
-      match: (p: string) => p.endsWith("/all"),
-    },
-  ];
 
   const ToggleIcon = collapsed ? ChevronLeft : ChevronRight;
 
@@ -208,65 +182,41 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
 
         <nav
           className={cn("flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto", collapsed ? "px-2" : "px-3")}
-          aria-label="ניווט ראשי"
+          aria-label={he.schedule.managedDoctors}
         >
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = tab.match(pathname);
-            return (
+          {/* מנתחים בניהולי - הקטגוריה היחידה בתפריט */}
+          {collapsed ? (
+            <div className="flex flex-col items-center gap-1">
               <Link
-                key={tab.to}
-                to={tab.to}
-                aria-current={isActive ? "page" : undefined}
-                title={collapsed ? tab.label : undefined}
+                to="/doctor/all/schedule"
+                aria-current={doctorId === "all" ? "page" : undefined}
+                title={he.schedule.allDoctors}
                 className={cn(
-                  "flex min-h-[46px] items-center rounded-md font-semibold transition-colors duration-fast",
-                  collapsed ? "justify-center px-0" : "gap-3 px-3",
-                  isActive
-                    ? "bg-primary-50 text-primary-800"
-                    : "text-muted hover:bg-canvas hover:text-body",
+                  "flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-fast",
+                  doctorId === "all" ? "bg-primary-50 text-primary-700" : "text-muted hover:bg-canvas",
                 )}
               >
-                <span className="relative inline-flex shrink-0">
-                  <Icon
-                    className={cn("h-[18px] w-[18px]", isActive ? "text-primary-600" : "text-muted")}
-                    aria-hidden
-                  />
-                  {collapsed && tab.count > 0 && (
-                    <span
-                      aria-hidden
-                      className={cn(
-                        "tnum absolute -end-2.5 -top-2 rounded-full px-1 text-[11px] font-bold leading-[15px]",
-                        isActive ? "bg-primary-700 text-white" : "bg-canvas text-body",
-                      )}
-                    >
-                      {tab.count}
-                    </span>
-                  )}
-                </span>
-                {!collapsed && (
-                  <>
-                    <span className="min-w-0 flex-1 truncate">{tab.label}</span>
-                    {tab.count > 0 && (
-                      <span
-                        className={cn(
-                          "tnum shrink-0 rounded-full px-2 py-0.5 text-[12px] font-bold",
-                          isActive ? "bg-primary-700 text-white" : "bg-canvas text-muted",
-                        )}
-                      >
-                        {tab.count}
-                      </span>
-                    )}
-                  </>
-                )}
-                {collapsed && <span className="sr-only">{`${tab.label}, ${tab.count}`}</span>}
+                <CalendarRange className="h-5 w-5" aria-hidden />
+                <span className="sr-only">{he.schedule.allDoctors}</span>
               </Link>
-            );
-          })}
-
-          {/* מנתחים בניהולי - בחירת ההקשר, בתוך אותו תפריט */}
-          {!collapsed && (
-            <div className="mt-5">
+              {managed.map((d) => (
+                <Link
+                  key={d.id}
+                  to={`/doctor/${d.id}/schedule`}
+                  aria-current={d.id === doctorId ? "page" : undefined}
+                  title={d.displayName}
+                  className={cn(
+                    "flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-fast",
+                    d.id === doctorId ? "bg-primary-50 ring-1 ring-primary-300" : "hover:bg-canvas",
+                  )}
+                >
+                  <Avatar name={d.displayName} src={d.avatarUrl} size="sm" />
+                  <span className="sr-only">{d.displayName}</span>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div>
               <p className="px-3 pb-1 text-caption font-semibold text-muted">
                 {he.schedule.managedDoctors}
               </p>
@@ -288,7 +238,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
               )}
 
               <Link
-                to={`/doctor/all/${section}`}
+                to="/doctor/all/schedule"
                 aria-current={doctorId === "all" ? "page" : undefined}
                 className={cn(
                   "flex min-h-[44px] items-center gap-2.5 rounded-md px-3 transition-colors duration-fast",
@@ -310,7 +260,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                   return (
                     <Link
                       key={d.id}
-                      to={`/doctor/${d.id}/${section}`}
+                      to={`/doctor/${d.id}/schedule`}
                       aria-current={isActive ? "page" : undefined}
                       className={cn(
                         "flex min-h-[44px] items-center gap-2.5 rounded-md px-3 transition-colors duration-fast",
@@ -346,32 +296,54 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
         >
           <BrandMark />
         </Link>
-        <AccountMenu />
+        <div className="flex items-center gap-2">
+          <Dropdown
+            portal
+            align="start"
+            menuClassName="w-[min(92vw,320px)] p-1"
+            trigger={
+              <button
+                type="button"
+                aria-label={`בחירת מנתח. נבחר כעת: ${doctorId === "all" ? he.schedule.allDoctors : activeDoctor?.displayName ?? ""}`}
+                className="flex min-h-[44px] max-w-44 items-center gap-2 rounded-md border border-line bg-surface px-2.5 font-semibold text-ink transition-colors duration-fast hover:border-primary-300"
+              >
+                {doctorId === "all" ? (
+                  <CalendarRange className="h-4 w-4 shrink-0 text-primary-600" aria-hidden />
+                ) : (
+                  <Avatar name={activeDoctor?.displayName ?? ""} src={activeDoctor?.avatarUrl} size="sm" />
+                )}
+                <span className="min-w-0 flex-1 truncate text-caption">
+                  {doctorId === "all" ? he.schedule.allDoctors : activeDoctor?.displayName}
+                </span>
+                <ChevronDown className="h-4 w-4 shrink-0 text-muted" aria-hidden />
+              </button>
+            }
+          >
+            <Link
+              to="/doctor/all/schedule"
+              className="flex min-h-[44px] items-center gap-2.5 rounded-md px-3 text-body transition-colors duration-fast hover:bg-canvas"
+            >
+              <CalendarRange className="h-4 w-4 shrink-0 text-primary-600" aria-hidden />
+              {he.schedule.allDoctors}
+            </Link>
+            {managed.map((d) => (
+              <Link
+                key={d.id}
+                to={`/doctor/${d.id}/schedule`}
+                className={cn(
+                  "flex min-h-[44px] items-center gap-2.5 rounded-md px-3 transition-colors duration-fast",
+                  d.id === doctorId ? "bg-primary-50 font-semibold text-primary-800" : "text-body hover:bg-canvas",
+                )}
+              >
+                <Avatar name={d.displayName} src={d.avatarUrl} size="sm" />
+                <span className="min-w-0 flex-1 truncate">{d.displayName}</span>
+              </Link>
+            ))}
+          </Dropdown>
+          <AccountMenu />
+        </div>
       </header>
 
-      <nav
-        className="fixed inset-x-0 bottom-0 z-40 flex border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] shadow-[0_-2px_12px_rgba(26,26,34,.06)] md:hidden"
-        aria-label="ניווט תחתון"
-      >
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          const isActive = tab.match(pathname);
-          return (
-            <Link
-              key={tab.to}
-              to={tab.to}
-              aria-current={isActive ? "page" : undefined}
-              className={cn(
-                "flex min-h-[56px] flex-1 flex-col items-center justify-center gap-0.5 text-[12px] font-semibold transition-colors duration-fast",
-                isActive ? "text-primary-700" : "text-muted",
-              )}
-            >
-              <Icon className="h-5 w-5" aria-hidden />
-              {tab.label}
-            </Link>
-          );
-        })}
-      </nav>
     </>
   );
 }
