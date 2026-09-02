@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   addMonths,
   eachDayOfInterval,
@@ -50,9 +50,19 @@ export function MonthCalendar({
   selectableOnly,
   className,
 }: MonthCalendarProps) {
-  const [viewMonth, setViewMonth] = useState(() =>
-    startOfMonth(toDate(selectedDate ?? today)),
-  );
+  const [viewMonth, setViewMonth] = useState(() => startOfMonth(toDate(selectedDate ?? today)));
+
+  /**
+   * הלוח משקף תמיד את החודש שבו נמצאים: מעבר ליום אחר ברשימה או בפס
+   * הימים מזיז גם את הלוח. דפדוף ידני בחודשים נשאר עד לבחירת יום חדש.
+   */
+  const selectedMonthKey = selectedDate ? formatMonthYear(toDate(selectedDate)) : null;
+  useEffect(() => {
+    if (selectedDate) setViewMonth(startOfMonth(toDate(selectedDate)));
+  }, [selectedMonthKey]);
+
+  const isBrowsingAway =
+    selectedDate != null && formatMonthYear(viewMonth) !== formatMonthYear(toDate(selectedDate));
 
   const days = eachDayOfInterval({
     start: startOfWeek(startOfMonth(viewMonth)),
@@ -74,10 +84,19 @@ export function MonthCalendar({
           <ChevronRight className="h-4 w-4" />
         </button>
         <div className="flex flex-col items-center">
-          <p className="text-h3 text-ink">{formatMonthYear(viewMonth)}</p>
-          {selectedDate && (
-            <p className="text-caption text-muted">{formatFullDate(selectedDate)}</p>
-          )}
+          {/* הכותרת מציגה את החודש שמוצג, ולחיצה עליה מחזירה לחודש של היום הנבחר */}
+          <button
+            type="button"
+            onClick={() => selectedDate && setViewMonth(startOfMonth(toDate(selectedDate)))}
+            disabled={!isBrowsingAway}
+            title={isBrowsingAway ? `חזרה ל${formatFullDate(selectedDate!)}` : undefined}
+            className={cn(
+              "rounded-md px-2 py-0.5 text-h3 text-ink transition-colors duration-fast",
+              isBrowsingAway && "text-primary-700 hover:bg-primary-50",
+            )}
+          >
+            {formatMonthYear(viewMonth)}
+          </button>
         </div>
         <button
           type="button"

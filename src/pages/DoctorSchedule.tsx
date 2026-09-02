@@ -1,12 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams, Navigate } from "react-router-dom";
-import { addDays } from "date-fns";
-import {
-  ChevronRight,
-  ChevronLeft,
-  Info,
-  Plus,
-} from "lucide-react";
+import { Info, Plus } from "lucide-react";
 import { DoctorShell } from "../components/layout/AppShell";
 import { ScreenHeader } from "../components/layout/ScreenHeader";
 import { Button } from "../components/primitives/Button";
@@ -30,16 +24,14 @@ import {
   type FreeSlot,
 } from "../features/doctor-schedule/slots";
 import { HospitalChip } from "../components/data/Chip";
+import { Avatar, AllDoctorsAvatar } from "../components/data/Avatar";
 import { doctorById, MOCK_TODAY } from "../mock/doctors";
 import { useData } from "../state/data";
 import { useFakeLoading } from "../lib/useFakeLoading";
 import {
-  formatShortDate,
-  formatWeekday,
+  formatFullDate,
   formatTotalHours,
   timeToMinutes,
-  toDate,
-  toISO,
 } from "../lib/date";
 import { he } from "../i18n/he";
 import type { Hospital, ISODate, Surgery } from "../types";
@@ -170,73 +162,51 @@ export function DoctorSchedule() {
     setSelectedDate(date);
   }
 
-  function navPrev() {
-    setSelectedDate(toISO(addDays(toDate(selectedDate), -1)));
-  }
-
-  function navNext() {
-    setSelectedDate(toISO(addDays(toDate(selectedDate), 1)));
-  }
-
   return (
     <DoctorShell
       doctorId={doctorId}
       header={
         <ScreenHeader
-          title={
-            isAll ? he.schedule.combinedSchedule : he.schedule.titleFor(doctor.displayName)
+          compact
+          divider={false}
+          title={isAll ? he.schedule.combinedSchedule : doctor.displayName}
+          media={
+            isAll ? (
+              <AllDoctorsAvatar size="lg" />
+            ) : (
+              <Avatar name={doctor.displayName} src={doctor.avatarUrl} size="lg" />
+            )
+          }
+          titleEnd={
+            <button
+              type="button"
+              onClick={() => toast("info", "שינוי הל\"ז אינו חלק מהפרוטוטייפ")}
+              className="inline-flex h-10 shrink-0 items-center rounded-md border border-line px-3 font-semibold text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
+            >
+              {he.schedule.changeSchedule}
+            </button>
           }
           start={
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pb-2">
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={() => setSelectedDate(MOCK_TODAY)}
-                  disabled={selectedDate === MOCK_TODAY}
-                  className="me-1 inline-flex h-10 items-center rounded-md border border-line px-3 font-semibold text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 disabled:cursor-default disabled:opacity-45 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-body"
-                >
-                  {he.schedule.backToToday}
-                </button>
-                <button
-                  type="button"
-                  aria-label="יום קודם"
-                  onClick={navPrev}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-line text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
-                >
-                  <ChevronRight className="h-5 w-5" aria-hidden />
-                </button>
-                <span dir="ltr" className="min-w-[96px] text-center text-h3 font-semibold text-ink tnum">
-                  {formatShortDate(selectedDate)}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 py-1">
+              <span className="text-h3 font-semibold text-ink">{formatFullDate(selectedDate)}</span>
+              {daySurgeries.length > 0 && (
+                <span className="text-h3 font-semibold text-muted">
+                  {he.schedule.daySummary(daySurgeries.length, formatTotalHours(totalMinutes))}
                 </span>
-                <button
-                  type="button"
-                  aria-label="יום הבא"
-                  onClick={navNext}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-line text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
-                >
-                  <ChevronLeft className="h-5 w-5" aria-hidden />
-                </button>
-              </div>
-              <p className="text-caption text-muted">
-                {formatWeekday(selectedDate)}
-                {daySurgeries.length > 0 && (
-                  <>
-                    {" "}
-                    · {he.schedule.daySummary(daySurgeries.length, formatTotalHours(totalMinutes))}
-                  </>
-                )}
-              </p>
+              )}
+              <button
+                type="button"
+                onClick={() => setSelectedDate(MOCK_TODAY)}
+                disabled={selectedDate === MOCK_TODAY}
+                className="inline-flex h-10 items-center rounded-md border border-line px-3 font-semibold text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 disabled:cursor-default disabled:opacity-45 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-body"
+              >
+                {he.schedule.backToToday}
+              </button>
             </div>
           }
           end={
-            <div className="pb-2">
-              <button
-                type="button"
-                onClick={() => toast("info", "שינוי הל\"ז אינו חלק מהפרוטוטייפ")}
-                className="inline-flex min-h-[40px] items-center rounded-md px-3 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50 hover:text-primary-800"
-              >
-                {he.schedule.changeSchedule}
-              </button>
+            <div className="py-1">
+              <DayStrip doctorId={doctorId} selectedDate={selectedDate} onSelect={setSelectedDate} />
             </div>
           }
         />
@@ -246,11 +216,6 @@ export function DoctorSchedule() {
         <section className="min-w-0 flex-1">
           {/* ===== תצוגה יומית ===== */}
           <>
-              {/* פס ימים - ניווט מהיר כשהלוח החודשי אינו מוצג בצד */}
-              <div className="mb-3 overflow-hidden rounded-lg border border-line bg-surface shadow-sm xl:hidden">
-                <DayStrip doctorId={doctorId} selectedDate={selectedDate} onSelect={setSelectedDate} />
-              </div>
-
               {loading ? (
                 <div className="flex flex-col gap-4 p-4">
                   {[0, 1, 2].map((i) => (
@@ -318,7 +283,10 @@ export function DoctorSchedule() {
                         className="group w-full rounded-lg border border-dashed border-line p-4 text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50"
                       >
                         <span className="flex items-start gap-4">
-                          <span className="flex h-14 w-16 shrink-0 flex-col items-center justify-center rounded-md border border-dashed border-line bg-surface transition-colors duration-fast group-hover:border-primary-200">
+                          {/* פס נייטרלי - אותו מקום שבו יושב פס בית החולים ברשומה תפוסה */}
+                          <span aria-hidden className="w-1 shrink-0 self-stretch rounded-full bg-line" />
+
+                          <span className="flex h-14 w-16 shrink-0 flex-col items-center justify-center">
                             <span dir="ltr" className="text-h3 font-bold leading-none text-body tnum">
                               {item.slot.start}
                             </span>

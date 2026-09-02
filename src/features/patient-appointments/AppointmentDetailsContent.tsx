@@ -127,7 +127,7 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
                     type="button"
                     onClick={() => setMyDocs((list) => list.filter((_, idx) => idx !== i))}
                     aria-label={`${he.patient.removeUpload}: ${file.name}`}
-                    className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-canvas hover:text-danger"
+                    className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-danger"
                   >
                     <X className="h-4 w-4" aria-hidden />
                   </button>

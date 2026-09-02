@@ -13,27 +13,6 @@ export function BlockLegend({ className }: { className?: string }) {
         <span className="flex items-center gap-2">
           <span
             aria-hidden
-            className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-700 text-[11px] font-bold text-white"
-          >
-            5
-          </span>
-          {he.schedule.calendarLegend.selected}
-        </span>
-        <span className="flex items-center gap-2">
-          <span
-            aria-hidden
-            className="flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-bold text-primary-800 ring-2 ring-primary-500"
-          >
-            5
-          </span>
-          {he.schedule.calendarLegend.today}
-        </span>
-      </div>
-
-      <div className="flex items-center gap-4 border-t border-line pt-2">
-        <span className="flex items-center gap-2">
-          <span
-            aria-hidden
             className="tnum rounded-full bg-primary-100 px-1.5 text-[11px] font-semibold text-primary-800"
           >
             {he.schedule.load.badgeHours(4)}

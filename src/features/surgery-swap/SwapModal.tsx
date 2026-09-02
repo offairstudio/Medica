@@ -109,11 +109,11 @@ export function SwapModal({ surgery, onClose }: SwapModalProps) {
         <section>
           <h3 className="mb-2 text-h3 text-ink">{he.swap.pickTime}</h3>
           {!selectedDate ? (
-            <p className="rounded-md bg-canvas px-4 py-6 text-center text-caption text-muted">
+            <p className="rounded-md bg-surface-2 px-4 py-6 text-center text-caption text-muted">
               יש לבחור קודם יום החלפה
             </p>
           ) : timeOptions.length === 0 ? (
-            <p className="rounded-md bg-canvas px-4 py-6 text-center text-caption text-muted">
+            <p className="rounded-md bg-surface-2 px-4 py-6 text-center text-caption text-muted">
               {he.swap.noSlots}
             </p>
           ) : (

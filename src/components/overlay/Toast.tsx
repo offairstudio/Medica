@@ -86,7 +86,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 type="button"
                 onClick={() => dismiss(t.id)}
                 aria-label="סגירת ההודעה"
-                className="shrink-0 rounded p-1 text-muted transition-colors duration-fast hover:bg-canvas hover:text-ink"
+                className="shrink-0 rounded p-1 text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-ink"
               >
                 <X className="h-4 w-4" />
               </button>

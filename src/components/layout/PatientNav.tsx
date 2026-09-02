@@ -77,7 +77,7 @@ function AccountMenu({
           aria-label={`תפריט המשתמש: ${fullName}`}
           title={iconOnly ? fullName : undefined}
           className={cn(
-            "flex min-h-[52px] items-center gap-2.5 border border-line bg-canvas text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50",
+            "flex min-h-[52px] items-center gap-2.5 border border-line bg-surface-2 text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50",
             iconOnly
               ? "justify-center rounded-full p-1.5"
               : variant === "sidebar"
@@ -165,7 +165,7 @@ export function PatientNav() {
             aria-label={collapsed ? "הרחבת סרגל הניווט" : "מזעור סרגל הניווט"}
             aria-expanded={!collapsed}
             title={collapsed ? "הרחבת סרגל הניווט" : "מזעור סרגל הניווט"}
-            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-canvas hover:text-body"
+            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-body"
           >
             <ToggleIcon className="h-5 w-5" aria-hidden />
           </button>
@@ -189,7 +189,7 @@ export function PatientNav() {
                   collapsed ? "justify-center px-0" : "gap-3 px-3",
                   isActive
                     ? "bg-primary-50 text-primary-800"
-                    : "text-muted hover:bg-canvas hover:text-body",
+                    : "text-muted hover:bg-surface-2 hover:text-body",
                 )}
               >
                 <span className="relative inline-flex shrink-0">
@@ -202,7 +202,7 @@ export function PatientNav() {
                       aria-hidden
                       className={cn(
                         "tnum absolute -end-2.5 -top-2 rounded-full px-1 text-[11px] font-bold leading-[15px]",
-                        isActive ? "bg-primary-700 text-white" : "bg-canvas text-body",
+                        isActive ? "bg-primary-700 text-white" : "bg-surface-2 text-body",
                       )}
                     >
                       {tab.count}
@@ -216,7 +216,7 @@ export function PatientNav() {
                       <span
                         className={cn(
                           "tnum shrink-0 rounded-full px-2 py-0.5 text-[12px] font-bold",
-                          isActive ? "bg-primary-700 text-white" : "bg-canvas text-muted",
+                          isActive ? "bg-primary-700 text-white" : "bg-surface-2 text-muted",
                         )}
                       >
                         {tab.count}

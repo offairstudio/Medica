@@ -78,13 +78,13 @@ export function Modal({ open, onClose, title, size = "md", children, footer }: M
           sizes[size],
         )}
       >
-        <div className="flex items-center justify-between border-b border-line bg-canvas/60 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-line bg-surface-2/60 px-6 py-4">
           <h2 className="text-h2 text-ink">{title}</h2>
           <button
             type="button"
             onClick={onClose}
             aria-label="סגירה"
-            className="rounded-md p-2 text-muted transition-colors duration-fast hover:bg-canvas hover:text-ink"
+            className="rounded-md p-2 text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-ink"
           >
             <X className="h-5 w-5" />
           </button>

@@ -469,7 +469,7 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
         <h2 className="mb-2 text-h3 text-ink">{he.surgeryView.procedures}</h2>
         <div className="flex flex-col gap-3">
           {draft.procedures.map((proc, i) => (
-            <div key={i} className="relative rounded-md border border-line bg-canvas/60 p-3">
+            <div key={i} className="relative rounded-md border border-line bg-surface-2/60 p-3">
               {draft.procedures.length > 1 && (
                 <button
                   type="button"
@@ -579,7 +579,7 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
           </ul>
         )}
 
-        <div className="rounded-md border border-line bg-canvas/60 p-3">
+        <div className="rounded-md border border-line bg-surface-2/60 p-3">
           <div className="grid gap-3 sm:grid-cols-[240px,1fr]">
             <Select
               label={he.wizard.step3.docType}

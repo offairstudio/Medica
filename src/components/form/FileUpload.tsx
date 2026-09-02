@@ -43,7 +43,7 @@ export function FileUpload({ value, onChange, error, className }: FileUploadProp
   if (value) {
     const Icon = fileIcon(value.name);
     return (
-      <div className={cn("flex items-center gap-3 rounded-md border border-line bg-canvas p-3", className)}>
+      <div className={cn("flex items-center gap-3 rounded-md border border-line bg-surface-2 p-3", className)}>
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary-100">
           <Icon className="h-5 w-5 text-primary-600" aria-hidden />
         </span>

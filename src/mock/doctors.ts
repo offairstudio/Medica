@@ -143,7 +143,14 @@ const GENERATED_DOCTORS: Doctor[] = EXTRA_NAMES.map(([first, last], i) => {
 const WITHOUT_AVATAR = new Set(["doc-4", "doc-8", "doc-13", "doc-21", "doc-27", "doc-33"]);
 
 export const doctors: Doctor[] = [...BASE_DOCTORS, ...GENERATED_DOCTORS].map((d) =>
-  WITHOUT_AVATAR.has(d.id) ? d : { ...d, avatarUrl: `/avatars/${d.id}.jpg` },
+  WITHOUT_AVATAR.has(d.id)
+    ? d
+    : {
+        ...d,
+        // סדרת פורטרטים אחידה לממשק; תשעת הצילומים חוזרים במחזור כדי
+        // לשמור על גיוון בלי לייצר מאגר תמונות כבד עבור המוקאפ.
+        avatarUrl: `/avatars/generated/doctor-${((Number(d.id.replace("doc-", "")) - 1) % 9) + 1}.png`,
+      },
 );
 
 export function doctorById(id: string): Doctor | undefined {

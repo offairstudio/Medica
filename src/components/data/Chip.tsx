@@ -15,7 +15,7 @@ export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
 
 const chipColors = {
   primary: "bg-primary-100 text-primary-700",
-  neutral: "bg-canvas text-body border border-line",
+  neutral: "bg-surface-2 text-body border border-line",
   success: "bg-success/10 text-success",
   warning: "bg-warning/10 text-warning",
   danger: "bg-danger/10 text-danger",

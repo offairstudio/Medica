@@ -192,7 +192,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
         />
       </div>
 
-      <div className="rounded-md border border-line bg-canvas p-4">
+      <div className="rounded-md border border-line bg-surface-2 p-4">
         <Toggle
           checked={state.feeEnabled}
           onChange={(v) => onChange({ feeEnabled: v })}

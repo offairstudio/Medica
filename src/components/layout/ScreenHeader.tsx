@@ -12,7 +12,7 @@ export function tabClass(isActive: boolean) {
 export function tabCountClass(isActive: boolean) {
   return cn(
     "tnum rounded-full px-1.5 py-0.5 text-[12px] font-bold",
-    isActive ? "bg-primary-100 text-primary-800" : "bg-canvas text-muted",
+    isActive ? "bg-primary-100 text-primary-800" : "bg-surface-2 text-muted",
   );
 }
 
@@ -23,6 +23,14 @@ export interface ScreenHeaderProps {
   start?: ReactNode;
   /** בקרות בקצה השורה - סינון וחיפוש */
   end?: ReactNode;
+  /** תמונה או סימון בתחילת שורת הכותרת */
+  media?: ReactNode;
+  /** פעולה בקצה שורת הכותרת */
+  titleEnd?: ReactNode;
+  /** כותרת מוקטנת - כשהכותרת היא שם ולא שם מסך */
+  compact?: boolean;
+  /** קו הפרדה מתחת לשורת הבקרות */
+  divider?: boolean;
 }
 
 /**
@@ -31,21 +39,41 @@ export interface ScreenHeaderProps {
  * הכותרת מוזרקת ל-shell ולכן נשארת קבועה בראש המסך;
  * הקו התחתון הוא הגבול שבו תוכן הגלילה נחתך.
  */
-export function ScreenHeader({ title, subtitle, start, end }: ScreenHeaderProps) {
+export function ScreenHeader({
+  title,
+  subtitle,
+  start,
+  end,
+  media,
+  titleEnd,
+  compact,
+  divider = true,
+}: ScreenHeaderProps) {
   const hasControls = Boolean(start || end);
 
   return (
     <>
-      <h1 className="text-display text-ink">{title}</h1>
+      <div className="flex items-center gap-3">
+        {media}
+        <h1 className={cn("min-w-0 flex-1 truncate", compact ? "text-h1 text-ink" : "text-display text-ink")}>
+          {title}
+        </h1>
+        {titleEnd}
+      </div>
       {subtitle && <p className="mt-1 text-body text-muted">{subtitle}</p>}
 
       {hasControls ? (
-        <div className="mt-4 flex flex-col gap-1 border-b border-line md:flex-row md:items-end md:justify-between md:gap-6">
+        <div
+          className={cn(
+            "mt-4 flex flex-col gap-1 md:flex-row md:items-end md:justify-between md:gap-6",
+            divider && "border-b border-line",
+          )}
+        >
           <div className="min-w-0">{start}</div>
           <div className="min-w-0">{end}</div>
         </div>
       ) : (
-        <div className="mt-4 border-b border-line" />
+        divider && <div className="mt-4 border-b border-line" />
       )}
     </>
   );

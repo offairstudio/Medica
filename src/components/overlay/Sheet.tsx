@@ -117,7 +117,7 @@ export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, 
           <span className="h-1 w-10 rounded-full bg-line" />
         </div>
 
-        <div className="flex items-start justify-between gap-3 border-b border-line bg-canvas/60 px-5 py-4 md:px-6">
+        <div className="flex items-start justify-between gap-3 border-b border-line bg-surface-2/60 px-5 py-4 md:px-6">
           <div className="min-w-0 flex-1">
             {titleSlot ?? <h2 className="text-h2 text-ink">{title}</h2>}
           </div>
@@ -125,7 +125,7 @@ export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, 
             type="button"
             onClick={requestClose}
             aria-label="סגירה וחזרה לרשימה"
-            className="-me-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-canvas hover:text-ink"
+            className="-me-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-ink"
           >
             <X className="h-5 w-5" />
           </button>

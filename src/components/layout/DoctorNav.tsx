@@ -45,7 +45,7 @@ function AccountMenu({ collapsed }: { collapsed?: boolean }) {
           aria-label={`תפריט המשתמש: ${currentDoctor.displayName}`}
           title={collapsed ? currentDoctor.displayName : undefined}
           className={cn(
-            "flex min-h-[52px] items-center gap-2.5 border border-line bg-canvas text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50",
+            "flex min-h-[52px] items-center gap-2.5 border border-line bg-surface-2 text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50",
             collapsed ? "justify-center rounded-full p-1.5" : "w-full rounded-md p-2 pe-3",
           )}
         >
@@ -173,7 +173,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
             aria-label={collapsed ? "הרחבת סרגל הניווט" : "מזעור סרגל הניווט"}
             aria-expanded={!collapsed}
             title={collapsed ? "הרחבת סרגל הניווט" : "מזעור סרגל הניווט"}
-            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-canvas hover:text-body"
+            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-body"
           >
             <ToggleIcon className="h-5 w-5" aria-hidden />
           </button>
@@ -192,7 +192,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                 title={he.schedule.allDoctors}
                 className={cn(
                   "flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-fast",
-                  doctorId === "all" ? "bg-primary-50 text-primary-700" : "text-muted hover:bg-canvas",
+                  doctorId === "all" ? "bg-primary-50 text-primary-700" : "text-muted hover:bg-surface-2",
                 )}
               >
                 <AllDoctorsAvatar size="sm" className={doctorId === "all" ? undefined : "opacity-80"} />
@@ -206,7 +206,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                   title={d.displayName}
                   className={cn(
                     "flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-fast",
-                    d.id === doctorId ? "bg-primary-50 ring-1 ring-primary-300" : "hover:bg-canvas",
+                    d.id === doctorId ? "bg-primary-50 ring-1 ring-primary-300" : "hover:bg-surface-2",
                   )}
                 >
                   <Avatar name={d.displayName} src={d.avatarUrl} size="sm" />
@@ -245,7 +245,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                   "flex min-h-[44px] items-center gap-2.5 rounded-md px-3 transition-colors duration-fast",
                   doctorId === "all"
                     ? "bg-primary-50 font-semibold text-primary-800"
-                    : "text-body hover:bg-canvas",
+                    : "text-body hover:bg-surface-2",
                 )}
               >
                 <AllDoctorsAvatar size="sm" />
@@ -267,7 +267,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                         "flex min-h-[44px] items-center gap-2.5 rounded-md px-3 transition-colors duration-fast",
                         isActive
                           ? "bg-primary-50 font-semibold text-primary-800"
-                          : "text-body hover:bg-canvas",
+                          : "text-body hover:bg-surface-2",
                       )}
                     >
                       <Avatar name={d.displayName} src={d.avatarUrl} size="sm" />
@@ -322,7 +322,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
           >
             <Link
               to="/doctor/all/schedule"
-              className="flex min-h-[44px] items-center gap-2.5 rounded-md px-3 text-body transition-colors duration-fast hover:bg-canvas"
+              className="flex min-h-[44px] items-center gap-2.5 rounded-md px-3 text-body transition-colors duration-fast hover:bg-surface-2"
             >
               <AllDoctorsAvatar size="sm" />
               {he.schedule.allDoctors}
@@ -333,7 +333,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                 to={`/doctor/${d.id}/schedule`}
                 className={cn(
                   "flex min-h-[44px] items-center gap-2.5 rounded-md px-3 transition-colors duration-fast",
-                  d.id === doctorId ? "bg-primary-50 font-semibold text-primary-800" : "text-body hover:bg-canvas",
+                  d.id === doctorId ? "bg-primary-50 font-semibold text-primary-800" : "text-body hover:bg-surface-2",
                 )}
               >
                 <Avatar name={d.displayName} src={d.avatarUrl} size="sm" />

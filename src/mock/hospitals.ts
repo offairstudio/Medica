@@ -10,6 +10,12 @@ export interface HospitalInfo {
   chipClass: string;
   /** נקודת סימון בלוח ובפס הימים */
   dotClass: string;
+  /** רקע רשומת היומן - גוון בהיר של צבע בית החולים */
+  softClass: string;
+  /** פס הצד של הרשומה */
+  accentClass: string;
+  /** שעות הרשומה, בצבע בית החולים */
+  textClass: string;
 }
 
 /**
@@ -24,6 +30,9 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
     fullName: "medica רפאל, תל אביב",
     chipClass: "bg-hospital-refael",
     dotClass: "bg-hospital-refael",
+    softClass: "bg-hospital-refael-soft",
+    accentClass: "bg-hospital-refael",
+    textClass: "text-hospital-refael",
   },
   elisha: {
     key: "elisha",
@@ -31,6 +40,9 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
     fullName: "medica - בית חולים אלישע, חיפה",
     chipClass: "bg-hospital-elisha",
     dotClass: "bg-hospital-elisha",
+    softClass: "bg-hospital-elisha-soft",
+    accentClass: "bg-hospital-elisha",
+    textClass: "text-hospital-elisha",
   },
   telAviv: {
     key: "telAviv",
@@ -38,6 +50,9 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
     fullName: "medica תל אביב, הברזל 28",
     chipClass: "bg-hospital-telaviv",
     dotClass: "bg-hospital-telaviv",
+    softClass: "bg-hospital-telaviv-soft",
+    accentClass: "bg-hospital-telaviv",
+    textClass: "text-hospital-telaviv",
   },
   rmc: {
     key: "rmc",
@@ -45,6 +60,9 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
     fullName: "medica RMC, עפולה",
     chipClass: "bg-hospital-rmc",
     dotClass: "bg-hospital-rmc",
+    softClass: "bg-hospital-rmc-soft",
+    accentClass: "bg-hospital-rmc",
+    textClass: "text-hospital-rmc",
   },
 };
 

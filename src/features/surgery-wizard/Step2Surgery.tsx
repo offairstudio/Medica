@@ -56,7 +56,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
       <SectionTitle>{t.sectionSurgery}</SectionTitle>
 
       {state.procedures.map((proc, i) => (
-        <div key={i} className="relative rounded-md border border-line bg-canvas/60 p-4">
+        <div key={i} className="relative rounded-md border border-line bg-surface-2/60 p-4">
           {i > 0 && (
             <button
               type="button"

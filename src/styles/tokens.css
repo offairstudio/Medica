@@ -17,6 +17,11 @@
   --hospital-elisha: #46348a;
   --hospital-telaviv: #0b6e6d;
   --hospital-rmc: #8e3b62;
+  /* גווני רקע לרשומות היומן - תמיד גוון בהיר של צבע בית החולים עצמו */
+  --hospital-refael-soft: #e3ebf5;
+  --hospital-elisha-soft: #eae5f7;
+  --hospital-telaviv-soft: #e0f4f3;
+  --hospital-rmc-soft: #f4cfe0;
 
   /* Semantic */
   --success: #187b5b;
@@ -30,7 +35,9 @@
   --muted: #545c66;
   --line: #dde5e6;
   --surface: #ffffff;
-  --canvas: #f0f4f3;
+  /* רקע המסך לבן; surface-2 הוא המשטח העדין להדגשות פנימיות ולריחוף */
+  --canvas: #ffffff;
+  --surface-2: #f2f6f6;
 
   /* Motion */
   --motion-fast: 120ms ease-out;

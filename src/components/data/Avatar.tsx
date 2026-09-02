@@ -14,38 +14,42 @@ const sizes = {
   lg: "h-12 w-12 text-[15px]",
 };
 
-/**
- * צללית רופא/ה - ראש וחלוק עם מפתח V, באותה גיאומטריה של האווטרים
- * המאוירים, כדי שמנתח ללא תמונה ייראה חלק מאותה משפחה ולא כחריג.
- */
+/** צללית רופא/ה עם תג זיהוי וחלוק, עבור פרופיל שלא הועלתה לו תמונה. */
 function DoctorGlyph({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 96 96" className={className} fill="currentColor" aria-hidden focusable="false">
-      <circle cx="48" cy="37" r="17.5" />
+    <svg viewBox="0 0 96 96" className={className} aria-hidden focusable="false">
+      <circle cx="48" cy="48" r="48" fill="currentColor" opacity=".12" />
+      <circle cx="48" cy="34" r="15" fill="currentColor" />
       <path
+        fill="currentColor"
         fillRule="evenodd"
-        d="M12,96 C12,77 27.5,66.5 48,66.5 C68.5,66.5 84,77 84,96 Z M41,67.6 L48,84 L55,67.6 L48,66.9 Z"
+        d="M14 92c1.4-15.5 15.4-26.5 34-26.5S80.6 76.5 82 92H14Zm26.5-25.8L48 80l7.5-13.8-7.5-1.3-7.5 1.3Z"
       />
+      <path d="M39 67.2 48 80l9-12.8-4.8-2.3h-8.4L39 67.2Z" fill="white" opacity=".92" />
+      <rect x="55" y="73" width="16" height="12" rx="3" fill="white" />
+      <path d="M63 76v6m-3-3h6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
     </svg>
   );
 }
 
-/**
- * שתי צלליות - הסימון של "כל המנתחים", באותה שפה של אווטר יחיד
- * כדי שהשורה תיקרא כמו שורת מנתח ולא כפריט תפריט זר.
- */
+/** קבוצת רופאים עם תג קטן - מצב "כל המנתחים". */
 function DoctorsGlyph({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 96 96" className={className} fill="currentColor" aria-hidden focusable="false">
-      <g opacity=".45">
-        <circle cx="64" cy="33" r="12" />
-        <path d="M42,96 C42,79.5 51.5,70.5 64,70.5 C76.5,70.5 86,79.5 86,96 Z" />
+    <svg viewBox="0 0 96 96" className={className} aria-hidden focusable="false">
+      <circle cx="48" cy="48" r="48" fill="currentColor" opacity=".12" />
+      <g fill="currentColor" opacity=".58">
+        <circle cx="66" cy="33" r="11" />
+        <path d="M48 75c1.2-12.7 8.5-20.7 18-20.7S82.8 62.3 84 75H48Z" />
       </g>
-      <circle cx="39" cy="38" r="15" />
+      <circle cx="38" cy="38" r="14" fill="currentColor" />
       <path
+        fill="currentColor"
         fillRule="evenodd"
-        d="M9,96 C9,80 21.5,71.5 39,71.5 C56.5,71.5 69,80 69,96 Z M33.5,72.2 L39,85 L44.5,72.2 L39,71.8 Z"
+        d="M12 85c1.2-14.5 11.9-24.4 26-24.4S62.8 70.5 64 85H12Zm20.2-23.6L38 73l5.8-11.6L38 60.5l-5.8.9Z"
       />
+      <path d="m30.8 61.8 7.2 11.5 7.2-11.5-3.8-1.7h-6.8l-3.8 1.7Z" fill="white" opacity=".92" />
+      <circle cx="69" cy="70" r="11" fill="white" />
+      <path d="M69 64.8v10.4m-5.2-5.2h10.4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }

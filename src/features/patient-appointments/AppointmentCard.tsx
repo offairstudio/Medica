@@ -49,7 +49,7 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel, f
         <span
           className={cn(
             "flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-md",
-            muted ? "bg-canvas" : "bg-primary-100",
+            muted ? "bg-surface-2" : "bg-primary-100",
           )}
         >
           <span

@@ -42,7 +42,7 @@ export function Step3Documents({ state, errors, onChange }: Step3Props) {
         {state.extraDocs.map((docRow) => (
           <div
             key={docRow.id}
-            className="relative grid gap-3 rounded-md border border-line bg-canvas/60 p-4 sm:grid-cols-[240px,1fr]"
+            className="relative grid gap-3 rounded-md border border-line bg-surface-2/60 p-4 sm:grid-cols-[240px,1fr]"
           >
             <button
               type="button"

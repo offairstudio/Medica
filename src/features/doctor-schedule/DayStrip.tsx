@@ -1,17 +1,17 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { addDays } from "date-fns";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { toDate, toISO } from "../../lib/date";
 import { MOCK_TODAY } from "../../mock/doctors";
 import { blocks } from "../../mock/blocks";
 import { useData } from "../../state/data";
 import { he } from "../../i18n/he";
-import { HOSPITALS, HOSPITAL_LIST } from "../../mock/hospitals";
 import type { Hospital, ISODate } from "../../types";
 
-const WEEKDAY_LETTERS = ["א", "ב", "ג", "ד", "ה", "ו", "ש"];
-/** שישה שבועות קדימה - גלילה על פני כל החודש הקרוב */
-const DAYS_AHEAD = 42;
+const WEEKDAY_LABELS = ["א׳", "ב׳", "ג׳", "ד׳", "ה׳", "ו׳", "ש׳"];
+/** חלון של שבוע סביב היום הנבחר, בדומה לפס הימים ביומן */
+const WINDOW = 7;
 
 export interface DayStripProps {
   doctorId: string;
@@ -20,28 +20,22 @@ export interface DayStripProps {
 }
 
 /**
- * פס ימים אופקי - ניווט מהיר בין ימים כשהלוח החודשי אינו לצד הרשימה.
- * לכל יום: מספר הניתוחים, ונקודות זמינות בצבע בית החולים
- * (מוצגות רק כשקיים בלוק עם שעות פנויות - לא בלוק מלא).
+ * פס ימים אופקי לניווט מהיר: שבעה ימים סביב היום הנבחר, כשהיום
+ * הנבחר מסומן בעיגול מלא. החצים מזיזים שבוע. הסדר הוא RTL -
+ * היום המוקדם ביותר בימין, כמו בכל שאר הממשק.
  */
 export function DayStrip({ doctorId, selectedDate, onSelect }: DayStripProps) {
   const { surgeries } = useData();
-  const selectedRef = useRef<HTMLButtonElement | null>(null);
   const isAll = doctorId === "all";
 
-  const days = useMemo(
-    () =>
-      Array.from({ length: DAYS_AHEAD }, (_, i) => {
-        const date = toDate(MOCK_TODAY);
-        const iso = toISO(addDays(date, i));
-        return {
-          iso,
-          weekday: WEEKDAY_LETTERS[addDays(date, i).getDay()],
-          dayNum: addDays(date, i).getDate(),
-        };
-      }),
-    [],
-  );
+  const days = useMemo(() => {
+    // היום הנבחר יושב במרכז החלון
+    const first = addDays(toDate(selectedDate), -Math.floor(WINDOW / 2));
+    return Array.from({ length: WINDOW }, (_, i) => {
+      const date = addDays(first, i);
+      return { iso: toISO(date), weekday: WEEKDAY_LABELS[date.getDay()], dayNum: date.getDate() };
+    });
+  }, [selectedDate]);
 
   const countByDay = useMemo(() => {
     const map: Record<ISODate, number> = {};
@@ -66,93 +60,71 @@ export function DayStrip({ doctorId, selectedDate, onSelect }: DayStripProps) {
     return map;
   }, [doctorId, isAll]);
 
-  useEffect(() => {
-    selectedRef.current?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-  }, [selectedDate]);
-
   function dayAriaLabel(iso: ISODate): string {
     const parts = [iso];
     const count = countByDay[iso] ?? 0;
-    if (count > 0) parts.push(`${count} ניתוחים`);
-    for (const h of freeHospitalsByDay[iso] ?? []) {
-      parts.push(`שעות פנויות ב${he.hospitals[h]}`);
-    }
+    parts.push(count > 0 ? `${count} ניתוחים` : "אין ניתוחים");
+    for (const h of freeHospitalsByDay[iso] ?? []) parts.push(`שעות פנויות ב${he.hospitals[h]}`);
     return parts.join(", ");
   }
 
-  return (
-    <div>
-      <div
-        role="group"
-        aria-label="ניווט מהיר בין ימים"
-        className="flex gap-1.5 overflow-x-auto px-3 pt-2.5 pb-1.5 scrollbar-thin"
-      >
-        {days.map((d) => {
-          const selected = d.iso === selectedDate;
-          const isToday = d.iso === MOCK_TODAY;
-          const count = countByDay[d.iso] ?? 0;
-          const freeHospitals = freeHospitalsByDay[d.iso] ?? [];
+  function shift(weeks: number) {
+    onSelect(toISO(addDays(toDate(selectedDate), weeks * WINDOW)));
+  }
 
-          return (
-            <button
-              key={d.iso}
-              ref={selected ? selectedRef : undefined}
-              type="button"
-              onClick={() => onSelect(d.iso)}
-              aria-pressed={selected}
-              aria-label={dayAriaLabel(d.iso)}
-              title={dayAriaLabel(d.iso)}
+  const arrowClass =
+    "inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-ink";
+
+  return (
+    <div role="group" aria-label="ניווט מהיר בין ימים" className="flex items-center gap-1">
+      <button type="button" aria-label="שבוע קודם" onClick={() => shift(-1)} className={arrowClass}>
+        <ChevronRight className="h-5 w-5" aria-hidden />
+      </button>
+
+      {days.map((d, i) => {
+        const selected = d.iso === selectedDate;
+        const isToday = d.iso === MOCK_TODAY;
+        return (
+          <button
+            key={d.iso}
+            type="button"
+            onClick={() => onSelect(d.iso)}
+            aria-pressed={selected}
+            aria-label={dayAriaLabel(d.iso)}
+            title={dayAriaLabel(d.iso)}
+            className={cn(
+              "group flex w-11 shrink-0 flex-col items-center gap-0.5 rounded-md py-1",
+              // במסך צר מציגים חמישה ימים סביב הנבחר, כדי לשמור על מטרות מגע רחבות
+              (i === 0 || i === days.length - 1) && "hidden sm:flex",
+            )}
+          >
+            <span
               className={cn(
-                "flex min-h-[64px] w-12 shrink-0 flex-col items-center justify-start gap-0.5 rounded-md border pt-1.5 transition-colors duration-fast",
-                selected
-                  ? "border-primary-700 bg-primary-700 text-white"
-                  : isToday
-                    ? "border-primary-400 bg-primary-50 text-primary-800 hover:bg-primary-100"
-                    : "border-line bg-surface text-body hover:border-primary-300 hover:bg-primary-50",
+                "text-[11px] font-semibold uppercase leading-none transition-colors duration-fast",
+                selected ? "text-primary-700" : "text-muted",
               )}
             >
-              <span className={cn("text-[11px] leading-none", selected ? "text-white/90" : "text-muted")}>
-                {d.weekday}
-              </span>
-              <span className="text-[15px] font-semibold leading-tight tnum">{d.dayNum}</span>
-              <span className="flex min-h-[14px] items-center gap-1">
-                {count > 0 && (
-                  <span
-                    className={cn(
-                      "rounded-full px-1.5 text-[11px] font-bold leading-[15px] tnum",
-                      selected ? "bg-white/25 text-white" : "bg-primary-200 text-primary-800",
-                    )}
-                  >
-                    {count}
-                  </span>
-                )}
-                {freeHospitals.map((h) => (
-                  <span
-                    key={h}
-                    aria-hidden
-                    className={cn(
-                      "h-1.5 w-1.5 rounded-full",
-                      selected
-                        ? "bg-white/80"
-                        : HOSPITALS[h].dotClass,
-                    )}
-                  />
-                ))}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+              {d.weekday}
+            </span>
+            <span
+              className={cn(
+                "flex h-9 w-9 items-center justify-center rounded-full text-[17px] leading-none tnum transition-colors duration-fast",
+                selected
+                  ? "bg-primary-700 font-bold text-white"
+                  : isToday
+                    ? "font-bold text-primary-800 ring-1 ring-primary-400 group-hover:bg-primary-50"
+                    : "font-semibold text-body group-hover:bg-surface-2",
+              )}
+            >
+              {d.dayNum}
+            </span>
+          </button>
+        );
+      })}
 
-      {/* מקרא קצר - מה אומרים הסימנים */}
-      <p className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 pb-2 text-[11px] text-muted">
-        {HOSPITAL_LIST.map((h) => (
-          <span key={h.key} className="flex items-center gap-1" title={h.fullName}>
-            <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${h.dotClass}`} />
-            {h.name}
-          </span>
-        ))}
-      </p>
+      <button type="button" aria-label="שבוע הבא" onClick={() => shift(1)} className={arrowClass}>
+        <ChevronLeft className="h-5 w-5" aria-hidden />
+      </button>
     </div>
   );
 }
