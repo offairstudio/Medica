@@ -10,7 +10,6 @@ import {
   ClipboardList,
   Phone,
   Mail,
-  Table as TableIcon,
 } from "lucide-react";
 import { DoctorShell } from "../components/layout/AppShell";
 import { ScreenHeader } from "../components/layout/ScreenHeader";
@@ -70,8 +69,6 @@ export function DoctorSchedule() {
   const [selectedDate, setSelectedDate] = useState<ISODate>(MOCK_TODAY);
   /** לוח החודש נפתח ונסגר מהכפתור שבשורת הבקרות */
   const [calendarOpen, setCalendarOpen] = useState(true);
-  /** יומן = היום עצמו; טבלה = כל המאפיינים על פני טווח תאריכים */
-  const [view, setView] = useState<"day" | "table">("day");
   const [swapTarget, setSwapTarget] = useState<Surgery | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Surgery | null>(null);
   const [wizardPrefill, setWizardPrefill] = useState<WizardPrefill | null>(null);
@@ -236,7 +233,7 @@ export function DoctorSchedule() {
             </button>
           }
           start={
-            view === "table" ? null : (
+            isAll ? null : (
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 py-1">
               <span className="text-h3 font-semibold text-ink">{formatFullDate(selectedDate)}</span>
               {daySurgeries.length > 0 && (
@@ -248,27 +245,8 @@ export function DoctorSchedule() {
             )
           }
           end={
+            isAll ? null : (
             <div className="flex items-center gap-2 py-1">
-              {/* מתג תצוגה: יומן היום מול טבלת כל הניתוחים */}
-              <div role="group" aria-label="תצוגה" className="flex items-center gap-1 rounded-md border border-line p-0.5">
-                {(["day", "table"] as const).map((v) => (
-                  <button
-                    key={v}
-                    type="button"
-                    onClick={() => setView(v)}
-                    aria-pressed={view === v}
-                    className={cn(
-                      "inline-flex h-9 items-center gap-1.5 rounded-[10px] px-2.5 font-semibold transition-colors duration-fast",
-                      view === v ? "bg-primary-100 text-primary-800" : "text-muted hover:bg-surface-2 hover:text-body",
-                    )}
-                  >
-                    {v === "day" ? <CalendarDays className="h-4 w-4" aria-hidden /> : <TableIcon className="h-4 w-4" aria-hidden />}
-                    {v === "day" ? he.schedule.viewDay : "טבלה"}
-                  </button>
-                ))}
-              </div>
-
-              {view === "day" && (
               <div className="flex items-center gap-1">
                 <button
                   type="button"
@@ -295,10 +273,8 @@ export function DoctorSchedule() {
                   <ChevronLeft className="h-5 w-5" aria-hidden />
                 </button>
               </div>
-              )}
 
               {/* הצגה והסתרה של לוח החודש שלצד הרשימה */}
-              {view === "day" && (
               <button
                 type="button"
                 onClick={() => setCalendarOpen((open) => !open)}
@@ -315,13 +291,13 @@ export function DoctorSchedule() {
               >
                 <CalendarDays className="h-5 w-5" aria-hidden />
               </button>
-              )}
             </div>
+            )
           }
         />
       }
     >
-      {view === "table" ? (
+      {isAll ? (
         <SurgeryTableView
           surgeries={surgeries.filter((s) => (isAll || s.doctorId === doctorId) && s.status !== "cancelled")}
           isAll={isAll}
