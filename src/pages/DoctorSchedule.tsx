@@ -10,6 +10,7 @@ import {
   ClipboardList,
   Phone,
   Mail,
+  Table as TableIcon,
 } from "lucide-react";
 import { DoctorShell } from "../components/layout/AppShell";
 import { ScreenHeader } from "../components/layout/ScreenHeader";
@@ -21,6 +22,7 @@ import { useToast } from "../components/overlay/Toast";
 import { MonthCalendar } from "../components/calendar/MonthCalendar";
 import { BlockLegend } from "../components/calendar/BlockLegend";
 import { SurgeryRow } from "../features/doctor-schedule/SurgeryRow";
+import { SurgeryTableView } from "../features/doctor-schedule/SurgeryTableView";
 import { SwapModal } from "../features/surgery-swap/SwapModal";
 import { SurgeryDetailsModal } from "../features/surgery-details/SurgeryDetailsModal";
 import {
@@ -68,6 +70,8 @@ export function DoctorSchedule() {
   const [selectedDate, setSelectedDate] = useState<ISODate>(MOCK_TODAY);
   /** לוח החודש נפתח ונסגר מהכפתור שבשורת הבקרות */
   const [calendarOpen, setCalendarOpen] = useState(true);
+  /** יומן = היום עצמו; טבלה = כל המאפיינים על פני טווח תאריכים */
+  const [view, setView] = useState<"day" | "table">("day");
   const [swapTarget, setSwapTarget] = useState<Surgery | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Surgery | null>(null);
   const [wizardPrefill, setWizardPrefill] = useState<WizardPrefill | null>(null);
@@ -232,6 +236,7 @@ export function DoctorSchedule() {
             </button>
           }
           start={
+            view === "table" ? null : (
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 py-1">
               <span className="text-h3 font-semibold text-ink">{formatFullDate(selectedDate)}</span>
               {daySurgeries.length > 0 && (
@@ -240,9 +245,30 @@ export function DoctorSchedule() {
                 </span>
               )}
             </div>
+            )
           }
           end={
             <div className="flex items-center gap-2 py-1">
+              {/* מתג תצוגה: יומן היום מול טבלת כל הניתוחים */}
+              <div role="group" aria-label="תצוגה" className="flex items-center gap-1 rounded-md border border-line p-0.5">
+                {(["day", "table"] as const).map((v) => (
+                  <button
+                    key={v}
+                    type="button"
+                    onClick={() => setView(v)}
+                    aria-pressed={view === v}
+                    className={cn(
+                      "inline-flex h-9 items-center gap-1.5 rounded-[10px] px-2.5 font-semibold transition-colors duration-fast",
+                      view === v ? "bg-primary-100 text-primary-800" : "text-muted hover:bg-surface-2 hover:text-body",
+                    )}
+                  >
+                    {v === "day" ? <CalendarDays className="h-4 w-4" aria-hidden /> : <TableIcon className="h-4 w-4" aria-hidden />}
+                    {v === "day" ? he.schedule.viewDay : "טבלה"}
+                  </button>
+                ))}
+              </div>
+
+              {view === "day" && (
               <div className="flex items-center gap-1">
                 <button
                   type="button"
@@ -269,8 +295,10 @@ export function DoctorSchedule() {
                   <ChevronLeft className="h-5 w-5" aria-hidden />
                 </button>
               </div>
+              )}
 
               {/* הצגה והסתרה של לוח החודש שלצד הרשימה */}
+              {view === "day" && (
               <button
                 type="button"
                 onClick={() => setCalendarOpen((open) => !open)}
@@ -287,162 +315,174 @@ export function DoctorSchedule() {
               >
                 <CalendarDays className="h-5 w-5" aria-hidden />
               </button>
+              )}
             </div>
           }
         />
       }
     >
-      <div className="flex items-start gap-4">
-        <section className="min-w-0 flex-1">
-          {/* ===== תצוגה יומית ===== */}
-          <>
-              {loading ? (
-                <div className="flex flex-col gap-4 p-4">
-                  {[0, 1, 2].map((i) => (
-                    <div key={i} className="flex items-center gap-4">
-                      <Skeleton variant="circle" className="h-9 w-9" />
-                      <div className="flex flex-1 flex-col gap-2">
-                        <Skeleton className="w-2/3" />
-                        <Skeleton className="w-1/3" />
+      {view === "table" ? (
+        <SurgeryTableView
+          surgeries={surgeries.filter((s) => (isAll || s.doctorId === doctorId) && s.status !== "cancelled")}
+          isAll={isAll}
+          onView={(s) => setDetailsTarget({ id: s.id, edit: false })}
+          onEdit={(s) => setDetailsTarget({ id: s.id, edit: true })}
+          onSwap={setSwapTarget}
+          onDelete={setDeleteTarget}
+        />
+      ) : (
+        <div className="flex items-start gap-4">
+          <section className="min-w-0 flex-1">
+            {/* ===== תצוגה יומית ===== */}
+            <>
+                {loading ? (
+                  <div className="flex flex-col gap-4 p-4">
+                    {[0, 1, 2].map((i) => (
+                      <div key={i} className="flex items-center gap-4">
+                        <Skeleton variant="circle" className="h-9 w-9" />
+                        <div className="flex flex-1 flex-col gap-2">
+                          <Skeleton className="w-2/3" />
+                          <Skeleton className="w-1/3" />
+                        </div>
+                        <Skeleton className="w-24" />
                       </div>
-                      <Skeleton className="w-24" />
-                    </div>
-                  ))}
-                </div>
-              ) : daySurgeries.length === 0 && freeSlots.length === 0 ? (
-                <EmptyState
-                  illustration="calendar"
-                  title={he.schedule.emptyDay}
-                  action={
-                    <Button
-                      variant="secondary"
-                      icon={<Plus className="h-4 w-4" />}
-                      onClick={() => setWizardPrefill({ date: selectedDate })}
-                    >
-                      {he.schedule.createSurgery}
-                    </Button>
-                  }
-                />
-              ) : (
-                <div className="flex flex-col gap-3">
-                  {/* ציר זמן ממוזג: ניתוחים וחלונות פנויים לפי סדר השעות ביום */}
-                  {dayItems.map((item) =>
-                    item.type === "surgery" ? (
-                      <SurgeryRow
-                        key={item.surgery.id}
-                        surgery={item.surgery}
-                        doctorName={
-                          isAll ? doctorById(item.surgery.doctorId)?.displayName : undefined
-                        }
-                        highlighted={highlightId === item.surgery.id}
-                        onView={(s) => setDetailsTarget({ id: s.id, edit: false })}
-                        onEdit={(s) => setDetailsTarget({ id: s.id, edit: true })}
-                        onSwap={setSwapTarget}
-                        onDelete={setDeleteTarget}
-                      />
-                    ) : (
-                      // חלון פנוי - אותה פריסת עמודות כמו שורת ניתוח, לסריקה אחידה
-                      <button
-                        key={`free-${item.slot.hospital}-${item.slot.start}`}
-                        type="button"
-                        onClick={() =>
-                          setWizardPrefill({
-                            date: selectedDate,
-                            time: item.slot.start,
-                            doctorId: item.slot.doctorIds[0],
-                          })
-                        }
-                        title={
-                          isAll && item.slot.doctorIds.length > 0
-                            ? item.slot.doctorIds
-                                .map((id) => doctorById(id)?.displayName)
-                                .filter(Boolean)
-                                .join(", ")
-                            : undefined
-                        }
-                        className="group w-full rounded-lg border border-dashed border-line p-4 text-start transition-colors duration-fast hover:border-muted/40 hover:bg-surface-2"
+                    ))}
+                  </div>
+                ) : daySurgeries.length === 0 && freeSlots.length === 0 ? (
+                  <EmptyState
+                    illustration="calendar"
+                    title={he.schedule.emptyDay}
+                    action={
+                      <Button
+                        variant="secondary"
+                        icon={<Plus className="h-4 w-4" />}
+                        onClick={() => setWizardPrefill({ date: selectedDate })}
                       >
-                        <span className="flex items-start gap-4">
-                          {/* פס נייטרלי - אותו מקום שבו יושב פס בית החולים ברשומה תפוסה */}
-                          <span aria-hidden className="w-1 shrink-0 self-stretch rounded-full bg-line" />
+                        {he.schedule.createSurgery}
+                      </Button>
+                    }
+                  />
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {/* ציר זמן ממוזג: ניתוחים וחלונות פנויים לפי סדר השעות ביום */}
+                    {dayItems.map((item) =>
+                      item.type === "surgery" ? (
+                        <SurgeryRow
+                          key={item.surgery.id}
+                          surgery={item.surgery}
+                          doctorName={
+                            isAll ? doctorById(item.surgery.doctorId)?.displayName : undefined
+                          }
+                          highlighted={highlightId === item.surgery.id}
+                          onView={(s) => setDetailsTarget({ id: s.id, edit: false })}
+                          onEdit={(s) => setDetailsTarget({ id: s.id, edit: true })}
+                          onSwap={setSwapTarget}
+                          onDelete={setDeleteTarget}
+                        />
+                      ) : (
+                        // חלון פנוי - אותה פריסת עמודות כמו שורת ניתוח, לסריקה אחידה
+                        <button
+                          key={`free-${item.slot.hospital}-${item.slot.start}`}
+                          type="button"
+                          onClick={() =>
+                            setWizardPrefill({
+                              date: selectedDate,
+                              time: item.slot.start,
+                              doctorId: item.slot.doctorIds[0],
+                            })
+                          }
+                          title={
+                            isAll && item.slot.doctorIds.length > 0
+                              ? item.slot.doctorIds
+                                  .map((id) => doctorById(id)?.displayName)
+                                  .filter(Boolean)
+                                  .join(", ")
+                              : undefined
+                          }
+                          className="group w-full rounded-lg border border-dashed border-line p-4 text-start transition-colors duration-fast hover:border-muted/40 hover:bg-surface-2"
+                        >
+                          <span className="flex items-start gap-4">
+                            {/* פס נייטרלי - אותו מקום שבו יושב פס בית החולים ברשומה תפוסה */}
+                            <span aria-hidden className="w-1 shrink-0 self-stretch rounded-full bg-line" />
 
-                          <span className="flex h-14 w-16 shrink-0 flex-col items-center justify-center">
-                            <span dir="ltr" className="text-h3 font-bold leading-none text-body tnum">
-                              {item.slot.start}
+                            <span className="flex h-14 w-16 shrink-0 flex-col items-center justify-center">
+                              <span dir="ltr" className="text-h3 font-bold leading-none text-body tnum">
+                                {item.slot.start}
+                              </span>
+                              <span dir="ltr" className="mt-0.5 text-[12px] font-semibold text-muted tnum">
+                                {item.slot.end}
+                              </span>
                             </span>
-                            <span dir="ltr" className="mt-0.5 text-[12px] font-semibold text-muted tnum">
-                              {item.slot.end}
-                            </span>
-                          </span>
 
-                          <span className="min-w-0 flex-1">
-                            <span className="block text-h3 text-muted">{he.schedule.free}</span>
-                            <span className="mt-0.5 block truncate text-muted">
-                              {freeDurationLabel(item.slot)}
-                              {isAll && item.slot.doctorIds.length > 0 && (
-                                <>
-                                  {" · "}
-                                  {item.slot.doctorIds.length === 1
-                                    ? doctorById(item.slot.doctorIds[0])?.displayName
-                                    : he.schedule.freeDoctorsCount(item.slot.doctorIds.length)}
-                                </>
-                              )}
-                            </span>
-                            <span className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
-                              <HospitalChip hospital={item.slot.hospital} compact />
-                              <span className="ms-auto flex shrink-0 items-center gap-1 font-semibold text-primary-600 transition-colors duration-fast group-hover:text-primary-800">
-                                <Plus className="h-4 w-4" aria-hidden />
-                                {he.schedule.createSurgery}
+                            <span className="min-w-0 flex-1">
+                              <span className="block text-h3 text-muted">{he.schedule.free}</span>
+                              <span className="mt-0.5 block truncate text-muted">
+                                {freeDurationLabel(item.slot)}
+                                {isAll && item.slot.doctorIds.length > 0 && (
+                                  <>
+                                    {" · "}
+                                    {item.slot.doctorIds.length === 1
+                                      ? doctorById(item.slot.doctorIds[0])?.displayName
+                                      : he.schedule.freeDoctorsCount(item.slot.doctorIds.length)}
+                                  </>
+                                )}
+                              </span>
+                              <span className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
+                                <HospitalChip hospital={item.slot.hospital} compact />
+                                <span className="ms-auto flex shrink-0 items-center gap-1 font-semibold text-primary-600 transition-colors duration-fast group-hover:text-primary-800">
+                                  <Plus className="h-4 w-4" aria-hidden />
+                                  {he.schedule.createSurgery}
+                                </span>
                               </span>
                             </span>
                           </span>
-                        </span>
+                        </button>
+                      ),
+                    )}
+                  </div>
+                )}
+
+                {/* באנר ניתוח משולב - רלוונטי ליומן האישי בלבד */}
+                {!isAll && (
+                  <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-primary-200 bg-primary-50 px-4 py-3">
+                    <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary-500" aria-hidden />
+                    <p className="text-caption text-primary-800">
+                      {he.schedule.combinedBanner('ד"ר בורג אלון')}{" "}
+                      <button
+                        type="button"
+                        onClick={() => setWizardPrefill({ date: selectedDate })}
+                        className="font-semibold text-primary-600 underline underline-offset-2 transition-colors duration-fast hover:text-primary-800"
+                      >
+                        {he.schedule.clickHere}
                       </button>
-                    ),
-                  )}
-                </div>
-              )}
+                    </p>
+                  </div>
+                )}
+            </>
+          </section>
 
-              {/* באנר ניתוח משולב - רלוונטי ליומן האישי בלבד */}
-              {!isAll && (
-                <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-primary-200 bg-primary-50 px-4 py-3">
-                  <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary-500" aria-hidden />
-                  <p className="text-caption text-primary-800">
-                    {he.schedule.combinedBanner('ד"ר בורג אלון')}{" "}
-                    <button
-                      type="button"
-                      onClick={() => setWizardPrefill({ date: selectedDate })}
-                      className="font-semibold text-primary-600 underline underline-offset-2 transition-colors duration-fast hover:text-primary-800"
-                    >
-                      {he.schedule.clickHere}
-                    </button>
-                  </p>
-                </div>
-              )}
-          </>
-        </section>
-
-        {/* לוח שנה צדדי - בורר תאריך במסכים רחבים */}
-        <aside
-          hidden={!calendarOpen}
-          className={cn(
-            "sticky top-0 max-h-[calc(100dvh-7rem)] w-[320px] shrink-0 self-start overflow-y-auto rounded-lg bg-surface p-4",
-            calendarOpen ? "hidden xl:block" : "hidden",
-          )}
-        >
-          {/* הלוח אינו נטען מחדש במעבר יום - רק הבחירה בתוכו מתעדכנת */}
-          <MonthCalendar
-            today={MOCK_TODAY}
-            selectedDate={selectedDate}
-            markedDates={markedDates}
-            loadMinutes={dayLoadMinutes}
-            onSelect={setSelectedDate}
-          />
-          <div className="mt-5">
-            <BlockLegend />
-          </div>
-        </aside>
-      </div>
+          {/* לוח שנה צדדי - בורר תאריך במסכים רחבים */}
+          <aside
+            hidden={!calendarOpen}
+            className={cn(
+              "sticky top-0 max-h-[calc(100dvh-7rem)] w-[320px] shrink-0 self-start overflow-y-auto rounded-lg bg-surface p-4",
+              calendarOpen ? "hidden xl:block" : "hidden",
+            )}
+          >
+            {/* הלוח אינו נטען מחדש במעבר יום - רק הבחירה בתוכו מתעדכנת */}
+            <MonthCalendar
+              today={MOCK_TODAY}
+              selectedDate={selectedDate}
+              markedDates={markedDates}
+              loadMinutes={dayLoadMinutes}
+              onSelect={setSelectedDate}
+            />
+            <div className="mt-5">
+              <BlockLegend />
+            </div>
+          </aside>
+        </div>
+      )}
 
       {/* אשף יצירת ניתוח - פופאפ מעל היומן */}
       <SurgeryWizardModal
