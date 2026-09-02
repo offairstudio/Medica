@@ -20,7 +20,7 @@ export function DoctorShell({
   children: ReactNode;
 }) {
   return (
-    <div className="clinical-surface flex h-dvh flex-col overflow-hidden md:flex-row">
+    <div className="flex h-dvh flex-col overflow-hidden bg-canvas md:flex-row">
       <DoctorNav doctorId={doctorId} />
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
@@ -56,7 +56,7 @@ export function PatientShell({
   children: ReactNode;
 }) {
   return (
-    <div className="clinical-surface flex h-dvh flex-col overflow-hidden md:flex-row">
+    <div className="flex h-dvh flex-col overflow-hidden bg-canvas md:flex-row">
       <PatientNav />
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
