@@ -232,6 +232,16 @@ export function DoctorSchedule() {
             </button>
           }
           start={
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 py-1">
+              <span className="text-h3 font-semibold text-ink">{formatFullDate(selectedDate)}</span>
+              {daySurgeries.length > 0 && (
+                <span className="text-h3 font-semibold text-muted">
+                  {he.schedule.daySummary(daySurgeries.length, formatTotalHours(totalMinutes))}
+                </span>
+              )}
+            </div>
+          }
+          end={
             <div className="flex items-center gap-2 py-1">
               <div className="flex items-center gap-1">
                 <button
@@ -277,16 +287,6 @@ export function DoctorSchedule() {
               >
                 <CalendarDays className="h-5 w-5" aria-hidden />
               </button>
-            </div>
-          }
-          end={
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 py-1">
-              <span className="text-h3 font-semibold text-ink">{formatFullDate(selectedDate)}</span>
-              {daySurgeries.length > 0 && (
-                <span className="text-h3 font-semibold text-muted">
-                  {he.schedule.daySummary(daySurgeries.length, formatTotalHours(totalMinutes))}
-                </span>
-              )}
             </div>
           }
         />
