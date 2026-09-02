@@ -48,28 +48,30 @@ export function Chip({ color = "neutral", onRemove, className, children, ...rest
 
 /* ---------- צ'יפ בית חולים ---------- */
 
-export function HospitalChip({ hospital, compact, className }: { hospital: Hospital; compact?: boolean; className?: string }) {
+/**
+ * שם בית החולים כטקסט בצבע המותג שלו.
+ * הלוגו לא שימש כאן: הוא נושא את המילה "Medica" ולא את שם בית החולים,
+ * ובגודל הזה הוא נקרא כמותג אחד ולא כהבחנה בין השניים.
+ */
+export function HospitalChip({
+  hospital,
+  compact,
+  className,
+}: {
+  hospital: Hospital;
+  compact?: boolean;
+  className?: string;
+}) {
   return (
     <span
       className={cn(
-        "inline-flex min-h-7 items-center rounded-full border px-2.5 py-1 text-caption font-semibold",
-        hospital === "refael"
-          ? "border-hospital-refael bg-hospital-refael text-white"
-          : "border-hospital-elisha/20 bg-white text-hospital-elisha",
-        compact && "min-h-6 px-2 py-0.5",
+        "inline-flex items-center rounded-full font-semibold text-white",
+        hospital === "refael" ? "bg-hospital-refael" : "bg-hospital-elisha",
+        compact ? "px-2.5 py-0.5 text-caption" : "min-h-7 px-3 py-1 text-caption",
         className,
       )}
-      title={he.hospitals[hospital]}
     >
-      <img
-        src={hospital === "refael" ? "/brand/medica-raphael-logo.png" : "/brand/medica-elisha-logo.png"}
-        alt={he.hospitals[hospital]}
-        className={cn(
-          "block h-4 w-auto max-w-[78px] object-contain",
-          hospital === "elisha" && "h-[18px]",
-          compact && "h-3.5 max-w-[68px]",
-        )}
-      />
+      {he.hospitals[hospital]}
     </span>
   );
 }
