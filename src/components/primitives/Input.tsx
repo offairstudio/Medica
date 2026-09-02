@@ -8,10 +8,12 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: ReactNode;
   /** גובה מוגדל למסכי מטופל */
   tall?: boolean;
+  /** שדה שקט - נראה כמו טקסט עד לריחוף או מיקוד */
+  quiet?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, hint, icon, tall, className, id: idProp, ...rest }, ref) => {
+  ({ label, error, hint, icon, tall, quiet, className, id: idProp, ...rest }, ref) => {
     const autoId = useId();
     const id = idProp ?? autoId;
     const describedBy = error ? `${id}-error` : hint ? `${id}-hint` : undefined;
@@ -35,12 +37,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             aria-invalid={error ? true : undefined}
             aria-describedby={describedBy}
             className={cn(
-              "w-full rounded-md border bg-surface px-3 text-ink placeholder:text-muted transition-colors duration-fast",
-              tall ? "h-[52px]" : "h-11",
+              "w-full rounded-md border text-ink placeholder:text-muted transition-colors duration-fast",
+              quiet ? "h-10 bg-transparent px-2" : "bg-surface px-3",
+              quiet ? "" : tall ? "h-[52px]" : "h-11",
               icon && "ps-9",
               error
                 ? "border-danger focus:border-danger"
-                : "border-line hover:border-primary-300 focus:border-primary-500",
+                : quiet
+                  ? "border-transparent hover:border-line focus:border-primary-500 focus:bg-surface"
+                  : "border-line hover:border-primary-300 focus:border-primary-500",
               rest.disabled && "opacity-45 cursor-not-allowed",
             )}
             {...rest}

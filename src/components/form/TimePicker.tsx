@@ -13,6 +13,8 @@ export interface TimePickerProps {
   from?: Time;
   to?: Time;
   className?: string;
+  /** שדה שקט - נראה כמו טקסט עד לריחוף או מיקוד */
+  quiet?: boolean;
 }
 
 function buildOptions(from: Time, to: Time, step: number): Time[] {
@@ -34,6 +36,7 @@ export function TimePicker({
   from = "07:00",
   to = "22:00",
   className,
+  quiet,
 }: TimePickerProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -69,12 +72,15 @@ export function TimePicker({
         aria-invalid={error ? true : undefined}
         onClick={() => setOpen((o) => !o)}
         className={cn(
-          "flex h-11 w-full items-center gap-2 rounded-md border bg-surface px-3 text-body transition-colors duration-fast",
+          "flex w-full items-center gap-2 rounded-md border text-body transition-colors duration-fast",
+          quiet ? "h-10 bg-transparent px-2" : "h-11 bg-surface px-3",
           error
             ? "border-danger"
             : open
               ? "border-primary-500"
-              : "border-line hover:border-primary-300",
+              : quiet
+                ? "border-transparent hover:border-line"
+                : "border-line hover:border-primary-300",
         )}
       >
         <Clock className="h-4 w-4 shrink-0 text-muted" />

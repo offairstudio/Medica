@@ -28,6 +28,10 @@ export interface SelectProps {
   disabled?: boolean;
   className?: string;
   renderValue?: (selected: SelectOption[]) => ReactNode;
+  /** מזהה חיצוני, לקישור תווית */
+  id?: string;
+  /** שדה שקט - נראה כמו טקסט עד לריחוף או מיקוד */
+  quiet?: boolean;
 }
 
 export function Select({
@@ -42,8 +46,11 @@ export function Select({
   error,
   disabled,
   className,
+  id: idProp,
+  quiet,
 }: SelectProps) {
-  const id = useId();
+  const autoId = useId();
+  const id = idProp ?? autoId;
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const rootRef = useRef<HTMLDivElement>(null);
@@ -112,12 +119,15 @@ export function Select({
         aria-invalid={error ? true : undefined}
         onClick={() => setOpen((o) => !o)}
         className={cn(
-          "flex h-11 w-full items-center justify-between gap-2 rounded-md border bg-surface px-3 text-body transition-colors duration-fast",
+          "flex w-full items-center justify-between gap-2 rounded-md border text-body transition-colors duration-fast",
+          quiet ? "h-10 bg-transparent px-2" : "h-11 bg-surface px-3",
           error
             ? "border-danger"
             : open
               ? "border-primary-500"
-              : "border-line hover:border-primary-300",
+              : quiet
+                ? "border-transparent hover:border-line"
+                : "border-line hover:border-primary-300",
           disabled && "opacity-45 cursor-not-allowed",
         )}
       >

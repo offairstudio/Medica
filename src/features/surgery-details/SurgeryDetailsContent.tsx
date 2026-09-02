@@ -1,8 +1,36 @@
-import { useState, type ReactNode } from "react";
-import { Download, FileText, Plus, X } from "lucide-react";
-import { Card } from "../../components/data/Card";
+import {
+  cloneElement,
+  isValidElement,
+  useId,
+  useState,
+  type ReactElement,
+  type ReactNode,
+} from "react";
+import {
+  Banknote,
+  Bed,
+  Boxes,
+  Download,
+  FileText,
+  IdCard,
+  Package,
+  Phone,
+  Plus,
+  ShieldCheck,
+  Syringe,
+  UserRound,
+  Users,
+  Wallet,
+  X,
+  CalendarDays,
+  Clock,
+  Hospital,
+  Stethoscope,
+  Timer,
+  type LucideIcon,
+} from "lucide-react";
 import { HospitalChip, Chip } from "../../components/data/Chip";
-import { HOSPITAL_LIST } from "../../mock/hospitals";
+import { HOSPITAL_LIST, HOSPITALS } from "../../mock/hospitals";
 import { Button } from "../../components/primitives/Button";
 import { Input } from "../../components/primitives/Input";
 import { Select } from "../../components/primitives/Select";
@@ -15,10 +43,12 @@ import { FileUpload, type UploadedFile } from "../../components/form/FileUpload"
 import { documentTypeLabel, lookups } from "../../mock/lookups";
 import { doctorById, doctors } from "../../mock/doctors";
 import { departmentName } from "../../mock/departments";
-import { formatNumericDate, timeRange } from "../../lib/date";
+import { formatFullDate, timeRange } from "../../lib/date";
 import { formatFileSize } from "../../lib/format";
+import { cn } from "../../lib/cn";
 import { he } from "../../i18n/he";
-import type { MedicalDocument, RequirementKey, Surgery } from "../../types";
+// Hospital מיובא כ-HospitalKey כדי לא להתנגש באייקון בשם הזה
+import type { Hospital as HospitalKey, MedicalDocument, RequirementKey, Surgery } from "../../types";
 
 /* ============ מצב עריכה ============ */
 
@@ -148,16 +178,90 @@ export function draftToPatch(draft: Draft, surgery: Surgery): Partial<Surgery> {
 
 /* ============ רכיבי תצוגה ============ */
 
-function Row({ label, value }: { label: string; value: ReactNode }) {
+/**
+ * שורת פרטים - אותה שפה של מגירת התור באזור המטופל:
+ * אייקון, תווית ברוחב קבוע וערך, בגובה נוח לקריאה.
+ */
+function DetailRow({
+  icon: Icon,
+  label,
+  children,
+}: {
+  icon: LucideIcon;
+  label: string;
+  children: ReactNode;
+}) {
   return (
-    <div className="flex items-baseline justify-between gap-4 border-b border-line py-2.5 last:border-b-0">
-      <dt className="shrink-0 text-caption text-muted">{label}</dt>
-      <dd className="text-end text-ink">{value}</dd>
+    <div className="flex min-h-[52px] items-center gap-3 border-b border-line py-2 last:border-b-0">
+      <Icon className="h-5 w-5 shrink-0 text-primary-600" aria-hidden />
+      <dt className="w-28 shrink-0 font-semibold text-body">{label}</dt>
+      <dd className="min-w-0 flex-1 font-semibold text-ink">{children}</dd>
     </div>
   );
 }
 
-/** תוכן הצפייה בניתוח - כרטיסי מטופל, ביצוע, דרישות ומסמכים */
+/** מקטע במגירה: כותרת ותוכן, בלי מסגרת כרטיס */
+function Section({
+  title,
+  className,
+  children,
+}: {
+  title: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className={cn("min-w-0", className)}>
+      <h3 className="mb-1 text-h3 text-ink">{title}</h3>
+      {children}
+    </section>
+  );
+}
+
+/** כותרת המועד - אותה שפה של בלוק הזמן ביומן, בצפייה ובעריכה כאחד */
+function SurgeryHeadline({
+  date,
+  startTime,
+  durationMinutes,
+  hospitalKey,
+  doctorId,
+}: {
+  date: string | null;
+  startTime: string | null;
+  durationMinutes: number;
+  hospitalKey: HospitalKey;
+  doctorId: string;
+}) {
+  const hospital = HOSPITALS[hospitalKey];
+  const doctor = doctorById(doctorId);
+
+  return (
+    <div className={cn("flex items-start gap-4 rounded-lg p-4", hospital.softClass)}>
+      <span aria-hidden className={cn("w-1 shrink-0 self-stretch rounded-full", hospital.accentClass)} />
+      <div className="min-w-0 flex-1">
+        <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <span className="text-h3 text-ink">{date ? formatFullDate(date) : "—"}</span>
+          <span dir="ltr" className={cn("text-h3 font-bold tnum", hospital.textClass)}>
+            {startTime ? timeRange(startTime, durationMinutes) : "—"}
+          </span>
+        </p>
+        <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-muted">
+          <HospitalChip hospital={hospitalKey} compact />
+          <span className="tnum">{durationMinutes} דק'</span>
+          {doctor && (
+            <span>
+              <span className="font-semibold text-ink">{doctor.displayName}</span>
+              {" · "}
+              {departmentName(doctor.departmentId)}
+            </span>
+          )}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/** תוכן הצפייה בניתוח: מועד, פרטי מטופל וניתוח, דרישות ומסמכים */
 export function SurgeryViewContent({ surgery }: { surgery: Surgery }) {
   const anesthesiaLabel =
     lookups.anesthesiaTypes.find((a) => a.key === surgery.anesthesia)?.label ?? "";
@@ -166,98 +270,101 @@ export function SurgeryViewContent({ surgery }: { surgery: Surgery }) {
     .filter(Boolean) as string[];
 
   return (
-    <>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Card>
-          <h2 className="mb-2 text-h3 text-ink">{he.surgeryView.patient}</h2>
+    <div className="flex flex-col gap-6">
+      <SurgeryHeadline
+        date={surgery.date}
+        startTime={surgery.startTime}
+        durationMinutes={surgery.durationMinutes}
+        hospitalKey={surgery.hospital}
+        doctorId={surgery.doctorId}
+      />
+
+      <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+        <Section title={he.surgeryView.patient}>
           <dl>
-            <Row label="שם מלא" value={`${surgery.patient.firstName} ${surgery.patient.lastName}`} />
-            <Row label="ת.ז / דרכון" value={<span className="tnum">{surgery.patient.idNumber}</span>} />
-            <Row label="טלפון" value={<span dir="ltr" className="tnum">{surgery.patient.phone}</span>} />
-            <Row label="קופת חולים" value={surgery.patient.hmo} />
-            <Row label="גורם מממן" value={surgery.patient.payer} />
+            <DetailRow icon={UserRound} label="שם מלא">
+              {surgery.patient.firstName} {surgery.patient.lastName}
+            </DetailRow>
+            <DetailRow icon={IdCard} label="ת.ז / דרכון">
+              <span className="tnum">{surgery.patient.idNumber}</span>
+            </DetailRow>
+            <DetailRow icon={Phone} label="טלפון">
+              <span dir="ltr" className="tnum">
+                {surgery.patient.phone}
+              </span>
+            </DetailRow>
+            <DetailRow icon={ShieldCheck} label="קופת חולים">
+              {surgery.patient.hmo}
+            </DetailRow>
+            <DetailRow icon={Wallet} label="גורם מממן">
+              {surgery.patient.payer}
+            </DetailRow>
             {surgery.surgeonFee?.enabled && (
-              <Row
-                label={he.wizard.step1.surgeonFee}
-                value={<span className="tnum">₪{surgery.surgeonFee.amount}</span>}
-              />
+              <DetailRow icon={Banknote} label={he.wizard.step1.surgeonFee}>
+                <span className="tnum">₪{surgery.surgeonFee.amount}</span>
+              </DetailRow>
             )}
           </dl>
-        </Card>
+        </Section>
 
-        <Card>
-          <h2 className="mb-2 text-h3 text-ink">{he.surgeryView.execution}</h2>
+        <Section title={he.surgeryView.execution}>
           <dl>
-            <Row
-              label="מנתח"
-              value={
-                <span>
-                  <span className="font-semibold">
-                    {doctorById(surgery.doctorId)?.displayName}
-                  </span>
-                  <span className="text-caption text-muted">
-                    {" "}
-                    · {departmentName(doctorById(surgery.doctorId)?.departmentId ?? "")}
-                  </span>
-                </span>
-              }
-            />
-            <Row label="בית חולים" value={<HospitalChip hospital={surgery.hospital} />} />
-            <Row label="תאריך" value={<span className="tnum">{formatNumericDate(surgery.date)}</span>} />
-            <Row
-              label="שעות"
-              value={
-                <span dir="ltr" className="tnum">
-                  {timeRange(surgery.startTime, surgery.durationMinutes)}
-                </span>
-              }
-            />
-            <Row label="משך" value={<span className="tnum">{surgery.durationMinutes} דק'</span>} />
-            <Row label="הרדמה" value={anesthesiaLabel} />
-            <Row label="סוג טיפול" value={surgery.treatmentType} />
+            <DetailRow icon={Syringe} label="הרדמה">
+              {anesthesiaLabel}
+            </DetailRow>
+            <DetailRow icon={Bed} label="סוג טיפול">
+              {surgery.treatmentType}
+            </DetailRow>
             {surgery.capitalEquipment && (
-              <Row label={he.wizard.step2.capitalEquipment} value={surgery.capitalEquipment} />
+              <DetailRow icon={Package} label={he.wizard.step2.capitalEquipment}>
+                {surgery.capitalEquipment}
+              </DetailRow>
             )}
             {surgery.additionalEquipment && (
-              <Row label={he.wizard.step2.additionalEquipment} value={surgery.additionalEquipment} />
+              <DetailRow icon={Boxes} label={he.wizard.step2.additionalEquipment}>
+                {surgery.additionalEquipment}
+              </DetailRow>
             )}
-            {surgery.combined && <Row label="ניתוח משולב" value={surgery.backupDoctorName ?? "כן"} />}
+            {surgery.combined && (
+              <DetailRow icon={Users} label="ניתוח משולב">
+                {surgery.backupDoctorName ?? "כן"}
+              </DetailRow>
+            )}
           </dl>
-        </Card>
+        </Section>
       </div>
 
       {requirementLabels.length > 0 && (
-        <Card className="mt-4">
-          <h2 className="mb-3 text-h3 text-ink">{he.wizard.step2.requirements}</h2>
-          <div className="flex flex-wrap gap-2">
+        <Section title={he.wizard.step2.requirements}>
+          <div className="mt-2 flex flex-wrap gap-2">
             {requirementLabels.map((label) => (
               <Chip key={label} color="primary">
                 {label}
               </Chip>
             ))}
           </div>
-        </Card>
+        </Section>
       )}
 
-      <Card className="mt-4">
-        <h2 className="mb-2 text-h3 text-ink">{he.surgeryView.documents}</h2>
+      <Section title={he.surgeryView.documents}>
         {surgery.documents.length === 0 ? (
-          <p className="py-3 text-caption text-muted">{he.surgeryView.noDocuments}</p>
+          <p className="mt-1 text-muted">{he.surgeryView.noDocuments}</p>
         ) : (
           <ul>
             {surgery.documents.map((d) => (
               <li
                 key={d.id}
-                className="flex items-center justify-between gap-3 border-b border-line py-2.5 last:border-b-0"
+                className="flex min-h-[52px] items-center justify-between gap-3 border-b border-line py-2 last:border-b-0"
               >
-                <span className="min-w-0">
-                  <span className="block truncate text-body-strong font-semibold text-ink">
-                    {d.fileName}
-                  </span>
-                  <span className="block text-caption text-muted">
-                    {d.typeLabel} ·{" "}
-                    <span dir="ltr" className="tnum">
-                      {formatFileSize(d.sizeKb)}
+                <span className="flex min-w-0 items-center gap-3">
+                  <FileText className="h-5 w-5 shrink-0 text-primary-600" aria-hidden />
+                  <span className="min-w-0">
+                    <span className="block truncate font-semibold text-ink">{d.fileName}</span>
+                    <span className="block text-caption text-muted">
+                      {d.typeLabel} ·{" "}
+                      <span dir="ltr" className="tnum">
+                        {formatFileSize(d.sizeKb)}
+                      </span>
                     </span>
                   </span>
                 </span>
@@ -274,19 +381,40 @@ export function SurgeryViewContent({ surgery }: { surgery: Surgery }) {
             ))}
           </ul>
         )}
-      </Card>
-    </>
+      </Section>
+    </div>
   );
 }
 
 /* ============ טופס עריכה ============ */
 
 /** שורת עריכה באותה פריסה של שורת הצפייה: תווית בהתחלה, שדה בסוף */
-function EditRow({ label, children }: { label: string; children: ReactNode }) {
+/**
+ * שורת עריכה - אותה פריסה של שורת הצפייה, כך שהמעבר בין המצבים
+ * אינו מזיז את התוכן: אייקון, תווית, והשדה עצמו במקום הערך.
+ */
+function EditRow({
+  icon: Icon,
+  label,
+  children,
+}: {
+  icon: LucideIcon;
+  label: string;
+  children: ReactNode;
+}) {
+  const id = useId();
+  // התווית נקשרת לשדה עצמו, כך שגם קורא מסך וגם לחיצה על הטקסט מגיעים אליו
+  const field = isValidElement(children)
+    ? cloneElement(children as ReactElement<{ id?: string }>, { id })
+    : children;
+
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-line py-2 last:border-b-0">
-      <span className="shrink-0 text-caption text-muted">{label}</span>
-      <div className="w-full max-w-[260px]">{children}</div>
+    <div className="flex min-h-[52px] items-center gap-3 border-b border-line py-1.5 last:border-b-0">
+      <Icon className="h-5 w-5 shrink-0 text-primary-600" aria-hidden />
+      <label htmlFor={id} className="w-28 shrink-0 font-semibold text-body">
+        {label}
+      </label>
+      <div className="min-w-0 flex-1">{field}</div>
     </div>
   );
 }
@@ -327,20 +455,30 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
   }
 
   return (
-    <>
-      <div className="grid gap-4 lg:grid-cols-2">
+    <div className="flex flex-col gap-6">
+      <SurgeryHeadline
+        date={draft.date}
+        startTime={draft.time}
+        durationMinutes={Number(draft.duration) || 0}
+        hospitalKey={draft.hospital as HospitalKey}
+        doctorId={draft.doctorId}
+      />
+
+      <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
         {/* מטופל */}
-        <Card>
-          <h2 className="mb-2 text-h3 text-ink">{he.surgeryView.patient}</h2>
+        <Section title={he.surgeryView.patient}>
           <div>
-            <EditRow label={he.wizard.step1.firstName}>
-              <Input value={draft.firstName} onChange={(e) => patch({ firstName: e.target.value })} error={errors.firstName} />
+            <EditRow icon={UserRound} label={he.wizard.step1.firstName}>
+              <Input
+                quiet value={draft.firstName} onChange={(e) => patch({ firstName: e.target.value })} error={errors.firstName} />
             </EditRow>
-            <EditRow label={he.wizard.step1.lastName}>
-              <Input value={draft.lastName} onChange={(e) => patch({ lastName: e.target.value })} error={errors.lastName} />
+            <EditRow icon={UserRound} label={he.wizard.step1.lastName}>
+              <Input
+                quiet value={draft.lastName} onChange={(e) => patch({ lastName: e.target.value })} error={errors.lastName} />
             </EditRow>
-            <EditRow label={he.wizard.step1.idType}>
+            <EditRow icon={IdCard} label={he.wizard.step1.idType}>
               <Select
+                quiet
                 options={[
                   { value: "id", label: he.wizard.step1.idTypeId },
                   { value: "passport", label: he.wizard.step1.idTypePassport },
@@ -349,17 +487,21 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
                 onChange={(v) => patch({ idType: (v as "id" | "passport") ?? "id" })}
               />
             </EditRow>
-            <EditRow label={he.wizard.step1.idNumber}>
-              <Input dir="ltr" maxLength={9} value={draft.idNumber} onChange={(e) => patch({ idNumber: e.target.value })} error={errors.idNumber} />
+            <EditRow icon={IdCard} label={he.wizard.step1.idNumber}>
+              <Input
+                quiet dir="ltr" maxLength={9} value={draft.idNumber} onChange={(e) => patch({ idNumber: e.target.value })} error={errors.idNumber} />
             </EditRow>
-            <EditRow label={he.wizard.step1.phone}>
-              <Input dir="ltr" type="tel" value={draft.phone} onChange={(e) => patch({ phone: e.target.value.replace(/[^\d-]/g, "") })} error={errors.phone} />
+            <EditRow icon={Phone} label={he.wizard.step1.phone}>
+              <Input
+                quiet dir="ltr" type="tel" value={draft.phone} onChange={(e) => patch({ phone: e.target.value.replace(/[^\d-]/g, "") })} error={errors.phone} />
             </EditRow>
-            <EditRow label={he.wizard.step1.birthDate}>
-              <DatePicker value={draft.birthDate} onChange={(d) => patch({ birthDate: d })} />
+            <EditRow icon={CalendarDays} label={he.wizard.step1.birthDate}>
+              <DatePicker
+                quiet value={draft.birthDate} onChange={(d) => patch({ birthDate: d })} />
             </EditRow>
-            <EditRow label={he.wizard.step1.gender}>
+            <EditRow icon={UserRound} label={he.wizard.step1.gender}>
               <Select
+                quiet
                 options={[
                   { value: "male", label: he.wizard.step1.male },
                   { value: "female", label: he.wizard.step1.female },
@@ -368,18 +510,21 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
                 onChange={(v) => patch({ gender: v as string | null })}
               />
             </EditRow>
-            <EditRow label={he.wizard.step1.hmo}>
-              <Select options={lookups.hmos.map((h) => ({ value: h, label: h }))} value={draft.hmo} onChange={(v) => patch({ hmo: v as string | null })} />
+            <EditRow icon={ShieldCheck} label={he.wizard.step1.hmo}>
+              <Select
+                quiet options={lookups.hmos.map((h) => ({ value: h, label: h }))} value={draft.hmo} onChange={(v) => patch({ hmo: v as string | null })} />
             </EditRow>
-            <EditRow label={he.wizard.step1.payer}>
-              <Select options={lookups.payers.map((p) => ({ value: p, label: p }))} value={draft.payer} onChange={(v) => patch({ payer: v as string | null })} />
+            <EditRow icon={Wallet} label={he.wizard.step1.payer}>
+              <Select
+                quiet options={lookups.payers.map((p) => ({ value: p, label: p }))} value={draft.payer} onChange={(v) => patch({ payer: v as string | null })} />
             </EditRow>
             <div className="border-b border-line py-1 last:border-b-0">
               <Toggle checked={draft.feeEnabled} onChange={(v) => patch({ feeEnabled: v })} label={he.wizard.step1.surgeonFee} />
             </div>
             {draft.feeEnabled && (
-              <EditRow label={he.wizard.step1.feeAmount}>
+              <EditRow icon={Banknote} label={he.wizard.step1.feeAmount}>
                 <Input
+                  quiet
                   dir="ltr"
                   inputMode="numeric"
                   value={draft.feeAmount}
@@ -390,22 +535,23 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
               </EditRow>
             )}
           </div>
-        </Card>
+        </Section>
 
         {/* ביצוע */}
-        <Card>
-          <h2 className="mb-2 text-h3 text-ink">{he.surgeryView.execution}</h2>
+        <Section title={he.surgeryView.execution}>
           <div>
-            <EditRow label="מנתח">
+            <EditRow icon={Stethoscope} label="מנתח">
               <Select
+                quiet
                 options={doctors.map((d) => ({ value: d.id, label: d.displayName }))}
                 value={draft.doctorId}
                 onChange={(v) => patch({ doctorId: (v as string) ?? draft.doctorId })}
                 searchable
               />
             </EditRow>
-            <EditRow label="בית חולים">
+            <EditRow icon={Hospital} label="בית חולים">
               <Select
+                quiet
                 options={[
                   ...HOSPITAL_LIST.map((h) => ({ value: h.key, label: h.name })),
                 ]}
@@ -413,31 +559,37 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
                 onChange={(v) => patch({ hospital: (v as string) ?? "refael" })}
               />
             </EditRow>
-            <EditRow label={he.wizard.step2.date}>
-              <DatePicker value={draft.date} onChange={(d) => patch({ date: d })} error={errors.date} />
+            <EditRow icon={CalendarDays} label={he.wizard.step2.date}>
+              <DatePicker
+                quiet value={draft.date} onChange={(d) => patch({ date: d })} error={errors.date} />
             </EditRow>
-            <EditRow label={he.wizard.step2.time}>
-              <TimePicker value={draft.time} onChange={(t) => patch({ time: t })} error={errors.time} />
+            <EditRow icon={Clock} label={he.wizard.step2.time}>
+              <TimePicker
+                quiet value={draft.time} onChange={(t) => patch({ time: t })} error={errors.time} />
             </EditRow>
-            <EditRow label={he.wizard.step2.duration}>
-              <Input type="number" dir="ltr" min={1} value={draft.duration} onChange={(e) => patch({ duration: e.target.value })} error={errors.duration} />
+            <EditRow icon={Timer} label={he.wizard.step2.duration}>
+              <Input
+                quiet type="number" dir="ltr" min={1} value={draft.duration} onChange={(e) => patch({ duration: e.target.value })} error={errors.duration} />
             </EditRow>
-            <EditRow label={he.wizard.step2.anesthesia}>
+            <EditRow icon={Syringe} label={he.wizard.step2.anesthesia}>
               <Select
+                quiet
                 options={lookups.anesthesiaTypes.map((a) => ({ value: a.key, label: a.label }))}
                 value={draft.anesthesia}
                 onChange={(v) => patch({ anesthesia: (v as string) ?? "general" })}
               />
             </EditRow>
-            <EditRow label={he.wizard.step2.treatmentType}>
+            <EditRow icon={Bed} label={he.wizard.step2.treatmentType}>
               <Select
+                quiet
                 options={lookups.treatmentTypes.map((t) => ({ value: t, label: t }))}
                 value={draft.treatmentType}
                 onChange={(v) => patch({ treatmentType: v as string | null })}
               />
             </EditRow>
-            <EditRow label={he.wizard.step2.capitalEquipment}>
+            <EditRow icon={Package} label={he.wizard.step2.capitalEquipment}>
               <Select
+                quiet
                 options={lookups.capitalEquipment.map((c) => ({ value: c, label: c }))}
                 value={draft.capitalEquipment}
                 onChange={(v) => patch({ capitalEquipment: v as string | null })}
@@ -448,8 +600,9 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
               <Toggle checked={draft.combined} onChange={(v) => patch({ combined: v })} label={he.wizard.step2.combined} />
             </div>
             {draft.combined && (
-              <EditRow label={he.wizard.step2.backupDoctor}>
-                <Input value={draft.backupDoctorName} onChange={(e) => patch({ backupDoctorName: e.target.value })} />
+              <EditRow icon={Users} label={he.wizard.step2.backupDoctor}>
+                <Input
+                  quiet value={draft.backupDoctorName} onChange={(e) => patch({ backupDoctorName: e.target.value })} />
               </EditRow>
             )}
             <div className="pt-2">
@@ -461,12 +614,11 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
               />
             </div>
           </div>
-        </Card>
+        </Section>
       </div>
 
       {/* הניתוחים */}
-      <Card className="mt-4">
-        <h2 className="mb-2 text-h3 text-ink">{he.surgeryView.procedures}</h2>
+      <Section title={he.surgeryView.procedures}>
         <div className="flex flex-col gap-3">
           {draft.procedures.map((proc, i) => (
             <div key={i} className="relative rounded-md border border-line bg-surface-2/60 p-3">
@@ -524,11 +676,10 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
             </Button>
           </div>
         </div>
-      </Card>
+      </Section>
 
       {/* דרישות נוספות */}
-      <Card className="mt-4">
-        <h2 className="mb-1 text-h3 text-ink">{he.wizard.step2.requirements}</h2>
+      <Section title={he.wizard.step2.requirements}>
         <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
           {lookups.requirements.map((r) => (
             <Checkbox
@@ -545,11 +696,10 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
             />
           ))}
         </div>
-      </Card>
+      </Section>
 
       {/* ניהול מסמכים */}
-      <Card className="mt-4">
-        <h2 className="mb-2 text-h3 text-ink">{he.surgeryView.documents}</h2>
+      <Section title={he.surgeryView.documents}>
 
         {draft.documents.length === 0 ? (
           <p className="py-2 text-caption text-muted">{he.surgeryView.noDocuments}</p>
@@ -606,7 +756,7 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
             </Button>
           </div>
         </div>
-      </Card>
-    </>
+      </Section>
+    </div>
   );
 }

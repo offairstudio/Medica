@@ -5,10 +5,12 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   label?: string;
   error?: string;
   hint?: string;
+  /** שדה שקט - נראה כמו טקסט עד לריחוף או מיקוד */
+  quiet?: boolean;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ label, error, hint, className, id: idProp, rows = 3, ...rest }, ref) => {
+  ({ label, error, hint, quiet, className, id: idProp, rows = 3, ...rest }, ref) => {
     const autoId = useId();
     const id = idProp ?? autoId;
     const describedBy = error ? `${id}-error` : hint ? `${id}-hint` : undefined;
@@ -26,10 +28,13 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
           className={cn(
-            "w-full rounded-md border bg-surface px-3 py-2.5 text-ink placeholder:text-muted transition-colors duration-fast",
+            "w-full rounded-md border py-2.5 text-ink placeholder:text-muted transition-colors duration-fast",
+            quiet ? "bg-transparent px-2" : "bg-surface px-3",
             error
               ? "border-danger focus:border-danger"
-              : "border-line hover:border-primary-300 focus:border-primary-500",
+              : quiet
+                ? "border-transparent hover:border-line focus:border-primary-500 focus:bg-surface"
+                : "border-line hover:border-primary-300 focus:border-primary-500",
             rest.disabled && "opacity-45 cursor-not-allowed",
           )}
           {...rest}

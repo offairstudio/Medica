@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { Avatar, AllDoctorsAvatar } from "../data/Avatar";
+import { Tooltip } from "../overlay/Tooltip";
 import { Dropdown } from "../overlay/Dropdown";
 import { BrandMark } from "./BrandMark";
 import { currentDoctor, doctors, MOCK_TODAY } from "../../mock/doctors";
@@ -186,32 +187,34 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
           {/* מנתחים בניהולי - הקטגוריה היחידה בתפריט */}
           {collapsed ? (
             <div className="flex flex-col items-center gap-1">
-              <Link
-                to="/doctor/all/schedule"
-                aria-current={doctorId === "all" ? "page" : undefined}
-                title={he.schedule.allDoctors}
-                className={cn(
-                  "flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-fast",
-                  doctorId === "all" ? "bg-primary-50 text-primary-700" : "text-muted hover:bg-surface-2",
-                )}
-              >
-                <AllDoctorsAvatar size="sm" className={doctorId === "all" ? undefined : "opacity-80"} />
-                <span className="sr-only">{he.schedule.allDoctors}</span>
-              </Link>
-              {managed.map((d) => (
+              {/* בתצוגה מצומצמת השם מופיע בבועית לצד האווטר */}
+              <Tooltip content={he.schedule.allDoctors} placement="end">
                 <Link
-                  key={d.id}
-                  to={`/doctor/${d.id}/schedule`}
-                  aria-current={d.id === doctorId ? "page" : undefined}
-                  title={d.displayName}
+                  to="/doctor/all/schedule"
+                  aria-current={doctorId === "all" ? "page" : undefined}
                   className={cn(
                     "flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-fast",
-                    d.id === doctorId ? "bg-primary-50 ring-1 ring-primary-300" : "hover:bg-surface-2",
+                    doctorId === "all" ? "bg-primary-50 text-primary-700" : "text-muted hover:bg-surface-2",
                   )}
                 >
-                  <Avatar name={d.displayName} src={d.avatarUrl} size="sm" />
-                  <span className="sr-only">{d.displayName}</span>
+                  <AllDoctorsAvatar size="sm" className={doctorId === "all" ? undefined : "opacity-80"} />
+                  <span className="sr-only">{he.schedule.allDoctors}</span>
                 </Link>
+              </Tooltip>
+              {managed.map((d) => (
+                <Tooltip key={d.id} content={d.displayName} placement="end">
+                  <Link
+                    to={`/doctor/${d.id}/schedule`}
+                    aria-current={d.id === doctorId ? "page" : undefined}
+                    className={cn(
+                      "flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-fast",
+                      d.id === doctorId ? "bg-primary-50 ring-1 ring-primary-300" : "hover:bg-surface-2",
+                    )}
+                  >
+                    <Avatar name={d.displayName} src={d.avatarUrl} size="sm" />
+                    <span className="sr-only">{d.displayName}</span>
+                  </Link>
+                </Tooltip>
               ))}
             </div>
           ) : (
