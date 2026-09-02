@@ -9,6 +9,11 @@
     font-family: "Assistant", system-ui, sans-serif;
   }
 
+  /* גרסת פונט חלופית - נבחרת ממסך הכניסה ונשמרת בדפדפן */
+  html[data-font="heebo"] {
+    font-family: "Heebo", system-ui, sans-serif;
+  }
+
   body {
     @apply bg-canvas text-body text-[15px] leading-[1.55] antialiased;
   }

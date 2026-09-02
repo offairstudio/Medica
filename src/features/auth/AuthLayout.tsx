@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { FontVersionToggle } from "./FontVersionToggle";
 
 /**
  * מסך מפוצל RTL: הטופס מימין וארט המותג משמאל.
@@ -37,10 +38,13 @@ export function AuthLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      <div className="clinical-surface flex flex-1 items-start justify-center px-4 py-8 md:w-[42%] md:items-center md:px-8 md:py-10">
+      <div className="clinical-surface relative flex flex-1 items-start justify-center px-4 py-8 pb-14 md:w-[42%] md:items-center md:px-8 md:py-10">
         <div className="w-full max-w-[430px] rounded-xl border border-line bg-surface p-6 shadow-md md:p-8 lg:p-9">
           {children}
         </div>
+
+        {/* מעבר בין גרסאות הפונט - בפינה, בקטן */}
+        <FontVersionToggle className="absolute bottom-3 start-4 md:start-6" />
       </div>
     </div>
   );

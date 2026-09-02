@@ -53,10 +53,10 @@ function WelcomeBanner({ nextRelative }: { nextRelative?: string }) {
       </div>
 
       <img
-        src="/brand/patient-welcome-line-art.svg"
+        src="/brand/patient-welcome-care-v2.png"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute -bottom-14 -left-10 z-0 h-56 w-56 object-contain opacity-75 sm:static sm:h-[168px] sm:w-full sm:opacity-100"
+        className="pointer-events-none absolute inset-y-0 left-0 z-0 h-full w-1/2 object-cover opacity-20 [mask-image:linear-gradient(to_right,black,transparent)] sm:static sm:h-[152px] sm:w-full sm:rounded-xl sm:object-cover sm:opacity-100 sm:[mask-image:none]"
       />
     </section>
   );
