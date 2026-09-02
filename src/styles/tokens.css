@@ -13,15 +13,17 @@
   --accent: #12cbca;
 
   /* Hospital identity */
-  --hospital-refael: #0062cf;
-  --hospital-elisha: #46348a;
-  --hospital-telaviv: #0b6e6d;
-  --hospital-rmc: #8e3b62;
-  /* גווני רקע לרשומות היומן - תמיד גוון בהיר של צבע בית החולים עצמו */
-  --hospital-refael-soft: #e3eefc;
-  --hospital-elisha-soft: #eae5f7;
-  --hospital-telaviv-soft: #e0f4f3;
-  --hospital-rmc-soft: #f4cfe0;
+  --hospital-refael: #022752;
+  --hospital-elisha: #462e79;
+  --hospital-telaviv: #276e93;
+  --hospital-rmc: #6a57a3;
+  /* בתי החולים נשענים על פלטת המותג בלבד - נייבי, תכלת וסגול -
+     במטריצה של גוון (כחול/סגול) מול עומק (כהה/בינוני) */
+  /* גווני רקע לרשומות היומן - טינט בהיר של צבע בית החולים עצמו */
+  --hospital-refael-soft: #cbd9ea;
+  --hospital-elisha-soft: #dfd5f2;
+  --hospital-telaviv-soft: #def0fa;
+  --hospital-rmc-soft: #efe9fb;
 
   /* Semantic */
   --success: #187b5b;

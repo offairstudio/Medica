@@ -10,7 +10,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col md:flex-row-reverse">
       <div className="relative min-h-[240px] overflow-hidden bg-primary-900 md:min-h-screen md:w-[58%]">
         <img
-          src="/brand/medica-auth-hero-v1.png"
+          src="/brand/medica-auth-lounge-v2.jpg"
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-[center_58%]"
         />

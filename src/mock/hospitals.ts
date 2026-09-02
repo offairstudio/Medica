@@ -2,7 +2,7 @@ import type { Hospital } from "../types";
 
 export interface HospitalInfo {
   key: Hospital;
-  /** שם קצר לצ'יפ ולמקרא */
+  /** שם המרכז כולל שם המותג - לצ'יפ ולמקרא */
   name: string;
   /** השם המלא כפי שהוא מופיע באתר הרשת */
   fullName: string;
@@ -26,7 +26,7 @@ export interface HospitalInfo {
 export const HOSPITALS: Record<Hospital, HospitalInfo> = {
   refael: {
     key: "refael",
-    name: "רפאל",
+    name: "medica רפאל",
     fullName: "medica רפאל, תל אביב",
     chipClass: "bg-hospital-refael",
     dotClass: "bg-hospital-refael",
@@ -36,7 +36,7 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
   },
   elisha: {
     key: "elisha",
-    name: "אלישע",
+    name: "medica אלישע",
     fullName: "medica - בית חולים אלישע, חיפה",
     chipClass: "bg-hospital-elisha",
     dotClass: "bg-hospital-elisha",
@@ -46,7 +46,7 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
   },
   telAviv: {
     key: "telAviv",
-    name: "תל אביב",
+    name: "medica תל אביב",
     fullName: "medica תל אביב, הברזל 28",
     chipClass: "bg-hospital-telaviv",
     dotClass: "bg-hospital-telaviv",
@@ -56,7 +56,7 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
   },
   rmc: {
     key: "rmc",
-    name: "עפולה",
+    name: "medica עפולה",
     fullName: "medica RMC, עפולה",
     chipClass: "bg-hospital-rmc",
     dotClass: "bg-hospital-rmc",
