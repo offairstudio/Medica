@@ -45,12 +45,23 @@ export function Stepper({ steps, current, onStepClick, className }: StepperProps
             />
             <span
               className={cn(
-                "flex items-center gap-1 text-caption transition-colors duration-fast",
+                "flex items-center gap-1.5 text-caption transition-colors duration-fast",
                 active ? "font-semibold text-primary-700" : done ? "text-body" : "text-muted",
                 clickable && "group-hover:text-primary-800",
               )}
             >
-              {done && <Check className="h-3.5 w-3.5 shrink-0" strokeWidth={3} aria-hidden />}
+              {/* מספר השלב - וי מחליף אותו אחרי שהשלב הושלם */}
+              <span
+                aria-hidden
+                className={cn(
+                  "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full text-[11px] font-bold leading-none",
+                  done || active
+                    ? "bg-primary-700 text-white"
+                    : "border border-line text-muted",
+                )}
+              >
+                {done ? <Check className="h-3 w-3" strokeWidth={3} /> : i + 1}
+              </span>
               <span className="truncate">{name}</span>
             </span>
           </button>

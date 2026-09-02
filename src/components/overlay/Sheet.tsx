@@ -129,7 +129,13 @@ export function Sheet({
           <span className="h-1 w-10 rounded-full bg-line" />
         </div>
 
-        <div className="flex items-center justify-between gap-3 border-b border-line bg-surface-2/60 px-5 py-4 md:px-6">
+        <div
+          className={cn(
+            "flex items-center justify-between gap-3 bg-surface-2/60 px-5 py-4 md:px-6",
+            // עם שורת התקדמות שתי השורות נקראות כגוש כותרת אחד
+            subheader ? "pb-3" : "border-b border-line",
+          )}
+        >
           <div className="min-w-0 flex-1">
             {titleSlot ?? <h2 className="text-h2 text-ink">{title}</h2>}
           </div>
@@ -144,7 +150,9 @@ export function Sheet({
         </div>
 
         {subheader && (
-          <div className="shrink-0 border-b border-line px-5 py-3 md:px-6">{subheader}</div>
+          <div className="shrink-0 border-b border-line bg-surface-2/60 px-5 pb-3 md:px-6">
+            {subheader}
+          </div>
         )}
 
         <ScrollArea className="px-5 py-5 md:px-6" fadeClassName="from-surface via-surface/70">
