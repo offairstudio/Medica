@@ -10,9 +10,9 @@ import {
   Banknote,
   Bed,
   Boxes,
-  Download,
   FileText,
   IdCard,
+  Info,
   Package,
   Phone,
   Plus,
@@ -30,6 +30,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { HospitalChip, Chip } from "../../components/data/Chip";
+import { DocumentRow } from "../patient-documents/DocumentRow";
 import { HOSPITAL_LIST, HOSPITALS } from "../../mock/hospitals";
 import { Button } from "../../components/primitives/Button";
 import { Input } from "../../components/primitives/Input";
@@ -200,20 +201,45 @@ function DetailRow({
   );
 }
 
-/** מקטע במגירה: כותרת ותוכן, בלי מסגרת כרטיס */
+/**
+ * כרטיסיית מקטע במגירה - אותו כרטיס של מגירת התור באזור המטופל.
+ * variant="accent" שמור למקטע הנחיות, בגוון המותג.
+ */
 function Section({
   title,
+  hint,
+  variant = "card",
   className,
   children,
 }: {
   title: string;
+  hint?: string;
+  variant?: "card" | "accent";
   className?: string;
   children: ReactNode;
 }) {
   return (
-    <section className={cn("min-w-0", className)}>
-      <h3 className="mb-1 text-h3 text-ink">{title}</h3>
-      {children}
+    <section
+      aria-label={title}
+      className={cn(
+        "min-w-0 rounded-lg p-5",
+        variant === "accent"
+          ? "border border-primary-200 bg-primary-50"
+          : "border border-line bg-surface shadow-sm",
+        className,
+      )}
+    >
+      <h3
+        className={cn(
+          "flex items-center gap-2 text-h3",
+          variant === "accent" ? "text-primary-800" : "text-ink",
+        )}
+      >
+        {variant === "accent" && <Info className="h-4 w-4 shrink-0 text-primary-500" aria-hidden />}
+        {title}
+      </h3>
+      {hint && <p className="mt-0.5 text-caption text-muted">{hint}</p>}
+      <div className={cn(hint ? "mt-2" : "mt-1")}>{children}</div>
     </section>
   );
 }
@@ -335,8 +361,8 @@ export function SurgeryViewContent({ surgery }: { surgery: Surgery }) {
       </div>
 
       {requirementLabels.length > 0 && (
-        <Section title={he.wizard.step2.requirements}>
-          <div className="mt-2 flex flex-wrap gap-2">
+        <Section title={he.wizard.step2.requirements} variant="accent">
+          <div className="flex flex-wrap gap-2">
             {requirementLabels.map((label) => (
               <Chip key={label} color="primary">
                 {label}
@@ -348,36 +374,11 @@ export function SurgeryViewContent({ surgery }: { surgery: Surgery }) {
 
       <Section title={he.surgeryView.documents}>
         {surgery.documents.length === 0 ? (
-          <p className="mt-1 text-muted">{he.surgeryView.noDocuments}</p>
+          <p className="text-muted">{he.surgeryView.noDocuments}</p>
         ) : (
           <ul>
             {surgery.documents.map((d) => (
-              <li
-                key={d.id}
-                className="flex min-h-[52px] items-center justify-between gap-3 border-b border-line py-2 last:border-b-0"
-              >
-                <span className="flex min-w-0 items-center gap-3">
-                  <FileText className="h-5 w-5 shrink-0 text-primary-600" aria-hidden />
-                  <span className="min-w-0">
-                    <span className="block truncate font-semibold text-ink">{d.fileName}</span>
-                    <span className="block text-caption text-muted">
-                      {d.typeLabel} ·{" "}
-                      <span dir="ltr" className="tnum">
-                        {formatFileSize(d.sizeKb)}
-                      </span>
-                    </span>
-                  </span>
-                </span>
-                <a
-                  href={d.fileUrl}
-                  download
-                  aria-label={`הורדת ${d.fileName}`}
-                  className="inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 py-2 text-caption font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50"
-                >
-                  <Download className="h-4 w-4" aria-hidden />
-                  {he.common.download}
-                </a>
-              </li>
+              <DocumentRow key={d.id} doc={d} />
             ))}
           </ul>
         )}

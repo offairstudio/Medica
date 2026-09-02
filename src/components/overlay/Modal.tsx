@@ -1,6 +1,6 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { X } from "lucide-react";
-import { ScrollFade } from "../layout/ScrollFade";
+import { ScrollArea } from "../layout/ScrollArea";
 import { cn } from "../../lib/cn";
 
 export interface ModalProps {
@@ -90,11 +90,9 @@ export function Modal({ open, onClose, title, size = "md", children, footer }: M
             <X className="h-5 w-5" />
           </button>
         </div>
-        <div className="relative min-h-0 flex-1">
-          <div className="h-full overflow-y-auto px-6 py-5">{children}</div>
-          <ScrollFade className="from-surface via-surface/70" />
-          {footer && <ScrollFade edge="bottom" className="from-surface via-surface/70" />}
-        </div>
+        <ScrollArea className="px-6 py-5" fadeClassName="from-surface via-surface/70">
+          {children}
+        </ScrollArea>
         {footer && (
           <div className="flex items-center justify-end gap-3 border-t border-line px-6 py-4">
             {footer}

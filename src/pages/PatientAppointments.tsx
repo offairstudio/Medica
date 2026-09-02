@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { NavLink } from "react-router-dom";
+import { CalendarDays } from "lucide-react";
 import { PatientShell } from "../components/layout/AppShell";
 import { EmptyState } from "../components/data/EmptyState";
 import { Skeleton } from "../components/data/Skeleton";
@@ -7,6 +8,7 @@ import { AppointmentCard } from "../features/patient-appointments/AppointmentCar
 import { groupByDate } from "../features/patient-appointments/grouping";
 import { appointments } from "../mock/appointments";
 import { MOCK_TODAY } from "../mock/doctors";
+import { currentPatient } from "../mock/patients";
 import {
   ScreenHeader,
   tabClass,
@@ -24,6 +26,41 @@ const TABS: { to: string; label: string; count: number; end: boolean }[] = [
   { to: "/p/appointments", label: he.patient.segUpcoming, count: upcomingCount, end: true },
   { to: "/p/appointments/past", label: he.patient.segPast, count: pastCount, end: false },
 ];
+
+function WelcomeBanner({ nextRelative }: { nextRelative?: string }) {
+  return (
+    <section
+      aria-labelledby="patient-welcome-title"
+      className="relative isolate grid min-h-[176px] overflow-hidden rounded-2xl border border-primary-200 bg-gradient-to-l from-primary-50 via-white to-[#ecf9f8] px-6 py-5 shadow-sm sm:grid-cols-[minmax(0,1fr)_230px] sm:items-center sm:px-8"
+    >
+      <div className="relative z-10 max-w-xl py-2">
+        <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1 text-caption font-semibold text-primary-700 shadow-sm ring-1 ring-primary-100">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
+          האזור האישי שלך
+        </span>
+        <h2 id="patient-welcome-title" className="text-h1 text-ink">
+          היי {currentPatient.firstName}, טוב לראות אותך
+        </h2>
+        <p className="mt-2 max-w-lg text-body text-muted">
+          כל התורים, ההכנות והמידע הרפואי שלך מחכים כאן במקום אחד.
+        </p>
+        {nextRelative && (
+          <p className="mt-4 inline-flex items-center gap-2 text-caption font-semibold text-primary-800">
+            <CalendarDays className="h-4 w-4 text-primary-500" aria-hidden />
+            התור הבא שלך {nextRelative}
+          </p>
+        )}
+      </div>
+
+      <img
+        src="/brand/patient-welcome-art-v1.png"
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute -bottom-14 -left-10 z-0 h-56 w-56 object-contain opacity-75 sm:static sm:h-[168px] sm:w-full sm:opacity-100"
+      />
+    </section>
+  );
+}
 
 /**
  * מסך התורים - עתידיים וקודמים תחת טאבים.
@@ -68,14 +105,16 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
 
   return (
     <PatientShell header={header}>
-      {loading ? (
-        <div className="flex flex-col gap-4">
-          <Skeleton variant="block" className="h-32" />
-          <Skeleton variant="block" className="h-32" />
-          <Skeleton variant="block" className="h-32" />
-        </div>
-      ) : (
-        <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8">
+        {mode === "upcoming" && <WelcomeBanner nextRelative={groups[0]?.relative} />}
+
+        {loading ? (
+          <div className="flex flex-col gap-4">
+            <Skeleton variant="block" className="h-32" />
+            <Skeleton variant="block" className="h-32" />
+            <Skeleton variant="block" className="h-32" />
+          </div>
+        ) : (
           <section aria-label={he.patient.appointmentsTitle}>
             {all.length === 0 ? (
               <EmptyState illustration="calendar" title={he.patient.emptyUpcoming} />
@@ -103,8 +142,8 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
               </div>
             )}
           </section>
-        </div>
-      )}
+        )}
+      </div>
     </PatientShell>
   );
 }

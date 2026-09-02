@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { X } from "lucide-react";
-import { ScrollFade } from "../layout/ScrollFade";
+import { ScrollArea } from "../layout/ScrollArea";
 import { cn } from "../../lib/cn";
 
 export interface SheetProps {
@@ -118,7 +118,7 @@ export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, 
           <span className="h-1 w-10 rounded-full bg-line" />
         </div>
 
-        <div className="flex items-start justify-between gap-3 border-b border-line bg-surface-2/60 px-5 py-4 md:px-6">
+        <div className="flex items-center justify-between gap-3 border-b border-line bg-surface-2/60 px-5 py-4 md:px-6">
           <div className="min-w-0 flex-1">
             {titleSlot ?? <h2 className="text-h2 text-ink">{title}</h2>}
           </div>
@@ -132,11 +132,9 @@ export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, 
           </button>
         </div>
 
-        <div className="relative min-h-0 flex-1">
-          <div className="h-full overflow-y-auto px-5 py-5 md:px-6">{children}</div>
-          <ScrollFade className="from-surface via-surface/70" />
-          {footer && <ScrollFade edge="bottom" className="from-surface via-surface/70" />}
-        </div>
+        <ScrollArea className="px-5 py-5 md:px-6" fadeClassName="from-surface via-surface/70">
+          {children}
+        </ScrollArea>
 
         {footer && (
           <div className="border-t border-line px-5 py-4 md:px-6">{footer}</div>
