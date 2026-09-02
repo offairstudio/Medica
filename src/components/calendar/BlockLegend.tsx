@@ -2,42 +2,69 @@ import { cn } from "../../lib/cn";
 import { he } from "../../i18n/he";
 
 /**
- * מקרא בלוקים - שורה לכל בית חולים, שם בית החולים בצבע הזהות שלו
- * והסמלים בגודל אחיד (שיפור על המקרא המבלבל במערכת הקיימת).
+ * מקרא הלוח - מסביר בדיוק את מה שמצויר בו:
+ * מצב היום הנבחר והיום הנוכחי, ולאחריהם משמעות הסימונים תחת המספר.
  */
 export function BlockLegend({ className }: { className?: string }) {
-  const rows = [
-    { key: "refael" as const, color: "text-hospital-refael", dot: "bg-hospital-refael", border: "border-hospital-refael" },
-    { key: "elisha" as const, color: "text-hospital-elisha", dot: "bg-hospital-elisha", border: "border-hospital-elisha" },
-  ];
-
   return (
-    <div className={cn("flex flex-col gap-1.5", className)}>
-      {rows.map((row) => (
-        <div key={row.key} className="flex items-center gap-4 text-caption text-body">
-          <span className={cn("w-10 shrink-0 text-body-strong font-semibold", row.color)}>
-            {he.hospitals[row.key]}
+    <div className={cn("flex flex-col gap-2 text-caption text-body", className)}>
+      <div className="flex items-center gap-4">
+        <span className="flex items-center gap-2">
+          <span
+            aria-hidden
+            className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-700 text-[11px] font-bold text-white"
+          >
+            5
           </span>
-          <span className="flex items-center gap-1.5">
-            <span aria-hidden className={cn("h-3 w-3 rounded-full", row.dot)} />
-            {he.schedule.blockLegend.full}
+          {he.schedule.calendarLegend.selected}
+        </span>
+        <span className="flex items-center gap-2">
+          <span
+            aria-hidden
+            className="flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-bold text-primary-800 ring-2 ring-primary-500"
+          >
+            5
           </span>
-          <span className="flex items-center gap-1.5">
-            <span aria-hidden className={cn("h-3 w-3 rounded-full border-2 bg-transparent", row.border)} />
-            {he.schedule.blockLegend.block}
+          {he.schedule.calendarLegend.today}
+        </span>
+      </div>
+
+      <div className="flex items-center gap-4 border-t border-line pt-2">
+        <span className="flex items-center gap-2">
+          <span
+            aria-hidden
+            className="tnum rounded-full bg-primary-200 px-1.5 text-[11px] font-semibold text-primary-800"
+          >
+            4
           </span>
-          <span className="flex items-center gap-1.5">
-            <span
-              aria-hidden
-              className={cn("h-3 w-3 rounded-full border-2", row.border)}
-              style={{
-                background: `linear-gradient(90deg, var(--hospital-${row.key}) 50%, transparent 50%)`,
-              }}
-            />
-            {he.schedule.blockLegend.partial}
-          </span>
+          {he.schedule.calendarLegend.hours}
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <span className="text-caption text-muted">{he.schedule.calendarLegend.blockDot}</span>
+        <div className="flex items-center gap-4">
+          {(["refael", "elisha"] as const).map((key) => (
+            <span key={key} className="flex items-center gap-2">
+              <span
+                aria-hidden
+                className={cn(
+                  "h-2.5 w-2.5 rounded-full",
+                  key === "refael" ? "bg-hospital-refael" : "bg-hospital-elisha",
+                )}
+              />
+              <span
+                className={cn(
+                  "font-semibold",
+                  key === "refael" ? "text-hospital-refael" : "text-hospital-elisha",
+                )}
+              >
+                {he.hospitals[key]}
+              </span>
+            </span>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }

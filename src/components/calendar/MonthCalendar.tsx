@@ -11,7 +11,8 @@ import {
 } from "date-fns";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { cn } from "../../lib/cn";
-import { formatMonthYear, toDate, toISO } from "../../lib/date";
+import { formatFullDate, formatMonthYear, toDate, toISO } from "../../lib/date";
+import { he } from "../../i18n/he";
 import type { Hospital, ISODate } from "../../types";
 
 export interface MonthCalendarProps {
@@ -58,16 +59,21 @@ export function MonthCalendar({
           type="button"
           onClick={() => setViewMonth((m) => addMonths(m, -1))}
           aria-label="חודש קודם"
-          className="rounded-md p-2 text-muted transition-colors duration-fast hover:bg-primary-50 hover:text-primary-700"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-primary-50 hover:text-primary-700"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
-        <p className="text-h3 text-ink">{formatMonthYear(viewMonth)}</p>
+        <div className="flex flex-col items-center">
+          <p className="text-h3 text-ink">{formatMonthYear(viewMonth)}</p>
+          {selectedDate && (
+            <p className="text-caption text-muted">{formatFullDate(selectedDate)}</p>
+          )}
+        </div>
         <button
           type="button"
           onClick={() => setViewMonth((m) => addMonths(m, 1))}
           aria-label="חודש הבא"
-          className="rounded-md p-2 text-muted transition-colors duration-fast hover:bg-primary-50 hover:text-primary-700"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-primary-50 hover:text-primary-700"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
@@ -106,8 +112,10 @@ export function MonthCalendar({
               <span
                 className={cn(
                   "flex h-7 w-7 items-center justify-center rounded-full tnum transition-colors duration-fast",
-                  isToday && "bg-primary-700 font-semibold text-white",
-                  isSelected && !isToday && "ring-2 ring-primary-500 font-semibold text-primary-700",
+                  // הבחירה היא הסימון החזק; היום הנוכחי מסומן בטבעת
+                  isSelected && "bg-primary-700 font-bold text-white",
+                  isToday && !isSelected && "font-bold text-primary-800 ring-2 ring-primary-500",
+                  isToday && isSelected && "ring-2 ring-primary-300 ring-offset-1",
                 )}
               >
                 {day.getDate()}
@@ -129,6 +137,19 @@ export function MonthCalendar({
           );
         })}
       </div>
+
+      {onSelect && (
+        <button
+          type="button"
+          onClick={() => {
+            setViewMonth(startOfMonth(todayDate));
+            onSelect(today);
+          }}
+          className="mt-2 inline-flex min-h-[40px] w-full items-center justify-center rounded-md text-caption font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50 hover:text-primary-800"
+        >
+          {he.schedule.backToToday}
+        </button>
+      )}
     </div>
   );
 }

@@ -42,7 +42,6 @@ import {
   toISO,
 } from "../lib/date";
 import { he } from "../i18n/he";
-import { cn } from "../lib/cn";
 import type { Hospital, ISODate, Surgery } from "../types";
 
 /** משך חלון פנוי בניסוח קריא: "45 דק'" / "שעה" / "2:40 שעות" */
@@ -190,48 +189,30 @@ export function DoctorSchedule() {
           title={
             isAll ? he.schedule.combinedSchedule : he.schedule.titleFor(doctor.displayName)
           }
-        />
-      }
-    >
-      <div className="flex items-start gap-4">
-        <section className="min-w-0 flex-1 rounded-lg border border-line bg-surface shadow-sm">
-          {/* כותרת הכרטיס */}
-          <header className="rounded-t-[15px] bg-primary-700 px-4 py-3 text-white">
-            {/* סרגל בקרה מאוחד: תצוגה, שינוי לו"ז וניווט בזמן */}
-            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-white/15 pt-3">
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => toast("info", "שינוי הל\"ז אינו חלק מהפרוטוטייפ")}
-                  className="rounded-md px-2.5 py-1.5 text-caption font-semibold underline-offset-2 transition-colors duration-fast hover:bg-white/10 hover:underline"
-                >
-                  {he.schedule.changeSchedule}
-                </button>
-              </div>
-
+          start={
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pb-2">
               <div className="flex items-center gap-1">
                 <button
                   type="button"
                   aria-label="יום קודם"
                   onClick={navPrev}
-                  className="rounded-md p-1.5 transition-colors duration-fast hover:bg-white/10"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-line text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
                 >
-                  <ChevronRight className="h-5 w-5" />
+                  <ChevronRight className="h-5 w-5" aria-hidden />
                 </button>
-                <span dir="ltr" className="min-w-[84px] text-center text-h3 font-semibold tnum">
+                <span dir="ltr" className="min-w-[96px] text-center text-h3 font-semibold text-ink tnum">
                   {formatShortDate(selectedDate)}
                 </span>
                 <button
                   type="button"
                   aria-label="יום הבא"
                   onClick={navNext}
-                  className="rounded-md p-1.5 transition-colors duration-fast hover:bg-white/10"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-line text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
                 >
-                  <ChevronLeft className="h-5 w-5" />
+                  <ChevronLeft className="h-5 w-5" aria-hidden />
                 </button>
               </div>
-
-              <p className="text-caption text-white/90 sm:ms-auto">
+              <p className="text-caption text-muted">
                 {formatWeekday(selectedDate)}
                 {daySurgeries.length > 0 && (
                   <>
@@ -241,12 +222,27 @@ export function DoctorSchedule() {
                 )}
               </p>
             </div>
-          </header>
-
+          }
+          end={
+            <div className="pb-2">
+              <button
+                type="button"
+                onClick={() => toast("info", "שינוי הל\"ז אינו חלק מהפרוטוטייפ")}
+                className="inline-flex min-h-[40px] items-center rounded-md px-3 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50 hover:text-primary-800"
+              >
+                {he.schedule.changeSchedule}
+              </button>
+            </div>
+          }
+        />
+      }
+    >
+      <div className="flex items-start gap-4">
+        <section className="min-w-0 flex-1">
           {/* ===== תצוגה יומית ===== */}
           <>
               {/* פס ימים - ניווט מהיר כשהלוח החודשי אינו מוצג בצד */}
-              <div className="border-b border-line xl:hidden">
+              <div className="mb-3 overflow-hidden rounded-lg border border-line bg-surface shadow-sm xl:hidden">
                 <DayStrip doctorId={doctorId} selectedDate={selectedDate} onSelect={setSelectedDate} />
               </div>
 
@@ -278,7 +274,7 @@ export function DoctorSchedule() {
                   }
                 />
               ) : (
-                <div className="max-md:flex max-md:flex-col max-md:gap-3 max-md:p-3">
+                <div className="flex flex-col gap-3">
                   {/* ציר זמן ממוזג: ניתוחים וחלונות פנויים לפי סדר השעות ביום */}
                   {dayItems.map((item) =>
                     item.type === "surgery" ? (
@@ -314,52 +310,39 @@ export function DoctorSchedule() {
                                 .join(", ")
                             : undefined
                         }
-                        className={cn(
-                          "relative flex min-h-[56px] w-full items-center gap-4 border-b border-line px-4 py-2 text-start transition-colors duration-fast last:border-b-0",
-                          "bg-success/[.08] hover:bg-success/[.14]",
-                          "max-md:rounded-md max-md:border max-md:border-success/30",
-                        )}
+                        className="w-full rounded-lg border border-dashed border-success/40 bg-success/[.06] p-4 text-start transition-colors duration-fast hover:border-success hover:bg-success/[.12]"
                       >
-                        <span aria-hidden className="absolute inset-y-0 start-0 w-[3px] bg-success" />
-
-                        {/* עמודת זמן - מיושרת עם שורות הניתוחים */}
-                        <span className="flex shrink-0 items-baseline gap-1 md:w-[64px] md:flex-col md:gap-0">
-                          <span dir="ltr" className="text-mono-num font-semibold text-success tnum">
-                            {item.slot.start}
-                          </span>
-                          <span aria-hidden className="text-caption text-success md:hidden">
-                            -
-                          </span>
-                          <span dir="ltr" className="text-caption text-success tnum">
-                            {item.slot.end}
-                          </span>
-                        </span>
-
-                        {/* עמודת בית חולים - מיושרת עם הצ'יפים של הניתוחים */}
-                        <span className="flex shrink-0 items-center md:w-24">
-                          <HospitalChip hospital={item.slot.hospital} compact />
-                        </span>
-
-                        <span className="min-w-0 flex-1">
-                          <span className="text-body-strong font-semibold text-success">
-                            {he.schedule.free}
-                          </span>
-                          <span className="text-caption text-success">
-                            {" "}
-                            · {freeDurationLabel(item.slot)}
-                          </span>
-                          {isAll && item.slot.doctorIds.length > 0 && (
-                            <span className="block truncate text-caption font-semibold text-primary-700">
-                              {item.slot.doctorIds.length === 1
-                                ? doctorById(item.slot.doctorIds[0])?.displayName
-                                : he.schedule.freeDoctorsCount(item.slot.doctorIds.length)}
+                        <span className="flex items-start gap-4">
+                          <span className="flex h-14 w-16 shrink-0 flex-col items-center justify-center rounded-md bg-success/15">
+                            <span dir="ltr" className="text-h3 font-bold leading-none text-success tnum">
+                              {item.slot.start}
                             </span>
-                          )}
-                        </span>
+                            <span dir="ltr" className="mt-0.5 text-[12px] font-semibold text-success tnum">
+                              {item.slot.end}
+                            </span>
+                          </span>
 
-                        {/* אייקון הוספה - מיושר עם עמודת הפעולות */}
-                        <span className="flex shrink-0 justify-center max-md:absolute max-md:end-3 max-md:top-3 md:w-9">
-                          <Plus className="h-5 w-5 text-success" aria-hidden />
+                          <span className="min-w-0 flex-1">
+                            <span className="block text-h3 text-success">{he.schedule.free}</span>
+                            <span className="mt-0.5 block truncate text-muted">
+                              {freeDurationLabel(item.slot)}
+                              {isAll && item.slot.doctorIds.length > 0 && (
+                                <>
+                                  {" · "}
+                                  {item.slot.doctorIds.length === 1
+                                    ? doctorById(item.slot.doctorIds[0])?.displayName
+                                    : he.schedule.freeDoctorsCount(item.slot.doctorIds.length)}
+                                </>
+                              )}
+                            </span>
+                            <span className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
+                              <HospitalChip hospital={item.slot.hospital} compact />
+                              <span className="ms-auto flex shrink-0 items-center gap-1 font-semibold text-success">
+                                <Plus className="h-4 w-4" aria-hidden />
+                                {he.schedule.createSurgery}
+                              </span>
+                            </span>
+                          </span>
                         </span>
                       </button>
                     ),
@@ -369,7 +352,7 @@ export function DoctorSchedule() {
 
               {/* באנר ניתוח משולב - רלוונטי ליומן האישי בלבד */}
               {!isAll && (
-                <div className="m-4 flex items-start gap-2.5 rounded-md border border-primary-200 bg-primary-50 px-4 py-3">
+                <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-primary-200 bg-primary-50 px-4 py-3">
                   <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary-500" aria-hidden />
                   <p className="text-caption text-primary-800">
                     {he.schedule.combinedBanner('ד"ר בורג אלון')}{" "}
@@ -387,7 +370,7 @@ export function DoctorSchedule() {
         </section>
 
         {/* לוח שנה צדדי - בורר תאריך במסכים רחבים */}
-        <aside className="hidden w-[320px] shrink-0 rounded-lg border border-line bg-surface p-4 shadow-sm xl:block">
+        <aside className="sticky top-0 hidden max-h-[calc(100dvh-7rem)] w-[320px] shrink-0 self-start overflow-y-auto rounded-lg border border-line bg-surface p-4 shadow-sm xl:block">
             {loading ? (
               <div className="flex flex-col gap-3">
                 <Skeleton className="mx-auto w-32" />

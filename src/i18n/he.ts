@@ -92,10 +92,12 @@ export const he = {
     deleteConfirmBody: (patient: string) =>
       `למחוק את הניתוח של ${patient}? פעולה זו אינה ניתנת לביטול.`,
     deleteSuccess: "הניתוח נמחק בהצלחה",
-    blockLegend: {
-      full: "בלוק מלא",
-      block: "בלוק",
-      partial: "שעות פנויות בבלוק",
+    backToToday: "חזרה להיום",
+    calendarLegend: {
+      selected: "היום שנבחר",
+      today: "היום",
+      hours: "סך שעות ניתוח מתוכננות ביום",
+      blockDot: "נקודה מתחת לתאריך = קיים בלוק ניתוחים בבית החולים:",
     },
   },
 

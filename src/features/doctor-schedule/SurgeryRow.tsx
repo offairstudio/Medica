@@ -1,9 +1,9 @@
-import { MoreVertical, Pencil, ArrowLeftRight, Trash2, Monitor } from "lucide-react";
+import { EllipsisVertical, Pencil, ArrowLeftRight, Trash2, Monitor, Clock } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { HospitalChip } from "../../components/data/Chip";
 import { Dropdown } from "../../components/overlay/Dropdown";
-import { Tooltip } from "../../components/overlay/Tooltip";
 import { addMinutes } from "../../lib/date";
+import { formatDuration } from "../../lib/format";
 import { he } from "../../i18n/he";
 import type { Surgery } from "../../types";
 
@@ -19,115 +19,87 @@ export interface SurgeryRowProps {
 }
 
 /**
- * שורת ניתוח בפריסת "יומן יומי": עמודת זמן קבועה בתחילת השורה,
- * אחריה צ'יפ בית חולים - כך הזמנים והתגיות נסרקים בטור ישר.
- * לחיצה על השורה פותחת צפייה; תפריט הפעולות בקצה השמאלי.
+ * רשומת ניתוח ביום - כרטיס בדפוס של כרטיס התור באזור המטופל:
+ * בלוק שעה בימין, שם המטופל ככותרת, תיאור הניתוח מתחתיו ושורת מטא אחת.
  */
-export function SurgeryRow({ surgery, doctorName, highlighted, onView, onEdit, onSwap, onDelete }: SurgeryRowProps) {
+export function SurgeryRow({
+  surgery,
+  doctorName,
+  highlighted,
+  onView,
+  onEdit,
+  onSwap,
+  onDelete,
+}: SurgeryRowProps) {
   const description = surgery.procedures.map((p) => p.name).join(" + ");
   const endTime = addMinutes(surgery.startTime, surgery.durationMinutes);
-
-  function openView(e: React.MouseEvent | React.KeyboardEvent) {
-    if ((e.target as HTMLElement).closest("button, a, [role='menu']")) return;
-    onView(surgery);
-  }
+  const patientName = `${surgery.patient.firstName} ${surgery.patient.lastName}`;
 
   return (
     <div
       role="link"
       tabIndex={0}
-      aria-label={`צפייה בניתוח של ${surgery.patient.firstName} ${surgery.patient.lastName}`}
-      onClick={openView}
+      aria-label={`צפייה בניתוח של ${patientName}`}
+      onClick={(e) => {
+        if ((e.target as HTMLElement).closest("button, a, [role='menu']")) return;
+        onView(surgery);
+      }}
       onKeyDown={(e) => {
-        if (e.key === "Enter" && e.target === e.currentTarget) openView(e);
+        if (e.key === "Enter" && e.target === e.currentTarget) onView(surgery);
       }}
       className={cn(
-        "group relative flex min-h-[72px] cursor-pointer items-center gap-4 border-b border-line px-4 py-2 transition-colors duration-fast last:border-b-0 hover:bg-primary-50",
-        "max-md:flex-col max-md:items-stretch max-md:gap-2 max-md:rounded-md max-md:border max-md:border-line max-md:py-3",
+        "group cursor-pointer rounded-lg border border-line bg-surface p-4 shadow-sm transition-all duration-fast hover:border-primary-300 hover:shadow-md",
         highlighted && "flash-success",
       )}
     >
-      <span
-        aria-hidden
-        className="absolute inset-y-0 start-0 w-[3px] bg-primary-500 opacity-0 transition-opacity duration-fast group-hover:opacity-100"
-      />
-
-      {/* עמודת זמן - שעת התחלה מודגשת, סיום מתחת */}
-      <div className="flex shrink-0 items-baseline gap-1 max-md:pe-10 md:w-[64px] md:flex-col md:gap-0">
-        <span dir="ltr" className="text-mono-num font-semibold text-ink tnum">
-          {surgery.startTime}
+      <div className="flex items-start gap-4">
+        {/* בלוק שעה - מקביל לבלוק התאריך בכרטיס התור */}
+        <span className="flex h-14 w-16 shrink-0 flex-col items-center justify-center rounded-md bg-primary-100">
+          <span dir="ltr" className="text-h3 font-bold leading-none text-primary-700 tnum">
+            {surgery.startTime}
+          </span>
+          <span dir="ltr" className="mt-0.5 text-[12px] font-semibold text-primary-600 tnum">
+            {endTime}
+          </span>
         </span>
-        <span aria-hidden className="text-caption text-muted md:hidden">
-          -
+
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-h3 text-ink">{patientName}</span>
+          <span className="mt-0.5 block truncate text-muted">{description}</span>
+
+          <span className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
+            <HospitalChip hospital={surgery.hospital} compact />
+            <span className="flex items-center gap-1">
+              <Clock className="h-3.5 w-3.5" aria-hidden />
+              {formatDuration(surgery.durationMinutes)}
+            </span>
+            <span className="tnum">{surgery.patient.idNumber}</span>
+            {doctorName && (
+              <span className="truncate font-semibold text-primary-700">{doctorName}</span>
+            )}
+
+            <span className="ms-auto shrink-0">
+              <Dropdown
+                portal
+                trigger={
+                  <button
+                    type="button"
+                    aria-label={`פעולות לניתוח של ${patientName}`}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-primary-100 hover:text-primary-700"
+                  >
+                    <EllipsisVertical className="h-5 w-5" />
+                  </button>
+                }
+                items={[
+                  { key: "view", label: he.schedule.actions.view, icon: <Monitor />, onSelect: () => onView(surgery) },
+                  { key: "edit", label: he.schedule.actions.edit, icon: <Pencil />, onSelect: () => onEdit(surgery) },
+                  { key: "swap", label: he.schedule.actions.swap, icon: <ArrowLeftRight />, onSelect: () => onSwap(surgery) },
+                  { key: "delete", label: he.schedule.actions.delete, icon: <Trash2 />, danger: true, onSelect: () => onDelete(surgery) },
+                ]}
+              />
+            </span>
+          </span>
         </span>
-        <span dir="ltr" className="text-caption text-muted tnum">
-          {endTime}
-        </span>
-      </div>
-
-      {/* עמודת בית חולים */}
-      <div className="flex shrink-0 items-center md:w-24">
-        <HospitalChip hospital={surgery.hospital} compact />
-      </div>
-
-      {/* תיאור הניתוח (+ שם המנתח ביומן הכולל) */}
-      <div className="min-w-0 flex-1">
-        <Tooltip content={description} className="max-w-full">
-          <p className="truncate text-body">{description}</p>
-        </Tooltip>
-        {doctorName && (
-          <p className="truncate text-caption font-semibold text-primary-700">{doctorName}</p>
-        )}
-      </div>
-
-      {/* מטופל */}
-      <div className="md:w-40 md:shrink-0">
-        <p className="truncate text-body-strong font-semibold text-ink">
-          {surgery.patient.firstName} {surgery.patient.lastName}
-        </p>
-        <p className="text-caption text-muted tnum">{surgery.patient.idNumber}</p>
-      </div>
-
-      {/* תפריט פעולות - בקצה השמאלי של השורה */}
-      <div className="max-md:absolute max-md:end-2 max-md:top-2 md:w-9 md:shrink-0">
-        <Dropdown
-          trigger={
-            <button
-              type="button"
-              aria-label={`פעולות לניתוח של ${surgery.patient.firstName} ${surgery.patient.lastName}`}
-              className="rounded-md p-2 text-muted transition-colors duration-fast hover:bg-primary-100 hover:text-primary-700"
-            >
-              <MoreVertical className="h-5 w-5" />
-            </button>
-          }
-          items={[
-            {
-              key: "edit",
-              label: he.schedule.actions.edit,
-              icon: <Pencil />,
-              onSelect: () => onEdit(surgery),
-            },
-            {
-              key: "swap",
-              label: he.schedule.actions.swap,
-              icon: <ArrowLeftRight />,
-              onSelect: () => onSwap(surgery),
-            },
-            {
-              key: "delete",
-              label: he.schedule.actions.delete,
-              icon: <Trash2 />,
-              danger: true,
-              onSelect: () => onDelete(surgery),
-            },
-            {
-              key: "view",
-              label: he.schedule.actions.view,
-              icon: <Monitor />,
-              onSelect: () => onView(surgery),
-            },
-          ]}
-        />
       </div>
     </div>
   );

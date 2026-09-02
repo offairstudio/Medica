@@ -119,7 +119,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
     [],
   );
   // רוב המשתמשים מנהלים מנתחים בודדים; חיפוש נחוץ רק ברשימה ארוכה
-  const showSearch = managed.length > 6;
+  const showSearch = managed.length > 10;
   const activeDoctor = managed.find((d) => d.id === doctorId);
   const visibleDoctors = useMemo(() => {
     const q = query.trim();
@@ -217,12 +217,13 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
             </div>
           ) : (
             <div>
-              <p className="px-3 pb-1 text-caption font-semibold text-muted">
-                {he.schedule.managedDoctors}
-              </p>
+              <div className="sticky top-0 z-10 -mx-1 bg-surface px-1 pb-2">
+                <p className="px-3 pb-1 text-caption font-semibold text-muted">
+                  {he.schedule.managedDoctors}
+                </p>
 
-              {showSearch && (
-                <div className="relative px-1 pb-1">
+                {showSearch && (
+                  <div className="relative px-1">
                   <Search
                     className="pointer-events-none absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
                     aria-hidden
@@ -232,10 +233,11 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder={he.schedule.searchDoctor}
                     aria-label={he.schedule.searchDoctor}
-                    className="h-10 w-full rounded-md border border-line bg-surface ps-9 pe-3 text-caption text-ink placeholder:text-muted focus:border-primary-500"
-                  />
-                </div>
-              )}
+                      className="h-10 w-full rounded-md border border-line bg-surface ps-9 pe-3 text-caption text-ink placeholder:text-muted focus:border-primary-500"
+                    />
+                  </div>
+                )}
+              </div>
 
               <Link
                 to="/doctor/all/schedule"
