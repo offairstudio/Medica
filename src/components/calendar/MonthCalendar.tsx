@@ -74,41 +74,42 @@ export function MonthCalendar({
 
   return (
     <div className={cn("select-none", className)}>
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
+        {/* הכותרת מציגה את החודש שמוצג, ולחיצה עליה מחזירה לחודש של היום הנבחר */}
         <button
           type="button"
-          onClick={() => setViewMonth((m) => addMonths(m, -1))}
-          aria-label="חודש קודם"
-          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-primary-50 hover:text-primary-700"
+          onClick={() => selectedDate && setViewMonth(startOfMonth(toDate(selectedDate)))}
+          disabled={!isBrowsingAway}
+          title={isBrowsingAway ? `חזרה ל${formatFullDate(selectedDate!)}` : undefined}
+          className={cn(
+            "rounded-md px-1 py-0.5 text-h3 font-semibold text-ink transition-colors duration-fast",
+            isBrowsingAway && "text-primary-700 hover:bg-primary-50",
+          )}
         >
-          <ChevronRight className="h-4 w-4" />
+          {formatMonthYear(viewMonth)}
         </button>
-        <div className="flex flex-col items-center">
-          {/* הכותרת מציגה את החודש שמוצג, ולחיצה עליה מחזירה לחודש של היום הנבחר */}
+        {/* שני החצים יחד בקצה שמאל: קודם מימין, הבא משמאלו */}
+        <div className="flex items-center gap-1">
           <button
             type="button"
-            onClick={() => selectedDate && setViewMonth(startOfMonth(toDate(selectedDate)))}
-            disabled={!isBrowsingAway}
-            title={isBrowsingAway ? `חזרה ל${formatFullDate(selectedDate!)}` : undefined}
-            className={cn(
-              "rounded-md px-2 py-0.5 text-h3 text-ink transition-colors duration-fast",
-              isBrowsingAway && "text-primary-700 hover:bg-primary-50",
-            )}
+            onClick={() => setViewMonth((m) => addMonths(m, -1))}
+            aria-label="חודש קודם"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted transition-colors duration-fast hover:bg-primary-50 hover:text-primary-700"
           >
-            {formatMonthYear(viewMonth)}
+            <ChevronRight className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMonth((m) => addMonths(m, 1))}
+            aria-label="חודש הבא"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted transition-colors duration-fast hover:bg-primary-50 hover:text-primary-700"
+          >
+            <ChevronLeft className="h-4 w-4" />
           </button>
         </div>
-        <button
-          type="button"
-          onClick={() => setViewMonth((m) => addMonths(m, 1))}
-          aria-label="חודש הבא"
-          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-primary-50 hover:text-primary-700"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-y-0.5 text-center">
+      <div className="grid grid-cols-7 gap-1 text-center">
         {WEEKDAYS.map((d) => (
           <span key={d} className="pb-1 text-caption font-semibold text-muted">
             {d}
@@ -133,16 +134,18 @@ export function MonthCalendar({
               title={minutes ? he.schedule.load.exact(minutes) : undefined}
               aria-pressed={isSelected}
               className={cn(
-                "relative mx-auto flex h-11 w-10 flex-col items-center justify-start rounded-md pt-1 transition-colors duration-fast",
+                "relative mx-auto flex h-12 w-full flex-col items-center justify-start rounded-md pt-1 transition-colors duration-fast",
                 !inMonth && "invisible",
                 disabled && inMonth && "cursor-default opacity-40",
-                !disabled && "hover:bg-primary-50",
+                // ימים עם ניתוחים נצבעים כגלולה, כך שהחודש נקרא במבט אחד
+                minutes ? "bg-primary-100" : !disabled && "hover:bg-primary-50",
               )}
             >
               <span
                 className={cn(
                   "flex h-7 w-7 items-center justify-center rounded-full tnum transition-colors duration-fast",
                   // הבחירה היא הסימון החזק; היום הנוכחי מסומן בטבעת
+                  minutes && !isSelected && "text-primary-800",
                   isSelected && "bg-primary-700 font-bold text-white",
                   isToday && !isSelected && "font-bold text-primary-800 ring-2 ring-primary-500",
                   isToday && isSelected && "ring-2 ring-primary-300 ring-offset-1",
@@ -153,7 +156,7 @@ export function MonthCalendar({
               {minutes ? (
                 <span
                   aria-hidden
-                  className="mt-px rounded-full bg-primary-100 px-1 text-[11px] font-semibold leading-tight text-primary-800 tnum"
+                  className="mt-px px-1 text-[11px] font-semibold leading-tight text-primary-800 tnum"
                 >
                   {loadBadgeLabel(minutes)}
                 </span>

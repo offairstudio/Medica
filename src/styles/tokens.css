@@ -13,12 +13,12 @@
   --accent: #12cbca;
 
   /* Hospital identity */
-  --hospital-refael: #012d5e;
+  --hospital-refael: #0062cf;
   --hospital-elisha: #46348a;
   --hospital-telaviv: #0b6e6d;
   --hospital-rmc: #8e3b62;
   /* גווני רקע לרשומות היומן - תמיד גוון בהיר של צבע בית החולים עצמו */
-  --hospital-refael-soft: #e3ebf5;
+  --hospital-refael-soft: #e3eefc;
   --hospital-elisha-soft: #eae5f7;
   --hospital-telaviv-soft: #e0f4f3;
   --hospital-rmc-soft: #f4cfe0;

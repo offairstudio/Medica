@@ -99,6 +99,8 @@ export const he = {
     load: {
       badgeHours: (h: number) => `${h}ש׳`,
       badgeMinutes: (m: number) => `${m}ד׳`,
+      /** דוגמה מלאה למקרא, שבה יש מקום לכתוב את היחידה */
+      legendSample: "4 שעות",
       /** הערך המדויק, לטולטיפ ולקורא מסך */
       exact: (minutes: number) => {
         const h = Math.floor(minutes / 60);
@@ -111,8 +113,7 @@ export const he = {
     calendarLegend: {
       selected: "היום שנבחר",
       today: "היום",
-      hours: "משך הניתוחים ביום, מעוגל לשעה (ש׳ = שעות)",
-      blockDot: "נקודה מתחת לתאריך = קיים בלוק ניתוחים בבית החולים:",
+      hours: "משך הניתוחים ביום (מעוגל לשעה)",
     },
   },
 

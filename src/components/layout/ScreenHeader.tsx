@@ -27,6 +27,10 @@ export interface ScreenHeaderProps {
   media?: ReactNode;
   /** פעולה בקצה שורת הכותרת */
   titleEnd?: ReactNode;
+  /** שורת פרטים מתחת לכותרת - טלפון, דוא"ל וכדומה */
+  meta?: ReactNode;
+  /** קו הפרדה מתחת לשורת הכותרת */
+  titleDivider?: boolean;
   /** כותרת מוקטנת - כשהכותרת היא שם ולא שם מסך */
   compact?: boolean;
   /** קו הפרדה מתחת לשורת הבקרות */
@@ -46,18 +50,26 @@ export function ScreenHeader({
   end,
   media,
   titleEnd,
+  meta,
   compact,
+  titleDivider,
   divider = true,
 }: ScreenHeaderProps) {
   const hasControls = Boolean(start || end);
 
   return (
     <>
-      <div className="flex items-center gap-3">
+      <div
+        className={cn(
+          "flex items-center gap-3",
+          titleDivider && "border-b border-line pb-3",
+        )}
+      >
         {media}
-        <h1 className={cn("min-w-0 flex-1 truncate", compact ? "text-h1 text-ink" : "text-display text-ink")}>
-          {title}
-        </h1>
+        <div className="min-w-0 flex-1">
+          <h1 className={cn("truncate", compact ? "text-h1 text-ink" : "text-display text-ink")}>{title}</h1>
+          {meta}
+        </div>
         {titleEnd}
       </div>
       {subtitle && <p className="mt-1 text-body text-muted">{subtitle}</p>}

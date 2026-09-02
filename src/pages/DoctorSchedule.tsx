@@ -1,6 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams, Navigate } from "react-router-dom";
-import { Info, Plus } from "lucide-react";
+import { addDays } from "date-fns";
+import {
+  Info,
+  Plus,
+  ChevronRight,
+  ChevronLeft,
+  CalendarDays,
+  ClipboardList,
+  Phone,
+  Mail,
+} from "lucide-react";
 import { DoctorShell } from "../components/layout/AppShell";
 import { ScreenHeader } from "../components/layout/ScreenHeader";
 import { Button } from "../components/primitives/Button";
@@ -11,7 +21,6 @@ import { useToast } from "../components/overlay/Toast";
 import { MonthCalendar } from "../components/calendar/MonthCalendar";
 import { BlockLegend } from "../components/calendar/BlockLegend";
 import { SurgeryRow } from "../features/doctor-schedule/SurgeryRow";
-import { DayStrip } from "../features/doctor-schedule/DayStrip";
 import { SwapModal } from "../features/surgery-swap/SwapModal";
 import { SurgeryDetailsModal } from "../features/surgery-details/SurgeryDetailsModal";
 import {
@@ -32,7 +41,10 @@ import {
   formatFullDate,
   formatTotalHours,
   timeToMinutes,
+  toDate,
+  toISO,
 } from "../lib/date";
+import { cn } from "../lib/cn";
 import { he } from "../i18n/he";
 import type { Hospital, ISODate, Surgery } from "../types";
 
@@ -54,6 +66,8 @@ export function DoctorSchedule() {
   const { toast } = useToast();
 
   const [selectedDate, setSelectedDate] = useState<ISODate>(MOCK_TODAY);
+  /** לוח החודש נפתח ונסגר מהכפתור שבשורת הבקרות */
+  const [calendarOpen, setCalendarOpen] = useState(true);
   const [swapTarget, setSwapTarget] = useState<Surgery | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Surgery | null>(null);
   const [wizardPrefill, setWizardPrefill] = useState<WizardPrefill | null>(null);
@@ -158,6 +172,18 @@ export function DoctorSchedule() {
     );
   }
 
+  /** כפתורי הניווט היומי - אותה צורה לשלושתם */
+  const navButtonClass =
+    "inline-flex h-10 w-10 items-center justify-center rounded-md border border-line text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700";
+
+  function navPrev() {
+    setSelectedDate(toISO(addDays(toDate(selectedDate), -1)));
+  }
+
+  function navNext() {
+    setSelectedDate(toISO(addDays(toDate(selectedDate), 1)));
+  }
+
   function openDay(date: ISODate) {
     setSelectedDate(date);
   }
@@ -177,6 +203,25 @@ export function DoctorSchedule() {
               <Avatar name={doctor.displayName} src={doctor.avatarUrl} size="lg" />
             )
           }
+          titleDivider
+          meta={
+            isAll ? undefined : (
+              <div className="mt-0.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-muted">
+                <span className="flex items-center gap-1.5">
+                  <ClipboardList className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                  <span className="tnum">{doctor.licenseNumber}</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Phone className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                  <span dir="ltr" className="tnum">{doctor.mobile}</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Mail className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                  <span dir="ltr">{doctor.email}</span>
+                </span>
+              </div>
+            )
+          }
           titleEnd={
             <button
               type="button"
@@ -187,6 +232,54 @@ export function DoctorSchedule() {
             </button>
           }
           start={
+            <div className="flex items-center gap-2 py-1">
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  aria-label="יום קודם"
+                  onClick={navPrev}
+                  className={navButtonClass}
+                >
+                  <ChevronRight className="h-5 w-5" aria-hidden />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedDate(MOCK_TODAY)}
+                  disabled={selectedDate === MOCK_TODAY}
+                  className={cn(navButtonClass, "w-auto px-3 font-semibold disabled:cursor-default disabled:opacity-45 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-body")}
+                >
+                  {he.schedule.backToToday}
+                </button>
+                <button
+                  type="button"
+                  aria-label="יום הבא"
+                  onClick={navNext}
+                  className={navButtonClass}
+                >
+                  <ChevronLeft className="h-5 w-5" aria-hidden />
+                </button>
+              </div>
+
+              {/* הצגה והסתרה של לוח החודש שלצד הרשימה */}
+              <button
+                type="button"
+                onClick={() => setCalendarOpen((open) => !open)}
+                aria-pressed={calendarOpen}
+                aria-label={he.schedule.calendar}
+                title={he.schedule.calendar}
+                className={cn(
+                  // הלוח עצמו מוצג רק במסך רחב, ולכן גם הכפתור שמפעיל אותו
+                  "hidden h-10 w-10 items-center justify-center rounded-md transition-colors duration-fast xl:inline-flex",
+                  calendarOpen
+                    ? "bg-primary-100 text-primary-800"
+                    : "border border-line text-body hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700",
+                )}
+              >
+                <CalendarDays className="h-5 w-5" aria-hidden />
+              </button>
+            </div>
+          }
+          end={
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 py-1">
               <span className="text-h3 font-semibold text-ink">{formatFullDate(selectedDate)}</span>
               {daySurgeries.length > 0 && (
@@ -194,19 +287,6 @@ export function DoctorSchedule() {
                   {he.schedule.daySummary(daySurgeries.length, formatTotalHours(totalMinutes))}
                 </span>
               )}
-              <button
-                type="button"
-                onClick={() => setSelectedDate(MOCK_TODAY)}
-                disabled={selectedDate === MOCK_TODAY}
-                className="inline-flex h-10 items-center rounded-md border border-line px-3 font-semibold text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 disabled:cursor-default disabled:opacity-45 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-body"
-              >
-                {he.schedule.backToToday}
-              </button>
-            </div>
-          }
-          end={
-            <div className="py-1">
-              <DayStrip doctorId={doctorId} selectedDate={selectedDate} onSelect={setSelectedDate} />
             </div>
           }
         />
@@ -343,7 +423,13 @@ export function DoctorSchedule() {
         </section>
 
         {/* לוח שנה צדדי - בורר תאריך במסכים רחבים */}
-        <aside className="sticky top-0 hidden max-h-[calc(100dvh-7rem)] w-[320px] shrink-0 self-start overflow-y-auto rounded-lg border border-line bg-surface p-4 shadow-sm xl:block">
+        <aside
+          hidden={!calendarOpen}
+          className={cn(
+            "sticky top-0 max-h-[calc(100dvh-7rem)] w-[320px] shrink-0 self-start overflow-y-auto rounded-lg bg-surface p-4",
+            calendarOpen ? "hidden xl:block" : "hidden",
+          )}
+        >
             {loading ? (
               <div className="flex flex-col gap-3">
                 <Skeleton className="mx-auto w-32" />
@@ -360,7 +446,7 @@ export function DoctorSchedule() {
                   loadMinutes={dayLoadMinutes}
                   onSelect={setSelectedDate}
                 />
-                <div className="mt-4 border-t border-line pt-3">
+                <div className="mt-5">
                   <BlockLegend />
                 </div>
               </>

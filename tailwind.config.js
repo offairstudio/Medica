@@ -18,11 +18,11 @@ export default {
         },
         accent: "#12CBCA",
         hospital: {
-          refael: "#012D5E",
+          refael: "#0062CF",
           elisha: "#46348A",
           telaviv: "#0B6E6D",
           rmc: "#8E3B62",
-          "refael-soft": "#E3EBF5",
+          "refael-soft": "#E3EEFC",
           "elisha-soft": "#EAE5F7",
           "telaviv-soft": "#E0F4F3",
           "rmc-soft": "#F4CFE0",
