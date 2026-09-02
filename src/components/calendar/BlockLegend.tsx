@@ -9,15 +9,7 @@ import { he } from "../../i18n/he";
 export function BlockLegend({ className }: { className?: string }) {
   return (
     <div className={cn("flex flex-col gap-4 text-caption text-body", className)}>
-      <div className="flex items-center gap-2">
-        <span
-          aria-hidden
-          className="tnum rounded-full bg-primary-100 px-1.5 text-[11px] font-semibold text-primary-800"
-        >
-          {he.schedule.load.legendSample}
-        </span>
-        {he.schedule.calendarLegend.hours}
-      </div>
+      <p>{he.schedule.calendarLegend.hours}</p>
 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
         {HOSPITAL_LIST.map((h) => (

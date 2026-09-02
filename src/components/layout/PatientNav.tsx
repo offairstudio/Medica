@@ -77,7 +77,7 @@ function AccountMenu({
           aria-label={`תפריט המשתמש: ${fullName}`}
           title={iconOnly ? fullName : undefined}
           className={cn(
-            "flex min-h-[52px] items-center gap-2.5 border border-line bg-surface-2 text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50",
+            "flex min-h-[52px] items-center gap-2.5 text-start transition-colors duration-fast hover:bg-surface-2",
             iconOnly
               ? "justify-center rounded-full p-1.5"
               : variant === "sidebar"

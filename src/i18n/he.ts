@@ -99,8 +99,6 @@ export const he = {
     load: {
       badgeHours: (h: number) => `${h}ש׳`,
       badgeMinutes: (m: number) => `${m}ד׳`,
-      /** דוגמה מלאה למקרא, שבה יש מקום לכתוב את היחידה */
-      legendSample: "4 שעות",
       /** הערך המדויק, לטולטיפ ולקורא מסך */
       exact: (minutes: number) => {
         const h = Math.floor(minutes / 60);

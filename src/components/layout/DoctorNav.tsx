@@ -45,7 +45,7 @@ function AccountMenu({ collapsed }: { collapsed?: boolean }) {
           aria-label={`תפריט המשתמש: ${currentDoctor.displayName}`}
           title={collapsed ? currentDoctor.displayName : undefined}
           className={cn(
-            "flex min-h-[52px] items-center gap-2.5 border border-line bg-surface-2 text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50",
+            "flex min-h-[52px] items-center gap-2.5 text-start transition-colors duration-fast hover:bg-surface-2",
             collapsed ? "justify-center rounded-full p-1.5" : "w-full rounded-md p-2 pe-3",
           )}
         >
