@@ -430,27 +430,17 @@ export function DoctorSchedule() {
             calendarOpen ? "hidden xl:block" : "hidden",
           )}
         >
-            {loading ? (
-              <div className="flex flex-col gap-3">
-                <Skeleton className="mx-auto w-32" />
-                <Skeleton variant="block" className="h-64" />
-                <Skeleton className="w-3/4" />
-                <Skeleton className="w-3/4" />
-              </div>
-            ) : (
-              <>
-                <MonthCalendar
-                  today={MOCK_TODAY}
-                  selectedDate={selectedDate}
-                  markedDates={markedDates}
-                  loadMinutes={dayLoadMinutes}
-                  onSelect={setSelectedDate}
-                />
-                <div className="mt-5">
-                  <BlockLegend />
-                </div>
-              </>
-            )}
+          {/* הלוח אינו נטען מחדש במעבר יום - רק הבחירה בתוכו מתעדכנת */}
+          <MonthCalendar
+            today={MOCK_TODAY}
+            selectedDate={selectedDate}
+            markedDates={markedDates}
+            loadMinutes={dayLoadMinutes}
+            onSelect={setSelectedDate}
+          />
+          <div className="mt-5">
+            <BlockLegend />
+          </div>
         </aside>
       </div>
 
