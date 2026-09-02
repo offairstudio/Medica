@@ -31,9 +31,9 @@ function WelcomeBanner({ nextRelative }: { nextRelative?: string }) {
   return (
     <section
       aria-labelledby="patient-welcome-title"
-      className="relative isolate grid min-h-[176px] overflow-hidden rounded-2xl border border-primary-200 bg-gradient-to-l from-primary-50 via-white to-[#ecf9f8] px-6 py-5 shadow-sm sm:grid-cols-[minmax(0,1fr)_230px] sm:items-center sm:px-8"
+      className="relative isolate grid min-h-[190px] overflow-hidden rounded-2xl border border-primary-200 bg-gradient-to-l from-primary-50 via-white to-[#ecf9f8] shadow-sm sm:grid-cols-[minmax(0,1fr)_34%] sm:items-stretch"
     >
-      <div className="relative z-10 max-w-xl py-2">
+      <div className="relative z-10 max-w-xl p-6 sm:self-center sm:px-8 sm:py-5">
         <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1 text-caption font-semibold text-primary-700 shadow-sm ring-1 ring-primary-100">
           <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
           האזור האישי שלך
@@ -53,10 +53,10 @@ function WelcomeBanner({ nextRelative }: { nextRelative?: string }) {
       </div>
 
       <img
-        src="/brand/patient-welcome-care-v2.png"
+        src="/brand/patient-welcome-care-v3.jpg"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 left-0 z-0 h-full w-1/2 object-cover opacity-20 [mask-image:linear-gradient(to_right,black,transparent)] sm:static sm:h-[152px] sm:w-full sm:rounded-xl sm:object-cover sm:opacity-100 sm:[mask-image:none]"
+        className="pointer-events-none absolute inset-y-0 left-0 z-0 h-full w-1/2 object-cover object-center opacity-20 [mask-image:linear-gradient(to_right,black,transparent)] sm:static sm:h-full sm:w-full sm:border-r sm:border-primary-100 sm:opacity-100 sm:[mask-image:none]"
       />
     </section>
   );
