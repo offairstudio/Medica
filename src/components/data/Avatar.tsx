@@ -66,12 +66,13 @@ export function AllDoctorsAvatar({
     <span
       aria-hidden
       className={cn(
-        "flex shrink-0 items-center justify-center text-primary-700",
+        // אותו עיגול של תמונת פרופיל, והאייקון יושב בתוכו עם שוליים
+        "flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-100 text-primary-700",
         sizes[size ?? "md"],
         className,
       )}
     >
-      <DoctorsGlyph className="h-full w-full" />
+      <DoctorsGlyph className="h-[72%] w-[72%]" />
     </span>
   );
 }
@@ -94,12 +95,13 @@ export function Avatar({ name, src, size = "md", className }: AvatarProps) {
       aria-hidden
       title={name}
       className={cn(
-        "flex shrink-0 items-center justify-center text-primary-700",
+        // אותו עיגול של תמונת פרופיל, והאייקון יושב בתוכו עם שוליים
+        "flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-100 text-primary-700",
         sizes[size],
         className,
       )}
     >
-      <DoctorGlyph className="h-full w-full" />
+      <DoctorGlyph className="h-[72%] w-[72%]" />
     </span>
   );
 }
