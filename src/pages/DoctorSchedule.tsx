@@ -360,7 +360,7 @@ export function DoctorSchedule() {
                                 .join(", ")
                             : undefined
                         }
-                        className="group w-full rounded-lg border border-dashed border-line p-4 text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50"
+                        className="group w-full rounded-lg border border-dashed border-line p-4 text-start transition-colors duration-fast hover:border-muted/40 hover:bg-surface-2"
                       >
                         <span className="flex items-start gap-4">
                           {/* פס נייטרלי - אותו מקום שבו יושב פס בית החולים ברשומה תפוסה */}
