@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { X } from "lucide-react";
+import { ScrollFade } from "../layout/ScrollFade";
 import { cn } from "../../lib/cn";
 
 export interface DrawerProps {
@@ -87,7 +88,10 @@ export function Drawer({ open, onClose, title, side = "end", children }: DrawerP
             <X className="h-5 w-5" />
           </button>
         </div>
-        <div className="flex-1 overflow-y-auto p-5">{children}</div>
+        <div className="relative min-h-0 flex-1">
+          <div className="h-full overflow-y-auto p-5">{children}</div>
+          <ScrollFade className="from-surface via-surface/70" />
+        </div>
       </div>
     </div>
   );

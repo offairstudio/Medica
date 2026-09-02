@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { PatientNav } from "./PatientNav";
 import { DoctorNav } from "./DoctorNav";
+import { ScrollFade } from "./ScrollFade";
 import { cn } from "../../lib/cn";
 
 /**
@@ -29,14 +30,12 @@ export function DoctorShell({
             <div className="mx-auto w-full max-w-[1400px]">{header}</div>
           </div>
         )}
-        <main
-          className={cn(
-            "min-h-0 flex-1 overflow-y-auto px-4 pb-24 md:px-6 md:pb-8",
-            header ? "pt-6" : "pt-6",
-          )}
-        >
-          <div className="mx-auto w-full max-w-[1400px]">{children}</div>
-        </main>
+        <div className="relative min-h-0 flex-1">
+          <main className="h-full overflow-y-auto px-4 pb-24 pt-6 md:px-6 md:pb-8">
+            <div className="mx-auto w-full max-w-[1400px]">{children}</div>
+          </main>
+          <ScrollFade />
+        </div>
       </div>
     </div>
   );
@@ -65,14 +64,17 @@ export function PatientShell({
             <div className="mx-auto w-full max-w-[1000px]">{header}</div>
           </div>
         )}
-        <main
-          className={cn(
-            "min-h-0 flex-1 overflow-y-auto px-4 pb-24 md:px-8 md:pb-12",
-            header ? "pt-6" : "pt-6 md:pt-10",
-          )}
-        >
-          <div className="mx-auto w-full max-w-[1000px]">{children}</div>
-        </main>
+        <div className="relative min-h-0 flex-1">
+          <main
+            className={cn(
+              "h-full overflow-y-auto px-4 pb-24 md:px-8 md:pb-12",
+              header ? "pt-6" : "pt-6 md:pt-10",
+            )}
+          >
+            <div className="mx-auto w-full max-w-[1000px]">{children}</div>
+          </main>
+          <ScrollFade />
+        </div>
       </div>
     </div>
   );
