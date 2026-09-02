@@ -13,7 +13,6 @@ const BASE_DOCTORS: Doctor[] = [
     lastName: "דוחנו",
     displayName: 'ד"ר דוחנו אולג',
     title: 'ד"ר',
-    avatarUrl: "/avatars/doc-1.svg",
     email: "oleg.dohno@raphael.co.il",
     mobile: "0523372667",
     licenseNumber: "1-47382",
@@ -26,7 +25,6 @@ const BASE_DOCTORS: Doctor[] = [
     lastName: "דרקסלר",
     displayName: "פרופ' דרקסלר מיכאל",
     title: "פרופ'",
-    avatarUrl: "/avatars/doc-2.svg",
     email: "m.drexler@raphael.co.il",
     mobile: "0528114923",
     licenseNumber: "1-29847",
@@ -39,7 +37,6 @@ const BASE_DOCTORS: Doctor[] = [
     lastName: "טיינין",
     displayName: "פרופ' טיינין",
     title: "פרופ'",
-    avatarUrl: "/avatars/doc-3.svg",
     email: "tainin@raphael.co.il",
     mobile: "0542218837",
     licenseNumber: "1-31205",
@@ -64,7 +61,6 @@ const BASE_DOCTORS: Doctor[] = [
     lastName: "חזן",
     displayName: "פרופ' חזן דוד",
     title: "פרופ'",
-    avatarUrl: "/avatars/doc-5.svg",
     email: "d.hazan@raphael.co.il",
     mobile: "0509923471",
     licenseNumber: "1-18463",
@@ -89,7 +85,6 @@ const BASE_DOCTORS: Doctor[] = [
     lastName: "בורג",
     displayName: 'ד"ר בורג אלון',
     title: 'ד"ר',
-    avatarUrl: "/avatars/doc-7.svg",
     email: "a.burg@raphael.co.il",
     mobile: "0546672310",
     licenseNumber: "1-44519",
@@ -141,7 +136,15 @@ const GENERATED_DOCTORS: Doctor[] = EXTRA_NAMES.map(([first, last], i) => {
   };
 });
 
-export const doctors: Doctor[] = [...BASE_DOCTORS, ...GENERATED_DOCTORS];
+/**
+ * מיעוט המנתחים ללא תמונת פרופיל - עבורם מוצג אייקון רופא/ה
+ * במקום התמונה, כדי לוודא שגם המצב הזה נבדק בממשק.
+ */
+const WITHOUT_AVATAR = new Set(["doc-4", "doc-8", "doc-13", "doc-21", "doc-27", "doc-33"]);
+
+export const doctors: Doctor[] = [...BASE_DOCTORS, ...GENERATED_DOCTORS].map((d) =>
+  WITHOUT_AVATAR.has(d.id) ? d : { ...d, avatarUrl: `/avatars/${d.id}.jpg` },
+);
 
 export function doctorById(id: string): Doctor | undefined {
   return doctors.find((d) => d.id === id);

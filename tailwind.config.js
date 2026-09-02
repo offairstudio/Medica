@@ -20,6 +20,8 @@ export default {
         hospital: {
           refael: "#012D5E",
           elisha: "#46348A",
+          telaviv: "#0B6E6D",
+          rmc: "#8E3B62",
         },
         success: "#187B5B",
         warning: "#8A5A12",

@@ -141,19 +141,16 @@ export function DoctorSchedule() {
   const totalMinutes = daySurgeries.reduce((sum, s) => sum + s.durationMinutes, 0);
 
 
-  const { markedDates, loadBadges } = useMemo(() => {
+  const { markedDates, dayLoadMinutes } = useMemo(() => {
     const marked: Record<ISODate, Hospital> = {};
-    const badges: Record<ISODate, string> = {};
+    /** דקות ניתוח מצטברות לכל יום - הלוח מעצב מהן את תג העומס */
     const perDay: Record<ISODate, number> = {};
     for (const s of surgeries) {
       if ((!isAll && s.doctorId !== doctorId) || s.status === "cancelled") continue;
       marked[s.date] = s.hospital;
       perDay[s.date] = (perDay[s.date] ?? 0) + s.durationMinutes;
     }
-    for (const [date, minutes] of Object.entries(perDay)) {
-      badges[date] = (minutes / 60).toFixed(2).replace(/\.?0+$/, "");
-    }
-    return { markedDates: marked, loadBadges: badges };
+    return { markedDates: marked, dayLoadMinutes: perDay };
   }, [surgeries, doctorId, isAll]);
 
   if (!doctor) return <Navigate to="/doctor/doc-1/schedule" replace />;
@@ -192,6 +189,14 @@ export function DoctorSchedule() {
           start={
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pb-2">
               <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setSelectedDate(MOCK_TODAY)}
+                  disabled={selectedDate === MOCK_TODAY}
+                  className="me-1 inline-flex h-10 items-center rounded-md border border-line px-3 font-semibold text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 disabled:cursor-default disabled:opacity-45 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-body"
+                >
+                  {he.schedule.backToToday}
+                </button>
                 <button
                   type="button"
                   aria-label="יום קודם"
@@ -310,20 +315,20 @@ export function DoctorSchedule() {
                                 .join(", ")
                             : undefined
                         }
-                        className="w-full rounded-lg border border-dashed border-success/40 bg-success/[.06] p-4 text-start transition-colors duration-fast hover:border-success hover:bg-success/[.12]"
+                        className="group w-full rounded-lg border border-dashed border-line p-4 text-start transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50"
                       >
                         <span className="flex items-start gap-4">
-                          <span className="flex h-14 w-16 shrink-0 flex-col items-center justify-center rounded-md bg-success/15">
-                            <span dir="ltr" className="text-h3 font-bold leading-none text-success tnum">
+                          <span className="flex h-14 w-16 shrink-0 flex-col items-center justify-center rounded-md border border-dashed border-line bg-surface transition-colors duration-fast group-hover:border-primary-200">
+                            <span dir="ltr" className="text-h3 font-bold leading-none text-body tnum">
                               {item.slot.start}
                             </span>
-                            <span dir="ltr" className="mt-0.5 text-[12px] font-semibold text-success tnum">
+                            <span dir="ltr" className="mt-0.5 text-[12px] font-semibold text-muted tnum">
                               {item.slot.end}
                             </span>
                           </span>
 
                           <span className="min-w-0 flex-1">
-                            <span className="block text-h3 text-success">{he.schedule.free}</span>
+                            <span className="block text-h3 text-muted">{he.schedule.free}</span>
                             <span className="mt-0.5 block truncate text-muted">
                               {freeDurationLabel(item.slot)}
                               {isAll && item.slot.doctorIds.length > 0 && (
@@ -337,7 +342,7 @@ export function DoctorSchedule() {
                             </span>
                             <span className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
                               <HospitalChip hospital={item.slot.hospital} compact />
-                              <span className="ms-auto flex shrink-0 items-center gap-1 font-semibold text-success">
+                              <span className="ms-auto flex shrink-0 items-center gap-1 font-semibold text-primary-600 transition-colors duration-fast group-hover:text-primary-800">
                                 <Plus className="h-4 w-4" aria-hidden />
                                 {he.schedule.createSurgery}
                               </span>
@@ -384,7 +389,7 @@ export function DoctorSchedule() {
                   today={MOCK_TODAY}
                   selectedDate={selectedDate}
                   markedDates={markedDates}
-                  loadBadges={loadBadges}
+                  loadMinutes={dayLoadMinutes}
                   onSelect={setSelectedDate}
                 />
                 <div className="mt-4 border-t border-line pt-3">

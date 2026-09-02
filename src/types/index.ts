@@ -3,7 +3,7 @@ export type ID = string;
 export type ISODate = string; // '2026-07-29'
 export type Time = string; // '16:00'
 
-export type Hospital = "refael" | "elisha";
+export type Hospital = "refael" | "elisha" | "telAviv" | "rmc";
 
 // ---------- מנתח ----------
 export interface Doctor {

@@ -12,6 +12,7 @@ import {
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { formatFullDate, formatMonthYear, toDate, toISO } from "../../lib/date";
+import { HOSPITALS } from "../../mock/hospitals";
 import { he } from "../../i18n/he";
 import type { Hospital, ISODate } from "../../types";
 
@@ -21,8 +22,8 @@ export interface MonthCalendarProps {
   today: ISODate;
   /** נקודות סימון: תאריך → צבע בית חולים */
   markedDates?: Record<ISODate, Hospital>;
-  /** תגי עומס: תאריך → שעות מתוכננות ("2.66") */
-  loadBadges?: Record<ISODate, string>;
+  /** עומס יומי: תאריך → סך דקות הניתוח המתוכננות */
+  loadMinutes?: Record<ISODate, number>;
   onSelect?: (date: ISODate) => void;
   /** מגביל בחירה לתאריכים עם סימון (למודל ההחלפה) */
   selectableOnly?: boolean;
@@ -31,11 +32,20 @@ export interface MonthCalendarProps {
 
 const WEEKDAYS = ["א", "ב", "ג", "ד", "ה", "ו", "ש"];
 
+/**
+ * תג העומס נקרא בתוך משבצת של 28px, ולכן הוא מעוגל לשעה שלמה
+ * ונושא סימון יחידה ("ש׳") כדי שלא ייקרא כשעת יום. הערך המדויק
+ * נמסר במקביל ב-title וב-aria-label של היום.
+ */
+function loadBadgeLabel(minutes: number): string {
+  return minutes < 60 ? he.schedule.load.badgeMinutes(minutes) : he.schedule.load.badgeHours(Math.round(minutes / 60));
+}
+
 export function MonthCalendar({
   selectedDate,
   today,
   markedDates = {},
-  loadBadges = {},
+  loadMinutes = {},
   onSelect,
   selectableOnly,
   className,
@@ -91,7 +101,7 @@ export function MonthCalendar({
           const isToday = isSameDay(day, todayDate);
           const isSelected = selected ? isSameDay(day, selected) : false;
           const mark = markedDates[iso];
-          const badge = loadBadges[iso];
+          const minutes = loadMinutes[iso];
           const disabled = !inMonth || (selectableOnly && !mark);
 
           return (
@@ -100,7 +110,8 @@ export function MonthCalendar({
               type="button"
               disabled={disabled && !isToday}
               onClick={() => onSelect?.(iso)}
-              aria-label={iso}
+              aria-label={minutes ? `${iso}, ${he.schedule.load.exact(minutes)}` : iso}
+              title={minutes ? he.schedule.load.exact(minutes) : undefined}
               aria-pressed={isSelected}
               className={cn(
                 "relative mx-auto flex h-11 w-10 flex-col items-center justify-start rounded-md pt-1 transition-colors duration-fast",
@@ -120,36 +131,21 @@ export function MonthCalendar({
               >
                 {day.getDate()}
               </span>
-              {badge ? (
-                <span className="mt-px rounded-full bg-primary-200 px-1 text-[11px] font-semibold leading-tight text-primary-800 tnum">
-                  {badge}
-                </span>
-              ) : mark ? (
+              {minutes ? (
                 <span
                   aria-hidden
-                  className={cn(
-                    "mt-0.5 h-1.5 w-1.5 rounded-full",
-                    mark === "refael" ? "bg-hospital-refael" : "bg-hospital-elisha",
-                  )}
-                />
+                  className="mt-px rounded-full bg-primary-100 px-1 text-[11px] font-semibold leading-tight text-primary-800 tnum"
+                >
+                  {loadBadgeLabel(minutes)}
+                </span>
+              ) : mark ? (
+                <span aria-hidden className={cn("mt-0.5 h-1.5 w-1.5 rounded-full", HOSPITALS[mark].dotClass)} />
               ) : null}
             </button>
           );
         })}
       </div>
 
-      {onSelect && (
-        <button
-          type="button"
-          onClick={() => {
-            setViewMonth(startOfMonth(todayDate));
-            onSelect(today);
-          }}
-          className="mt-2 inline-flex min-h-[40px] w-full items-center justify-center rounded-md text-caption font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50 hover:text-primary-800"
-        >
-          {he.schedule.backToToday}
-        </button>
-      )}
     </div>
   );
 }

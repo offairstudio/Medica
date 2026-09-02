@@ -1,4 +1,5 @@
 import { cn } from "../../lib/cn";
+import { HOSPITAL_LIST } from "../../mock/hospitals";
 import { he } from "../../i18n/he";
 
 /**
@@ -33,9 +34,9 @@ export function BlockLegend({ className }: { className?: string }) {
         <span className="flex items-center gap-2">
           <span
             aria-hidden
-            className="tnum rounded-full bg-primary-200 px-1.5 text-[11px] font-semibold text-primary-800"
+            className="tnum rounded-full bg-primary-100 px-1.5 text-[11px] font-semibold text-primary-800"
           >
-            4
+            {he.schedule.load.badgeHours(4)}
           </span>
           {he.schedule.calendarLegend.hours}
         </span>
@@ -43,24 +44,11 @@ export function BlockLegend({ className }: { className?: string }) {
 
       <div className="flex flex-col gap-1.5">
         <span className="text-caption text-muted">{he.schedule.calendarLegend.blockDot}</span>
-        <div className="flex items-center gap-4">
-          {(["refael", "elisha"] as const).map((key) => (
-            <span key={key} className="flex items-center gap-2">
-              <span
-                aria-hidden
-                className={cn(
-                  "h-2.5 w-2.5 rounded-full",
-                  key === "refael" ? "bg-hospital-refael" : "bg-hospital-elisha",
-                )}
-              />
-              <span
-                className={cn(
-                  "font-semibold",
-                  key === "refael" ? "text-hospital-refael" : "text-hospital-elisha",
-                )}
-              >
-                {he.hospitals[key]}
-              </span>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+          {HOSPITAL_LIST.map((h) => (
+            <span key={h.key} className="flex items-center gap-2" title={h.fullName}>
+              <span aria-hidden className={cn("h-2.5 w-2.5 rounded-full", h.dotClass)} />
+              <span className="font-semibold text-body">{h.name}</span>
             </span>
           ))}
         </div>

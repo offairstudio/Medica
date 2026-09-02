@@ -6,13 +6,12 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  CalendarRange,
   LogOut,
   Search,
   Smartphone,
 } from "lucide-react";
 import { cn } from "../../lib/cn";
-import { Avatar } from "../data/Avatar";
+import { Avatar, AllDoctorsAvatar } from "../data/Avatar";
 import { Dropdown } from "../overlay/Dropdown";
 import { BrandMark } from "./BrandMark";
 import { currentDoctor, doctors, MOCK_TODAY } from "../../mock/doctors";
@@ -196,7 +195,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                   doctorId === "all" ? "bg-primary-50 text-primary-700" : "text-muted hover:bg-canvas",
                 )}
               >
-                <CalendarRange className="h-5 w-5" aria-hidden />
+                <AllDoctorsAvatar size="sm" className={doctorId === "all" ? undefined : "opacity-80"} />
                 <span className="sr-only">{he.schedule.allDoctors}</span>
               </Link>
               {managed.map((d) => (
@@ -249,7 +248,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                     : "text-body hover:bg-canvas",
                 )}
               >
-                <CalendarRange className="h-4 w-4 shrink-0 text-primary-600" aria-hidden />
+                <AllDoctorsAvatar size="sm" />
                 <span className="min-w-0 flex-1 truncate">{he.schedule.allDoctors}</span>
               </Link>
 
@@ -310,7 +309,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                 className="flex min-h-[44px] max-w-44 items-center gap-2 rounded-md border border-line bg-surface px-2.5 font-semibold text-ink transition-colors duration-fast hover:border-primary-300"
               >
                 {doctorId === "all" ? (
-                  <CalendarRange className="h-4 w-4 shrink-0 text-primary-600" aria-hidden />
+                  <AllDoctorsAvatar size="sm" />
                 ) : (
                   <Avatar name={activeDoctor?.displayName ?? ""} src={activeDoctor?.avatarUrl} size="sm" />
                 )}
@@ -325,7 +324,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
               to="/doctor/all/schedule"
               className="flex min-h-[44px] items-center gap-2.5 rounded-md px-3 text-body transition-colors duration-fast hover:bg-canvas"
             >
-              <CalendarRange className="h-4 w-4 shrink-0 text-primary-600" aria-hidden />
+              <AllDoctorsAvatar size="sm" />
               {he.schedule.allDoctors}
             </Link>
             {managed.map((d) => (

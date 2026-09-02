@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import { Download, FileText, Plus, X } from "lucide-react";
 import { Card } from "../../components/data/Card";
 import { HospitalChip, Chip } from "../../components/data/Chip";
+import { HOSPITAL_LIST } from "../../mock/hospitals";
 import { Button } from "../../components/primitives/Button";
 import { Input } from "../../components/primitives/Input";
 import { Select } from "../../components/primitives/Select";
@@ -406,8 +407,7 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
             <EditRow label="בית חולים">
               <Select
                 options={[
-                  { value: "refael", label: he.hospitals.refael },
-                  { value: "elisha", label: he.hospitals.elisha },
+                  ...HOSPITAL_LIST.map((h) => ({ value: h.key, label: h.name })),
                 ]}
                 value={draft.hospital}
                 onChange={(v) => patch({ hospital: (v as string) ?? "refael" })}

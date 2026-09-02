@@ -6,6 +6,7 @@ import { MOCK_TODAY } from "../../mock/doctors";
 import { blocks } from "../../mock/blocks";
 import { useData } from "../../state/data";
 import { he } from "../../i18n/he";
+import { HOSPITALS, HOSPITAL_LIST } from "../../mock/hospitals";
 import type { Hospital, ISODate } from "../../types";
 
 const WEEKDAY_LETTERS = ["א", "ב", "ג", "ד", "ה", "ו", "ש"];
@@ -133,9 +134,7 @@ export function DayStrip({ doctorId, selectedDate, onSelect }: DayStripProps) {
                       "h-1.5 w-1.5 rounded-full",
                       selected
                         ? "bg-white/80"
-                        : h === "refael"
-                          ? "bg-hospital-refael"
-                          : "bg-hospital-elisha",
+                        : HOSPITALS[h].dotClass,
                     )}
                   />
                 ))}
@@ -147,18 +146,12 @@ export function DayStrip({ doctorId, selectedDate, onSelect }: DayStripProps) {
 
       {/* מקרא קצר - מה אומרים הסימנים */}
       <p className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 pb-2 text-[11px] text-muted">
-        <span className="flex items-center gap-1">
-          <span aria-hidden className="inline-flex h-[15px] items-center rounded-full bg-primary-200 px-1.5 text-[11px] font-bold text-primary-800 tnum">3</span>
-          ניתוחים ביום
-        </span>
-        <span className="flex items-center gap-1">
-          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-hospital-refael" />
-          שעות פנויות ברפאל
-        </span>
-        <span className="flex items-center gap-1">
-          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-hospital-elisha" />
-          שעות פנויות באלישע
-        </span>
+        {HOSPITAL_LIST.map((h) => (
+          <span key={h.key} className="flex items-center gap-1" title={h.fullName}>
+            <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${h.dotClass}`} />
+            {h.name}
+          </span>
+        ))}
       </p>
     </div>
   );

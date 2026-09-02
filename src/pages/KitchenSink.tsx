@@ -159,8 +159,10 @@ export function KitchenSink() {
         <Row label="badge / avatar">
           <Badge count={3} />
           <Badge count={120} />
-          <Avatar name="דוחנו אולג" src="/avatars/doc-1.svg" size="sm" />
-          <Avatar name="בורג אלון" size="md" />
+          <Avatar name="דוחנו אולג" src="/avatars/doc-1.jpg" size="sm" />
+          <Avatar name="דרקסלר מיכאל" src="/avatars/doc-2.jpg" size="md" />
+          <Avatar name="חזן דוד" src="/avatars/doc-5.jpg" size="lg" />
+          <Avatar name="בניקם שלווה" size="md" />
           <Avatar name="פריאל אילת" size="lg" />
         </Row>
       </Section>
@@ -250,8 +252,8 @@ export function KitchenSink() {
               today={MOCK_TODAY}
               selectedDate={calDate}
               onSelect={setCalDate}
-              markedDates={{ "2026-07-28": "elisha", "2026-07-30": "refael" }}
-              loadBadges={{ "2026-07-29": "4.33" }}
+              markedDates={{ "2026-07-28": "elisha", "2026-07-30": "refael", "2026-07-31": "telAviv" }}
+              loadMinutes={{ "2026-07-29": 260, "2026-07-31": 45 }}
             />
           </Card>
           <Card>

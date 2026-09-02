@@ -123,6 +123,46 @@ export const patients: Patient[] = [
   },
 ];
 
+
+/**
+ * מאגר מטופלים נוסף, דטרמיניסטי - כדי שהיומנים של עשרות המנתחים
+ * לא יחזרו על אותם עשרה שמות. הנתונים בדויים לחלוטין.
+ */
+const EXTRA_PATIENTS: [first: string, last: string, gender: Patient["gender"]][] = [
+  ["אבי", "שרעבי", "male"], ["תמר", "לוינסון", "female"], ["ניסים", "אוחיון", "male"],
+  ["ורד", "כהן־ארז", "female"], ["בוריס", "קרמר", "male"], ["סיגל", "מזרחי", "female"],
+  ["יונתן", "פרץ", "male"], ["אורנה", "בן דוד", "female"], ["ראמי", "חורי", "male"],
+  ["לינא", "סלאמה", "female"], ["גדעון", "שפירא", "male"], ["מירב", "אלקיים", "female"],
+  ["סרגיי", "וולקוב", "male"], ["חנה", "רוזנטל", "female"], ["מוחמד", "זועבי", "male"],
+  ["דליה", "אשכנזי", "female"], ["אליהו", "בוזגלו", "male"], ["נעמי", "שטרית", "female"],
+  ["ארתור", "גרינברג", "male"], ["רונית", "עמר", "female"], ["פאדי", "נסראללה", "male"],
+  ["יעל", "דיין", "female"], ["מרדכי", "וייסמן", "male"], ["אילנה", "צור", "female"],
+  ["סמיר", "חדאד", "male"], ["ציפי", "גבאי", "female"], ["ולדימיר", "אורלוב", "male"],
+  ["שושנה", "אזולאי", "female"], ["עמית", "רוטשילד", "male"], ["הדס", "ניר", "female"],
+  ["יעקב", "מלכה", "male"], ["רבקה", "פינטו", "female"], ["איברהים", "מנסור", "male"],
+  ["גלית", "סבן", "female"], ["ארנון", "בר לב", "male"], ["אסתר", "דהן", "female"],
+  ["ניקולאי", "פטרוב", "male"], ["מיכל", "אבוטבול", "female"], ["חיים", "שוורץ", "male"],
+  ["לילך", "בן חמו", "female"],
+];
+
+const HMOS = ["כללית", "מכבי", "מאוחדת", "לאומית"];
+const PAYERS = ["קופת חולים", "ביטוח פרטי", "פרטי"];
+
+const generatedPatients: Patient[] = EXTRA_PATIENTS.map(([first, last, gender], i) => ({
+  id: `pat-${i + 11}`,
+  firstName: first,
+  lastName: last,
+  idType: "id",
+  idNumber: String(200000000 + i * 3719483).slice(0, 9),
+  phone: `05${2 + (i % 4)}${String(1000000 + i * 81743).slice(0, 7)}`,
+  birthDate: `${1948 + ((i * 7) % 52)}-${String(1 + (i % 12)).padStart(2, "0")}-${String(1 + (i % 27)).padStart(2, "0")}`,
+  gender,
+  hmo: HMOS[i % HMOS.length],
+  payer: PAYERS[i % PAYERS.length],
+}));
+
+patients.push(...generatedPatients);
+
 /** המטופלת המחוברת לאזור האישי */
 export const currentPatient = patients[0];
 

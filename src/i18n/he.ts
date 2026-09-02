@@ -31,6 +31,8 @@ export const he = {
   hospitals: {
     refael: "רפאל",
     elisha: "אלישע",
+    telAviv: "תל אביב",
+    rmc: "עפולה",
   },
 
   login: {
@@ -92,11 +94,24 @@ export const he = {
     deleteConfirmBody: (patient: string) =>
       `למחוק את הניתוח של ${patient}? פעולה זו אינה ניתנת לביטול.`,
     deleteSuccess: "הניתוח נמחק בהצלחה",
-    backToToday: "חזרה להיום",
+    backToToday: "היום",
+    /** תגי משך הניתוחים בלוח החודשי */
+    load: {
+      badgeHours: (h: number) => `${h}ש׳`,
+      badgeMinutes: (m: number) => `${m}ד׳`,
+      /** הערך המדויק, לטולטיפ ולקורא מסך */
+      exact: (minutes: number) => {
+        const h = Math.floor(minutes / 60);
+        const m = minutes % 60;
+        if (!h) return `${m} דקות ניתוח`;
+        const hoursText = h === 1 ? "שעה" : `${h} שעות`;
+        return m ? `${hoursText} ו-${m} דקות ניתוח` : `${hoursText} של ניתוח`;
+      },
+    },
     calendarLegend: {
       selected: "היום שנבחר",
       today: "היום",
-      hours: "סך שעות ניתוח מתוכננות ביום",
+      hours: "משך הניתוחים ביום, מעוגל לשעה (ש׳ = שעות)",
       blockDot: "נקודה מתחת לתאריך = קיים בלוק ניתוחים בבית החולים:",
     },
   },

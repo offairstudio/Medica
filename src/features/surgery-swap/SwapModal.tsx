@@ -12,6 +12,7 @@ import { useData } from "../../state/data";
 import { useToast } from "../../components/overlay/Toast";
 import { computeFreeSlots, slotStartOptions } from "../doctor-schedule/slots";
 import { he } from "../../i18n/he";
+import { HOSPITALS } from "../../mock/hospitals";
 import type { Hospital, ISODate, Surgery, Time } from "../../types";
 
 export interface SwapModalProps {
@@ -134,7 +135,7 @@ export function SwapModal({ surgery, onClose }: SwapModalProps) {
                     aria-hidden
                     className={cn(
                       "h-2 w-2 rounded-full",
-                      opt.hospital === "refael" ? "bg-hospital-refael" : "bg-hospital-elisha",
+                      HOSPITALS[opt.hospital].dotClass,
                       selectedTime === opt.start && "bg-white",
                     )}
                   />

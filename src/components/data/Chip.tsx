@@ -2,6 +2,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { X } from "lucide-react";
 import { cn } from "../../lib/cn";
 import type { Appointment, Hospital } from "../../types";
+import { HOSPITALS } from "../../mock/hospitals";
 import { he } from "../../i18n/he";
 
 /* ---------- צ'יפ כללי ---------- */
@@ -49,9 +50,9 @@ export function Chip({ color = "neutral", onRemove, className, children, ...rest
 /* ---------- צ'יפ בית חולים ---------- */
 
 /**
- * שם בית החולים כטקסט בצבע המותג שלו.
- * הלוגו לא שימש כאן: הוא נושא את המילה "Medica" ולא את שם בית החולים,
- * ובגודל הזה הוא נקרא כמותג אחד ולא כהבחנה בין השניים.
+ * סמל medica ושם בית החולים, על גוון ייעודי לכל מרכז.
+ * הלוגו המלא לא שימש כאן: הוא נושא את המילה "Medica" ולא את שם בית החולים,
+ * ובגודל צ'יפ שני המרכזים נראו זהים.
  */
 export function HospitalChip({
   hospital,
@@ -62,16 +63,25 @@ export function HospitalChip({
   compact?: boolean;
   className?: string;
 }) {
+  const info = HOSPITALS[hospital];
+
   return (
     <span
+      title={info.fullName}
       className={cn(
-        "inline-flex items-center rounded-full font-semibold text-white",
-        hospital === "refael" ? "bg-hospital-refael" : "bg-hospital-elisha",
-        compact ? "px-2.5 py-0.5 text-caption" : "min-h-7 px-3 py-1 text-caption",
+        "inline-flex items-center gap-1.5 rounded-full font-semibold text-white",
+        info.chipClass,
+        compact ? "px-2 py-0.5 text-caption" : "min-h-7 px-2.5 py-1 text-caption",
         className,
       )}
     >
-      {he.hospitals[hospital]}
+      <img
+        src="/brand/medica-mark.svg"
+        alt=""
+        aria-hidden
+        className={cn("w-auto brightness-0 invert", compact ? "h-3" : "h-3.5")}
+      />
+      {info.name}
     </span>
   );
 }
