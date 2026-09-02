@@ -6,6 +6,8 @@ import { cn } from "../../lib/cn";
 export interface SheetProps {
   open: boolean;
   onClose: () => void;
+  /** שורה קבועה מתחת לכותרת - למשל התקדמות באשף */
+  subheader?: ReactNode;
   /** כותרת נגישות; מוצגת גם ויזואלית אלא אם הועבר titleSlot */
   title: string;
   /** אזור כותרת עשיר - למשל כותרת + צ'יפים */
@@ -28,7 +30,16 @@ const sizes = {
  */
 const EXIT_MS = 240;
 
-export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, footer }: SheetProps) {
+export function Sheet({
+  open,
+  onClose,
+  title,
+  titleSlot,
+  subheader,
+  size = "lg",
+  children,
+  footer,
+}: SheetProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   // נשארים mounted עד שאנימציית היציאה מסתיימת, ורק אז מודיעים להורה
@@ -131,6 +142,10 @@ export function Sheet({ open, onClose, title, titleSlot, size = "lg", children, 
             <X className="h-5 w-5" />
           </button>
         </div>
+
+        {subheader && (
+          <div className="shrink-0 border-b border-line px-5 py-3 md:px-6">{subheader}</div>
+        )}
 
         <ScrollArea className="px-5 py-5 md:px-6" fadeClassName="from-surface via-surface/70">
           {children}

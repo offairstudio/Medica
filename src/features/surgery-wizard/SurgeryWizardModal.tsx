@@ -172,6 +172,16 @@ function WizardInner({
       onClose={onClose}
       title={he.schedule.createSurgery}
       size="xl"
+      subheader={
+        <Stepper
+          steps={he.wizard.stepNames}
+          current={step}
+          onStepClick={(i) => {
+            setStep(i);
+            setErrors({});
+          }}
+        />
+      }
       footer={
         <div className="flex w-full items-center justify-between">
           {step > 0 ? (
@@ -195,18 +205,7 @@ function WizardInner({
         </div>
       }
     >
-      <div ref={bodyRef}>
-        <Stepper
-          steps={he.wizard.stepNames}
-          current={step}
-          onStepClick={(i) => {
-            setStep(i);
-            setErrors({});
-          }}
-          className="mb-6"
-        />
-        {stepContent[step]}
-      </div>
+      <div ref={bodyRef}>{stepContent[step]}</div>
     </Sheet>
   );
 }
