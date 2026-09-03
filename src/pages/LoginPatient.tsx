@@ -50,6 +50,7 @@ export function LoginPatient() {
           autoComplete="off"
           maxLength={9}
           dir="ltr"
+          className="[&_input]:text-right"
           tall
           value={idNumber}
           onChange={(e) => {
@@ -66,6 +67,7 @@ export function LoginPatient() {
           autoComplete="off"
           maxLength={10}
           dir="ltr"
+          className="[&_input]:text-right"
           tall
           value={phone}
           onChange={(e) => {

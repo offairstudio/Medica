@@ -41,7 +41,7 @@ export function LoginDoctor() {
           autoComplete="off"
           maxLength={9}
           dir="ltr"
-          className="[&_input]:text-start"
+          className="[&_input]:text-right"
           value={idNumber}
           onChange={(e) => {
             setIdNumber(e.target.value.replace(/\D/g, "").slice(0, 9));

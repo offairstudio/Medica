@@ -80,7 +80,7 @@ export function Verify({ audience }: { audience: "doctor" | "patient" }) {
   return (
     <AuthLayout>
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
-        <div>
+        <div className="text-center">
           <h1 className="text-h1 text-ink">{he.otp.title}</h1>
           <p className="mt-1 text-caption text-muted">
             {he.otp.sentTo} <span dir="ltr" className="tnum">{maskPhone("0523372667")}</span>
