@@ -62,7 +62,7 @@ export function DocumentRow({ doc, compact }: { doc: MedicalDocument; compact?: 
       <button
         type="button"
         onClick={download}
-        aria-label={`הורדת ${doc.fileName}`}
+        aria-label={t.ui.a11y.download(doc.fileName)}
         className={cn(
           "inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-md px-2.5 font-semibold transition-colors duration-fast",
           phase === "done"

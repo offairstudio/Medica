@@ -52,8 +52,8 @@ import type { Hospital, ISODate, Surgery } from "../types";
 /** משך חלון פנוי בניסוח קריא: "45 דק'" / "שעה" / "2:40 שעות" */
 function freeDurationLabel(slot: FreeSlot): string {
   const minutes = timeToMinutes(slot.end) - timeToMinutes(slot.start);
-  if (minutes < 60) return `${minutes} דק'`;
-  if (minutes === 60) return "שעה";
+  if (minutes < 60) return t.ui.fmt.minutes(minutes);
+  if (minutes === 60) return t.ui.fmt.oneHour;
   return formatTotalHours(minutes);
 }
 
@@ -169,7 +169,7 @@ export function DoctorSchedule() {
     toast(
       "success",
       t.schedule.deleteSuccess,
-      removed ? { label: "ביטול פעולה", onUndo: () => restoreSurgery(removed) } : undefined,
+      removed ? { label: t.ui.a11y.undo, onUndo: () => restoreSurgery(removed) } : undefined,
     );
   }
 
@@ -226,7 +226,7 @@ export function DoctorSchedule() {
           titleEnd={
             <button
               type="button"
-              onClick={() => toast("info", "שינוי הל\"ז אינו חלק מהפרוטוטייפ")}
+              onClick={() => toast("info", t.ui.schedule.swapNotInPrototype)}
               className="inline-flex h-10 shrink-0 items-center rounded-md border border-line px-3 font-semibold text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
             >
               {t.schedule.changeSchedule}
@@ -250,7 +250,7 @@ export function DoctorSchedule() {
               <div className="flex items-center gap-1">
                 <button
                   type="button"
-                  aria-label="יום קודם"
+                  aria-label={t.ui.a11y.prevDay}
                   onClick={navPrev}
                   className={navButtonClass}
                 >
@@ -266,7 +266,7 @@ export function DoctorSchedule() {
                 </button>
                 <button
                   type="button"
-                  aria-label="יום הבא"
+                  aria-label={t.ui.a11y.nextDay}
                   onClick={navNext}
                   className={navButtonClass}
                 >
@@ -423,7 +423,7 @@ export function DoctorSchedule() {
                   <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-primary-200 bg-primary-50 px-4 py-3">
                     <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary-500" aria-hidden />
                     <p className="text-caption text-primary-800">
-                      {t.schedule.combinedBanner('ד"ר בורג אלון')}{" "}
+                      {t.schedule.combinedBanner(doctorById("doc-7")?.displayName ?? "")}{" "}
                       <button
                         type="button"
                         onClick={() => setWizardPrefill({ date: selectedDate })}

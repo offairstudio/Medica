@@ -6,13 +6,17 @@ import {
   ChevronLeft,
   ChevronRight,
   ClipboardList,
+  Languages,
   LogOut,
+  Type,
   UserRound,
 } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { currentPatient } from "../../mock/patients";
 import { appointments } from "../../mock/appointments";
 import { t } from "../../i18n";
+import { currentLocale, otherLocale, setLocale } from "../../i18n/locale";
+import { applyFont, currentFont, otherFont } from "../../lib/font";
 import { BrandMark } from "./BrandMark";
 import { Dropdown } from "../overlay/Dropdown";
 import { ProfileDrawer } from "../../features/patient-profile/ProfileDrawer";
@@ -61,6 +65,9 @@ function AccountMenu({
   variant: "sidebar" | "collapsed" | "mobile";
 }) {
   const navigate = useNavigate();
+  // גרסת הפונט נשמרת בסטייט מקומי כדי שתווית הפריט תתעדכן מיד אחרי המעבר
+  const [font, setFont] = useState(() => currentFont());
+  const nextFont = otherFont(font);
   const initials = `${currentPatient.firstName[0]}${currentPatient.lastName[0]}`;
   const fullName = `${currentPatient.firstName} ${currentPatient.lastName}`;
   const iconOnly = variant === "collapsed";
@@ -74,7 +81,7 @@ function AccountMenu({
       trigger={
         <button
           type="button"
-          aria-label={`תפריט המשתמש: ${fullName}`}
+          aria-label={t.ui.a11y.userMenu(fullName)}
           title={iconOnly ? fullName : undefined}
           className={cn(
             "flex min-h-[52px] items-center gap-2.5 text-start transition-colors duration-fast hover:bg-surface-2",
@@ -109,6 +116,21 @@ function AccountMenu({
           label: t.patient.profile.menuLabel,
           icon: <UserRound />,
           onSelect: onProfile,
+        },
+        {
+          key: "language",
+          label: `${t.ui.auth.language}: ${otherLocale(currentLocale()).name}`,
+          icon: <Languages />,
+          onSelect: () => setLocale(otherLocale(currentLocale()).key),
+        },
+        {
+          key: "font",
+          label: `${t.ui.auth.font}: ${nextFont.name}`,
+          icon: <Type />,
+          onSelect: () => {
+            applyFont(nextFont);
+            setFont(nextFont);
+          },
         },
         {
           key: "logout",
@@ -155,16 +177,16 @@ export function PatientNav() {
           <Link
             to="/p/appointments"
             className="inline-flex min-h-[44px] items-center rounded-md"
-            aria-label="Medica - האזור האישי"
+            aria-label={t.ui.a11y.brandHomePatient}
           >
             <BrandMark mark={collapsed} />
           </Link>
           <button
             type="button"
             onClick={() => setCollapsed((c) => !c)}
-            aria-label={collapsed ? "הרחבת סרגל הניווט" : "מזעור סרגל הניווט"}
+            aria-label={collapsed ? t.ui.a11y.expandNav : t.ui.a11y.collapseNav}
             aria-expanded={!collapsed}
-            title={collapsed ? "הרחבת סרגל הניווט" : "מזעור סרגל הניווט"}
+            title={collapsed ? t.ui.a11y.expandNav : t.ui.a11y.collapseNav}
             className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-body"
           >
             <ToggleIcon className="h-5 w-5" aria-hidden />
@@ -173,7 +195,7 @@ export function PatientNav() {
 
         <nav
           className={cn("flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto", collapsed ? "px-2" : "px-3")}
-          aria-label="ניווט ראשי"
+          aria-label={t.ui.a11y.mainNav}
         >
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -243,7 +265,7 @@ export function PatientNav() {
         <Link
           to="/p/appointments"
           className="inline-flex min-h-[44px] items-center rounded-md"
-          aria-label="Medica - האזור האישי"
+          aria-label={t.ui.a11y.brandHomePatient}
         >
           <BrandMark />
         </Link>
@@ -253,7 +275,7 @@ export function PatientNav() {
       {/* ===== ניווט תחתון מקובע - מובייל ===== */}
       <nav
         className="fixed inset-x-0 bottom-0 z-40 flex border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] shadow-[0_-2px_12px_rgba(26,26,34,.06)] md:hidden"
-        aria-label="ניווט תחתון"
+        aria-label={t.ui.a11y.bottomNav}
       >
         {tabs.map((tab) => {
           const Icon = tab.icon;

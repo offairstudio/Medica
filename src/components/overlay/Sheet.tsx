@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { X } from "lucide-react";
 import { ScrollArea } from "../layout/ScrollArea";
 import { cn } from "../../lib/cn";
+import { t } from "../../i18n";
 
 export interface SheetProps {
   open: boolean;
@@ -142,7 +143,7 @@ export function Sheet({
           <button
             type="button"
             onClick={requestClose}
-            aria-label="סגירה וחזרה לרשימה"
+            aria-label={t.ui.a11y.closeSheet}
             className="-me-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-ink"
           >
             <X className="h-5 w-5" />

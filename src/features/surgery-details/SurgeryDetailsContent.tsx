@@ -273,7 +273,7 @@ function SurgeryHeadline({
         </p>
         <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-muted">
           <HospitalChip hospital={hospitalKey} compact />
-          <span className="tnum">{durationMinutes} דק'</span>
+          <span className="tnum">{t.ui.fmt.minutes(durationMinutes)}</span>
           {doctor && (
             <span>
               <span className="font-semibold text-ink">{doctor.displayName}</span>
@@ -308,21 +308,21 @@ export function SurgeryViewContent({ surgery }: { surgery: Surgery }) {
       <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
         <Section title={t.surgeryView.patient}>
           <dl>
-            <DetailRow icon={UserRound} label="שם מלא">
+            <DetailRow icon={UserRound} label={t.ui.fields.fullName}>
               {surgery.patient.firstName} {surgery.patient.lastName}
             </DetailRow>
-            <DetailRow icon={IdCard} label="ת.ז / דרכון">
+            <DetailRow icon={IdCard} label={t.ui.fields.idNumber}>
               <span className="tnum">{surgery.patient.idNumber}</span>
             </DetailRow>
-            <DetailRow icon={Phone} label="טלפון">
+            <DetailRow icon={Phone} label={t.ui.fields.phone}>
               <span dir="ltr" className="tnum">
                 {surgery.patient.phone}
               </span>
             </DetailRow>
-            <DetailRow icon={ShieldCheck} label="קופת חולים">
+            <DetailRow icon={ShieldCheck} label={t.ui.fields.hmo}>
               {surgery.patient.hmo}
             </DetailRow>
-            <DetailRow icon={Wallet} label="גורם מממן">
+            <DetailRow icon={Wallet} label={t.ui.fields.payer}>
               {surgery.patient.payer}
             </DetailRow>
             {surgery.surgeonFee?.enabled && (
@@ -335,10 +335,10 @@ export function SurgeryViewContent({ surgery }: { surgery: Surgery }) {
 
         <Section title={t.surgeryView.execution}>
           <dl>
-            <DetailRow icon={Syringe} label="הרדמה">
+            <DetailRow icon={Syringe} label={t.ui.fields.anesthesia}>
               {anesthesiaLabel}
             </DetailRow>
-            <DetailRow icon={Bed} label="סוג טיפול">
+            <DetailRow icon={Bed} label={t.ui.fields.treatmentType}>
               {surgery.treatmentType}
             </DetailRow>
             {surgery.capitalEquipment && (
@@ -352,8 +352,8 @@ export function SurgeryViewContent({ surgery }: { surgery: Surgery }) {
               </DetailRow>
             )}
             {surgery.combined && (
-              <DetailRow icon={Users} label="ניתוח משולב">
-                {surgery.backupDoctorName ?? "כן"}
+              <DetailRow icon={Users} label={t.ui.fields.combined}>
+                {surgery.backupDoctorName ?? t.ui.fields.yes}
               </DetailRow>
             )}
           </dl>
@@ -541,7 +541,7 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
         {/* ביצוע */}
         <Section title={t.surgeryView.execution}>
           <div>
-            <EditRow icon={Stethoscope} label="מנתח">
+            <EditRow icon={Stethoscope} label={t.ui.fields.surgeon}>
               <Select
                 quiet
                 options={doctors.map((d) => ({ value: d.id, label: d.displayName }))}
@@ -550,7 +550,7 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
                 searchable
               />
             </EditRow>
-            <EditRow icon={Hospital} label="בית חולים">
+            <EditRow icon={Hospital} label={t.ui.fields.hospital}>
               <Select
                 quiet
                 options={[
@@ -626,7 +626,7 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
               {draft.procedures.length > 1 && (
                 <button
                   type="button"
-                  aria-label={`הסרת ניתוח ${i + 1}`}
+                  aria-label={t.ui.a11y.removeSurgery(i + 1)}
                   onClick={() => patch({ procedures: draft.procedures.filter((_, j) => j !== i) })}
                   className="absolute end-2 top-2 z-10 rounded-md p-1.5 text-muted transition-colors duration-fast hover:bg-danger/10 hover:text-danger"
                 >
@@ -719,7 +719,7 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
                 </span>
                 <button
                   type="button"
-                  aria-label={`הסרת המסמך ${d.fileName}`}
+                  aria-label={t.ui.a11y.removeDocument(d.fileName)}
                   onClick={() => patch({ documents: draft.documents.filter((x) => x.id !== d.id) })}
                   className="shrink-0 rounded-md p-2 text-muted transition-colors duration-fast hover:bg-danger/10 hover:text-danger"
                 >

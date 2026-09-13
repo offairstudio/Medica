@@ -1,4 +1,5 @@
 import type { Patient, RequirementKey, Surgery, Hospital } from "../types";
+import { m } from "./localize";
 import { patients } from "./patients";
 import { documents } from "./documents";
 import { MOCK_TODAY } from "./doctors";
@@ -53,7 +54,7 @@ function make(seed: SurgerySeed): Surgery {
     backupDoctorName: seed.backupDoctorName,
     anesthesia: seed.anesthesia ?? "general",
     requirements: seed.requirements ?? ["preOp", "bloodTypeCross"],
-    treatmentType: seed.treatmentType ?? "אשפוז יום",
+    treatmentType: seed.treatmentType ?? m("אשפוז יום", "Day surgery"),
     documents: seed.withDocs ? [documents[5], documents[2]] : [],
     status: seed.status ?? "scheduled",
     summaryUrl: seed.withSummary ? "/mock-files/discharge-letter.pdf" : undefined,
@@ -68,76 +69,76 @@ function make(seed: SurgerySeed): Surgery {
  */
 export const initialSurgeries: Surgery[] = [
   // ---- שבוע שעבר (הסתיימו) ----
-  make({ id: "sur-1", code: "198712", hospital: "refael", doctorId: "doc-1", patientId: "pat-3", name: "כריתת כיס מרה בלפרוסקופיה", organ: "כיס מרה", date: "2026-07-13", startTime: "08:30", duration: 90, status: "done", withSummary: true, withDischarge: true }),
-  make({ id: "sur-2", code: "198718", hospital: "elisha", doctorId: "doc-1", patientId: "pat-4", name: "תיקון בקע טבורי בלפרוסקופיה", organ: "בטן", date: "2026-07-14", startTime: "10:00", duration: 60, status: "done", withSummary: true }),
-  make({ id: "sur-3", code: "198723", hospital: "telAviv", doctorId: "doc-2", patientId: "pat-8", name: "החלפת מפרק ירך", organ: "ירך", side: "left", date: "2026-07-15", startTime: "09:00", duration: 150, status: "done", withSummary: true, withDischarge: true, anesthesia: "regional" }),
-  make({ id: "sur-4", code: "198731", hospital: "refael", doctorId: "doc-1", patientId: "pat-9", name: "תיקון בקע מפשעתי דו צידי בלפרוסקופיה", organ: "בטן", date: "2026-07-16", startTime: "13:30", duration: 85, status: "done", withDischarge: true }),
-  make({ id: "sur-5", code: "198740", hospital: "elisha", doctorId: "doc-3", patientId: "pat-5", name: "שרוול קיבה בלפרוסקופיה", organ: "קיבה", date: "2026-07-20", startTime: "08:00", duration: 120, status: "done", withSummary: true, treatmentType: "אשפוז" }),
-  make({ id: "sur-6", code: "198745", hospital: "refael", doctorId: "doc-1", patientId: "pat-6", name: "תיקון בקע ונטרלי בגישה לפרוסקופית עם שתל", organ: "בטן", date: "2026-07-22", startTime: "11:15", duration: 95, status: "done", withSummary: true, withDischarge: true }),
+  make({ id: "sur-1", code: "198712", hospital: "refael", doctorId: "doc-1", patientId: "pat-3", name: m("כריתת כיס מרה בלפרוסקופיה", "Laparoscopic cholecystectomy"), organ: m("כיס מרה", "Gallbladder"), date: "2026-07-13", startTime: "08:30", duration: 90, status: "done", withSummary: true, withDischarge: true }),
+  make({ id: "sur-2", code: "198718", hospital: "elisha", doctorId: "doc-1", patientId: "pat-4", name: m("תיקון בקע טבורי בלפרוסקופיה", "Laparoscopic umbilical hernia repair"), organ: m("בטן", "Abdomen"), date: "2026-07-14", startTime: "10:00", duration: 60, status: "done", withSummary: true }),
+  make({ id: "sur-3", code: "198723", hospital: "telAviv", doctorId: "doc-2", patientId: "pat-8", name: m("החלפת מפרק ירך", "Hip replacement"), organ: m("ירך", "Hip"), side: "left", date: "2026-07-15", startTime: "09:00", duration: 150, status: "done", withSummary: true, withDischarge: true, anesthesia: "regional" }),
+  make({ id: "sur-4", code: "198731", hospital: "refael", doctorId: "doc-1", patientId: "pat-9", name: m("תיקון בקע מפשעתי דו צידי בלפרוסקופיה", "Laparoscopic bilateral inguinal hernia repair"), organ: m("בטן", "Abdomen"), date: "2026-07-16", startTime: "13:30", duration: 85, status: "done", withDischarge: true }),
+  make({ id: "sur-5", code: "198740", hospital: "elisha", doctorId: "doc-3", patientId: "pat-5", name: m("שרוול קיבה בלפרוסקופיה", "Laparoscopic sleeve gastrectomy"), organ: m("קיבה", "Stomach"), date: "2026-07-20", startTime: "08:00", duration: 120, status: "done", withSummary: true, treatmentType: m("אשפוז", "Inpatient") }),
+  make({ id: "sur-6", code: "198745", hospital: "refael", doctorId: "doc-1", patientId: "pat-6", name: m("תיקון בקע ונטרלי בגישה לפרוסקופית עם שתל", "Laparoscopic ventral hernia repair with mesh"), organ: m("בטן", "Abdomen"), date: "2026-07-22", startTime: "11:15", duration: 95, status: "done", withSummary: true, withDischarge: true }),
 
   // ---- היום של המוקאפ: 26/07 ----
-  make({ id: "sur-7", code: "198758", hospital: "telAviv", doctorId: "doc-1", patientId: "pat-7", name: "כריתת כיס מרה בלפרוסקופיה", organ: "כיס מרה", date: "2026-07-26", startTime: "09:00", duration: 90, withDocs: true }),
-  make({ id: "sur-8", code: "198761", hospital: "refael", doctorId: "doc-1", patientId: "pat-10", name: "תיקון בקע טבורי בלפרוסקופיה", organ: "בטן", date: "2026-07-26", startTime: "11:00", duration: 60 }),
-  make({ id: "sur-9", code: "198764", hospital: "rmc", doctorId: "doc-1", patientId: "pat-2", name: "מיני מעקף קיבה בלפרוסקופיה", organ: "קיבה", date: "2026-07-26", startTime: "15:30", duration: 110, treatmentType: "אשפוז", requirements: ["preOp", "bloodTypeCross", "icu"] }),
-  make({ id: "sur-10", code: "198766", hospital: "refael", doctorId: "doc-2", patientId: "pat-8", name: "החלפת מפרק ברך", organ: "ברך", side: "right", date: "2026-07-26", startTime: "10:00", duration: 140, anesthesia: "regional" }),
-  make({ id: "sur-11", code: "198769", hospital: "elisha", doctorId: "doc-5", patientId: "pat-3", name: "אנדרטרקטומיה של עורק התרדמה", organ: "עורק תרדמה", side: "right", date: "2026-07-26", startTime: "12:30", duration: 130, requirements: ["preOp", "bloodTypeCross", "nerveMonitoring", "icu"] }),
+  make({ id: "sur-7", code: "198758", hospital: "telAviv", doctorId: "doc-1", patientId: "pat-7", name: m("כריתת כיס מרה בלפרוסקופיה", "Laparoscopic cholecystectomy"), organ: m("כיס מרה", "Gallbladder"), date: "2026-07-26", startTime: "09:00", duration: 90, withDocs: true }),
+  make({ id: "sur-8", code: "198761", hospital: "refael", doctorId: "doc-1", patientId: "pat-10", name: m("תיקון בקע טבורי בלפרוסקופיה", "Laparoscopic umbilical hernia repair"), organ: m("בטן", "Abdomen"), date: "2026-07-26", startTime: "11:00", duration: 60 }),
+  make({ id: "sur-9", code: "198764", hospital: "rmc", doctorId: "doc-1", patientId: "pat-2", name: m("מיני מעקף קיבה בלפרוסקופיה", "Laparoscopic mini gastric bypass"), organ: m("קיבה", "Stomach"), date: "2026-07-26", startTime: "15:30", duration: 110, treatmentType: m("אשפוז", "Inpatient"), requirements: ["preOp", "bloodTypeCross", "icu"] }),
+  make({ id: "sur-10", code: "198766", hospital: "refael", doctorId: "doc-2", patientId: "pat-8", name: m("החלפת מפרק ברך", "Knee replacement"), organ: m("ברך", "Knee"), side: "right", date: "2026-07-26", startTime: "10:00", duration: 140, anesthesia: "regional" }),
+  make({ id: "sur-11", code: "198769", hospital: "elisha", doctorId: "doc-5", patientId: "pat-3", name: m("אנדרטרקטומיה של עורק התרדמה", "Carotid endarterectomy"), organ: m("עורק תרדמה", "Carotid artery"), side: "right", date: "2026-07-26", startTime: "12:30", duration: 130, requirements: ["preOp", "bloodTypeCross", "nerveMonitoring", "icu"] }),
 
   // ---- 27-28/07 ----
-  make({ id: "sur-12", code: "198772", hospital: "telAviv", doctorId: "doc-1", patientId: "pat-5", name: "Achilles tendon repair", organ: "גיד אכילס", side: "left", date: "2026-07-27", startTime: "14:00", duration: 75, anesthesia: "regional" }),
-  make({ id: "sur-13", code: "198775", hospital: "elisha", doctorId: "doc-4", patientId: "pat-10", name: "כריתת שד חלקית", organ: "שד", side: "left", date: "2026-07-28", startTime: "09:30", duration: 100, requirements: ["preOp", "bloodTypeCross", "frozenSection", "breastFnlMarking", "breastIsotope"] }),
+  make({ id: "sur-12", code: "198772", hospital: "telAviv", doctorId: "doc-1", patientId: "pat-5", name: "Achilles tendon repair", organ: m("גיד אכילס", "Achilles tendon"), side: "left", date: "2026-07-27", startTime: "14:00", duration: 75, anesthesia: "regional" }),
+  make({ id: "sur-13", code: "198775", hospital: "elisha", doctorId: "doc-4", patientId: "pat-10", name: m("כריתת שד חלקית", "Partial mastectomy"), organ: m("שד", "Breast"), side: "left", date: "2026-07-28", startTime: "09:30", duration: 100, requirements: ["preOp", "bloodTypeCross", "frozenSection", "breastFnlMarking", "breastIsotope"] }),
 
   // ---- 29/07 - היום מהמערכת הקיימת, בדיוק 4 ניתוחים ----
-  make({ id: "sur-14", code: "2000", hospital: "refael", doctorId: "doc-1", patientId: "pat-1", name: "מיני מעקף קיבה בלפרוסקופיה", organ: "קיבה", date: "2026-07-29", startTime: "16:00", duration: 75, treatmentType: "אשפוז", withDocs: true }),
-  make({ id: "sur-15", code: "198787", hospital: "refael", doctorId: "doc-1", patientId: "pat-2", name: "תיקון בקע מפשעתי דו צידי בלפרוסקופיה", organ: "בטן", date: "2026-07-29", startTime: "17:15", duration: 65 }),
-  make({ id: "sur-16", code: "198790", hospital: "telAviv", doctorId: "doc-1", patientId: "pat-9", name: "תיקון בקע ונטרלי בגישה לפרוסקופית עם שתל", organ: "בטן", date: "2026-07-29", startTime: "18:20", duration: 60 }),
-  make({ id: "sur-17", code: "198793", hospital: "refael", doctorId: "doc-1", patientId: "pat-6", name: "תיקון בקע טבורי בלפרוסקופיה", organ: "בטן", date: "2026-07-29", startTime: "19:20", duration: 60 }),
+  make({ id: "sur-14", code: "2000", hospital: "refael", doctorId: "doc-1", patientId: "pat-1", name: m("מיני מעקף קיבה בלפרוסקופיה", "Laparoscopic mini gastric bypass"), organ: m("קיבה", "Stomach"), date: "2026-07-29", startTime: "16:00", duration: 75, treatmentType: m("אשפוז", "Inpatient"), withDocs: true }),
+  make({ id: "sur-15", code: "198787", hospital: "refael", doctorId: "doc-1", patientId: "pat-2", name: m("תיקון בקע מפשעתי דו צידי בלפרוסקופיה", "Laparoscopic bilateral inguinal hernia repair"), organ: m("בטן", "Abdomen"), date: "2026-07-29", startTime: "17:15", duration: 65 }),
+  make({ id: "sur-16", code: "198790", hospital: "telAviv", doctorId: "doc-1", patientId: "pat-9", name: m("תיקון בקע ונטרלי בגישה לפרוסקופית עם שתל", "Laparoscopic ventral hernia repair with mesh"), organ: m("בטן", "Abdomen"), date: "2026-07-29", startTime: "18:20", duration: 60 }),
+  make({ id: "sur-17", code: "198793", hospital: "refael", doctorId: "doc-1", patientId: "pat-6", name: m("תיקון בקע טבורי בלפרוסקופיה", "Laparoscopic umbilical hernia repair"), organ: m("בטן", "Abdomen"), date: "2026-07-29", startTime: "19:20", duration: 60 }),
 
   // ---- קדימה ----
-  make({ id: "sur-18", code: "198801", hospital: "rmc", doctorId: "doc-1", patientId: "pat-8", name: "כריתת כיס מרה בלפרוסקופיה", organ: "כיס מרה", date: "2026-08-02", startTime: "08:30", duration: 90, combined: true, backupDoctorName: 'ד"ר בורג אלון' }),
-  make({ id: "sur-19", code: "198805", hospital: "refael", doctorId: "doc-7", patientId: "pat-4", name: "החלפת מפרק ברך", organ: "ברך", side: "left", date: "2026-08-04", startTime: "10:30", duration: 145, anesthesia: "regional" }),
-  make({ id: "sur-20", code: "198812", hospital: "telAviv", doctorId: "doc-1", patientId: "pat-9", name: "כריתת ערמונית רדיקלית", organ: "ערמונית", date: "2026-08-06", startTime: "09:00", duration: 160, treatmentType: "אשפוז", requirements: ["preOp", "bloodTypeCross", "icu", "surgicalAssistant"] }),
+  make({ id: "sur-18", code: "198801", hospital: "rmc", doctorId: "doc-1", patientId: "pat-8", name: m("כריתת כיס מרה בלפרוסקופיה", "Laparoscopic cholecystectomy"), organ: m("כיס מרה", "Gallbladder"), date: "2026-08-02", startTime: "08:30", duration: 90, combined: true, backupDoctorName: m('ד"ר בורג אלון', "Dr. Alon Burg") }),
+  make({ id: "sur-19", code: "198805", hospital: "refael", doctorId: "doc-7", patientId: "pat-4", name: m("החלפת מפרק ברך", "Knee replacement"), organ: m("ברך", "Knee"), side: "left", date: "2026-08-04", startTime: "10:30", duration: 145, anesthesia: "regional" }),
+  make({ id: "sur-20", code: "198812", hospital: "telAviv", doctorId: "doc-1", patientId: "pat-9", name: m("כריתת ערמונית רדיקלית", "Radical prostatectomy"), organ: m("ערמונית", "Prostate"), date: "2026-08-06", startTime: "09:00", duration: 160, treatmentType: m("אשפוז", "Inpatient"), requirements: ["preOp", "bloodTypeCross", "icu", "surgicalAssistant"] }),
 
   // ---- מילוי היומן: ניתוחים נוספים לכל המנתחים על פני השבועיים ----
 
   // ד"ר דוחנו אולג (doc-1)
-  make({ id: "sur-21", code: "198815", hospital: "refael", doctorId: "doc-1", patientId: "pat-3", name: "כריתת כיס מרה בלפרוסקופיה", organ: "כיס מרה", date: "2026-07-28", startTime: "08:00", duration: 90 }),
-  make({ id: "sur-22", code: "198818", hospital: "refael", doctorId: "doc-1", patientId: "pat-7", name: "תיקון בקע טבורי בלפרוסקופיה", organ: "בטן", date: "2026-07-31", startTime: "08:00", duration: 60 }),
-  make({ id: "sur-23", code: "198821", hospital: "telAviv", doctorId: "doc-1", patientId: "pat-5", name: "מיני מעקף קיבה בלפרוסקופיה", organ: "קיבה", date: "2026-08-03", startTime: "14:30", duration: 110, treatmentType: "אשפוז" }),
-  make({ id: "sur-24", code: "198824", hospital: "elisha", doctorId: "doc-1", patientId: "pat-2", name: "תיקון בקע מפשעתי דו צידי בלפרוסקופיה", organ: "בטן", date: "2026-08-05", startTime: "11:00", duration: 85 }),
-  make({ id: "sur-25", code: "198827", hospital: "elisha", doctorId: "doc-1", patientId: "pat-10", name: "כריתת כיס מרה בלפרוסקופיה", organ: "כיס מרה", date: "2026-08-07", startTime: "08:30", duration: 90 }),
+  make({ id: "sur-21", code: "198815", hospital: "refael", doctorId: "doc-1", patientId: "pat-3", name: m("כריתת כיס מרה בלפרוסקופיה", "Laparoscopic cholecystectomy"), organ: m("כיס מרה", "Gallbladder"), date: "2026-07-28", startTime: "08:00", duration: 90 }),
+  make({ id: "sur-22", code: "198818", hospital: "refael", doctorId: "doc-1", patientId: "pat-7", name: m("תיקון בקע טבורי בלפרוסקופיה", "Laparoscopic umbilical hernia repair"), organ: m("בטן", "Abdomen"), date: "2026-07-31", startTime: "08:00", duration: 60 }),
+  make({ id: "sur-23", code: "198821", hospital: "telAviv", doctorId: "doc-1", patientId: "pat-5", name: m("מיני מעקף קיבה בלפרוסקופיה", "Laparoscopic mini gastric bypass"), organ: m("קיבה", "Stomach"), date: "2026-08-03", startTime: "14:30", duration: 110, treatmentType: m("אשפוז", "Inpatient") }),
+  make({ id: "sur-24", code: "198824", hospital: "elisha", doctorId: "doc-1", patientId: "pat-2", name: m("תיקון בקע מפשעתי דו צידי בלפרוסקופיה", "Laparoscopic bilateral inguinal hernia repair"), organ: m("בטן", "Abdomen"), date: "2026-08-05", startTime: "11:00", duration: 85 }),
+  make({ id: "sur-25", code: "198827", hospital: "elisha", doctorId: "doc-1", patientId: "pat-10", name: m("כריתת כיס מרה בלפרוסקופיה", "Laparoscopic cholecystectomy"), organ: m("כיס מרה", "Gallbladder"), date: "2026-08-07", startTime: "08:30", duration: 90 }),
 
   // פרופ' דרקסלר מיכאל (doc-2) - אורתופדיה
-  make({ id: "sur-26", code: "198830", hospital: "refael", doctorId: "doc-2", patientId: "pat-8", name: "החלפת מפרק ירך", organ: "ירך", side: "right", date: "2026-07-27", startTime: "09:00", duration: 150, anesthesia: "regional" }),
-  make({ id: "sur-27", code: "198833", hospital: "rmc", doctorId: "doc-2", patientId: "pat-5", name: "Achilles tendon repair", organ: "גיד אכילס", side: "right", date: "2026-07-28", startTime: "11:30", duration: 75, anesthesia: "regional" }),
-  make({ id: "sur-28", code: "198836", hospital: "refael", doctorId: "doc-2", patientId: "pat-4", name: "החלפת מפרק ברך", organ: "ברך", side: "left", date: "2026-07-30", startTime: "08:30", duration: 140, anesthesia: "regional" }),
-  make({ id: "sur-29", code: "198839", hospital: "telAviv", doctorId: "doc-2", patientId: "pat-3", name: "החלפת מפרק ירך", organ: "ירך", side: "left", date: "2026-08-02", startTime: "09:00", duration: 150, anesthesia: "regional" }),
-  make({ id: "sur-30", code: "198842", hospital: "refael", doctorId: "doc-2", patientId: "pat-9", name: "החלפת מפרק ברך", organ: "ברך", side: "right", date: "2026-08-05", startTime: "10:00", duration: 145, anesthesia: "regional" }),
+  make({ id: "sur-26", code: "198830", hospital: "refael", doctorId: "doc-2", patientId: "pat-8", name: m("החלפת מפרק ירך", "Hip replacement"), organ: m("ירך", "Hip"), side: "right", date: "2026-07-27", startTime: "09:00", duration: 150, anesthesia: "regional" }),
+  make({ id: "sur-27", code: "198833", hospital: "rmc", doctorId: "doc-2", patientId: "pat-5", name: "Achilles tendon repair", organ: m("גיד אכילס", "Achilles tendon"), side: "right", date: "2026-07-28", startTime: "11:30", duration: 75, anesthesia: "regional" }),
+  make({ id: "sur-28", code: "198836", hospital: "refael", doctorId: "doc-2", patientId: "pat-4", name: m("החלפת מפרק ברך", "Knee replacement"), organ: m("ברך", "Knee"), side: "left", date: "2026-07-30", startTime: "08:30", duration: 140, anesthesia: "regional" }),
+  make({ id: "sur-29", code: "198839", hospital: "telAviv", doctorId: "doc-2", patientId: "pat-3", name: m("החלפת מפרק ירך", "Hip replacement"), organ: m("ירך", "Hip"), side: "left", date: "2026-08-02", startTime: "09:00", duration: 150, anesthesia: "regional" }),
+  make({ id: "sur-30", code: "198842", hospital: "refael", doctorId: "doc-2", patientId: "pat-9", name: m("החלפת מפרק ברך", "Knee replacement"), organ: m("ברך", "Knee"), side: "right", date: "2026-08-05", startTime: "10:00", duration: 145, anesthesia: "regional" }),
 
   // פרופ' טיינין (doc-3) - בריאטרית
-  make({ id: "sur-31", code: "198845", hospital: "elisha", doctorId: "doc-3", patientId: "pat-6", name: "שרוול קיבה בלפרוסקופיה", organ: "קיבה", date: "2026-07-27", startTime: "08:00", duration: 120, treatmentType: "אשפוז" }),
-  make({ id: "sur-32", code: "198848", hospital: "elisha", doctorId: "doc-3", patientId: "pat-10", name: "מיני מעקף קיבה בלפרוסקופיה", organ: "קיבה", date: "2026-07-29", startTime: "10:00", duration: 110, treatmentType: "אשפוז" }),
-  make({ id: "sur-33", code: "198851", hospital: "rmc", doctorId: "doc-3", patientId: "pat-5", name: "שרוול קיבה בלפרוסקופיה", organ: "קיבה", date: "2026-08-03", startTime: "09:30", duration: 120, treatmentType: "אשפוז" }),
+  make({ id: "sur-31", code: "198845", hospital: "elisha", doctorId: "doc-3", patientId: "pat-6", name: m("שרוול קיבה בלפרוסקופיה", "Laparoscopic sleeve gastrectomy"), organ: m("קיבה", "Stomach"), date: "2026-07-27", startTime: "08:00", duration: 120, treatmentType: m("אשפוז", "Inpatient") }),
+  make({ id: "sur-32", code: "198848", hospital: "elisha", doctorId: "doc-3", patientId: "pat-10", name: m("מיני מעקף קיבה בלפרוסקופיה", "Laparoscopic mini gastric bypass"), organ: m("קיבה", "Stomach"), date: "2026-07-29", startTime: "10:00", duration: 110, treatmentType: m("אשפוז", "Inpatient") }),
+  make({ id: "sur-33", code: "198851", hospital: "rmc", doctorId: "doc-3", patientId: "pat-5", name: m("שרוול קיבה בלפרוסקופיה", "Laparoscopic sleeve gastrectomy"), organ: m("קיבה", "Stomach"), date: "2026-08-03", startTime: "09:30", duration: 120, treatmentType: m("אשפוז", "Inpatient") }),
 
   // ד"ר בניקם שלווה (doc-4) - כירורגיית שד
-  make({ id: "sur-34", code: "198854", hospital: "elisha", doctorId: "doc-4", patientId: "pat-3", name: "כריתת שד חלקית", organ: "שד", side: "right", date: "2026-07-30", startTime: "12:00", duration: 100, requirements: ["preOp", "bloodTypeCross", "frozenSection", "breastFnlMarking"] }),
-  make({ id: "sur-35", code: "198857", hospital: "refael", doctorId: "doc-4", patientId: "pat-6", name: "כריתת שד חלקית", organ: "שד", side: "left", date: "2026-08-04", startTime: "08:30", duration: 95, requirements: ["preOp", "bloodTypeCross", "breastIsotope"] }),
+  make({ id: "sur-34", code: "198854", hospital: "elisha", doctorId: "doc-4", patientId: "pat-3", name: m("כריתת שד חלקית", "Partial mastectomy"), organ: m("שד", "Breast"), side: "right", date: "2026-07-30", startTime: "12:00", duration: 100, requirements: ["preOp", "bloodTypeCross", "frozenSection", "breastFnlMarking"] }),
+  make({ id: "sur-35", code: "198857", hospital: "refael", doctorId: "doc-4", patientId: "pat-6", name: m("כריתת שד חלקית", "Partial mastectomy"), organ: m("שד", "Breast"), side: "left", date: "2026-08-04", startTime: "08:30", duration: 95, requirements: ["preOp", "bloodTypeCross", "breastIsotope"] }),
 
   // פרופ' חזן דוד (doc-5)
-  make({ id: "sur-36", code: "198860", hospital: "telAviv", doctorId: "doc-5", patientId: "pat-7", name: "כריתת כיס מרה בלפרוסקופיה", organ: "כיס מרה", date: "2026-07-27", startTime: "11:00", duration: 90 }),
-  make({ id: "sur-37", code: "198863", hospital: "refael", doctorId: "doc-5", patientId: "pat-2", name: "תיקון בקע מפשעתי דו צידי בלפרוסקופיה", organ: "בטן", date: "2026-07-31", startTime: "09:00", duration: 85 }),
-  make({ id: "sur-38", code: "198866", hospital: "elisha", doctorId: "doc-5", patientId: "pat-8", name: "אנדרטרקטומיה של עורק התרדמה", organ: "עורק תרדמה", side: "left", date: "2026-08-05", startTime: "08:00", duration: 130, requirements: ["preOp", "bloodTypeCross", "nerveMonitoring", "icu"] }),
+  make({ id: "sur-36", code: "198860", hospital: "telAviv", doctorId: "doc-5", patientId: "pat-7", name: m("כריתת כיס מרה בלפרוסקופיה", "Laparoscopic cholecystectomy"), organ: m("כיס מרה", "Gallbladder"), date: "2026-07-27", startTime: "11:00", duration: 90 }),
+  make({ id: "sur-37", code: "198863", hospital: "refael", doctorId: "doc-5", patientId: "pat-2", name: m("תיקון בקע מפשעתי דו צידי בלפרוסקופיה", "Laparoscopic bilateral inguinal hernia repair"), organ: m("בטן", "Abdomen"), date: "2026-07-31", startTime: "09:00", duration: 85 }),
+  make({ id: "sur-38", code: "198866", hospital: "elisha", doctorId: "doc-5", patientId: "pat-8", name: m("אנדרטרקטומיה של עורק התרדמה", "Carotid endarterectomy"), organ: m("עורק תרדמה", "Carotid artery"), side: "left", date: "2026-08-05", startTime: "08:00", duration: 130, requirements: ["preOp", "bloodTypeCross", "nerveMonitoring", "icu"] }),
 
   // ד"ר תבורי אלי (doc-6) - אורולוגיה
-  make({ id: "sur-39", code: "198869", hospital: "refael", doctorId: "doc-6", patientId: "pat-4", name: "כריתת ערמונית רדיקלית", organ: "ערמונית", date: "2026-07-28", startTime: "14:00", duration: 160, treatmentType: "אשפוז", requirements: ["preOp", "bloodTypeCross", "icu"] }),
-  make({ id: "sur-40", code: "198872", hospital: "telAviv", doctorId: "doc-6", patientId: "pat-2", name: "כריתת ערמונית רדיקלית", organ: "ערמונית", date: "2026-08-04", startTime: "13:00", duration: 155, treatmentType: "אשפוז", requirements: ["preOp", "bloodTypeCross", "icu", "surgicalAssistant"] }),
+  make({ id: "sur-39", code: "198869", hospital: "refael", doctorId: "doc-6", patientId: "pat-4", name: m("כריתת ערמונית רדיקלית", "Radical prostatectomy"), organ: m("ערמונית", "Prostate"), date: "2026-07-28", startTime: "14:00", duration: 160, treatmentType: m("אשפוז", "Inpatient"), requirements: ["preOp", "bloodTypeCross", "icu"] }),
+  make({ id: "sur-40", code: "198872", hospital: "telAviv", doctorId: "doc-6", patientId: "pat-2", name: m("כריתת ערמונית רדיקלית", "Radical prostatectomy"), organ: m("ערמונית", "Prostate"), date: "2026-08-04", startTime: "13:00", duration: 155, treatmentType: m("אשפוז", "Inpatient"), requirements: ["preOp", "bloodTypeCross", "icu", "surgicalAssistant"] }),
 
   // ד"ר בורג אלון (doc-7) - אורתופדיה
-  make({ id: "sur-41", code: "198875", hospital: "refael", doctorId: "doc-7", patientId: "pat-5", name: "Achilles tendon repair", organ: "גיד אכילס", side: "left", date: "2026-07-30", startTime: "15:00", duration: 70, anesthesia: "regional" }),
-  make({ id: "sur-42", code: "198878", hospital: "rmc", doctorId: "doc-7", patientId: "pat-8", name: "החלפת מפרק ברך", organ: "ברך", side: "left", date: "2026-08-06", startTime: "11:00", duration: 140, anesthesia: "regional" }),
+  make({ id: "sur-41", code: "198875", hospital: "refael", doctorId: "doc-7", patientId: "pat-5", name: "Achilles tendon repair", organ: m("גיד אכילס", "Achilles tendon"), side: "left", date: "2026-07-30", startTime: "15:00", duration: 70, anesthesia: "regional" }),
+  make({ id: "sur-42", code: "198878", hospital: "rmc", doctorId: "doc-7", patientId: "pat-8", name: m("החלפת מפרק ברך", "Knee replacement"), organ: m("ברך", "Knee"), side: "left", date: "2026-08-06", startTime: "11:00", duration: 140, anesthesia: "regional" }),
 
   // ד"ר פריאל אילת (doc-8) - כלי דם
-  make({ id: "sur-43", code: "198881", hospital: "elisha", doctorId: "doc-8", patientId: "pat-9", name: "אנדרטרקטומיה של עורק התרדמה", organ: "עורק תרדמה", side: "right", date: "2026-07-31", startTime: "12:30", duration: 125, requirements: ["preOp", "bloodTypeCross", "nerveMonitoring"] }),
-  make({ id: "sur-44", code: "198884", hospital: "refael", doctorId: "doc-8", patientId: "pat-6", name: "תיקון בקע ונטרלי בגישה לפרוסקופית עם שתל", organ: "בטן", date: "2026-08-06", startTime: "08:00", duration: 95 }),
+  make({ id: "sur-43", code: "198881", hospital: "elisha", doctorId: "doc-8", patientId: "pat-9", name: m("אנדרטרקטומיה של עורק התרדמה", "Carotid endarterectomy"), organ: m("עורק תרדמה", "Carotid artery"), side: "right", date: "2026-07-31", startTime: "12:30", duration: 125, requirements: ["preOp", "bloodTypeCross", "nerveMonitoring"] }),
+  make({ id: "sur-44", code: "198884", hospital: "refael", doctorId: "doc-8", patientId: "pat-6", name: m("תיקון בקע ונטרלי בגישה לפרוסקופית עם שתל", "Laparoscopic ventral hernia repair with mesh"), organ: m("בטן", "Abdomen"), date: "2026-08-06", startTime: "08:00", duration: 95 }),
 ];
 
 /**
@@ -172,7 +173,7 @@ const generatedSurgeries: Surgery[] = plannedDays.flatMap((day, dayIndex) => {
       startTime: minutesToTime(item.startMinutes),
       duration: item.durationMinutes,
       anesthesia: proc.regional ? "regional" : "general",
-      treatmentType: proc.admission ? "אשפוז" : "אשפוז יום",
+      treatmentType: proc.admission ? m("אשפוז", "Inpatient") : m("אשפוז יום", "Day surgery"),
       status: item.cancelled ? "cancelled" : day.date < MOCK_TODAY ? "done" : "scheduled",
       withSummary: day.date < MOCK_TODAY,
       withDischarge: day.date < MOCK_TODAY && proc.admission,

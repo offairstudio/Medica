@@ -10,8 +10,9 @@ export interface Doctor {
   id: ID;
   firstName: string;
   lastName: string;
-  displayName: string; // 'ד"ר דוחנו אולג'
-  title: 'ד"ר' | "פרופ'" | "";
+  displayName: string; // 'ד"ר דוחנו אולג' / 'Dr. Oleg Dohno'
+  /** תואר: ד"ר / פרופ' - ובאנגלית Dr. / Prof. */
+  title: string;
   avatarUrl?: string;
   email: string;
   mobile: string;

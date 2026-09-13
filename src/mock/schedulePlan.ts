@@ -1,4 +1,5 @@
 import type { Hospital, ISODate } from "../types";
+import { m } from "./localize";
 import { doctors, MOCK_TODAY } from "./doctors";
 
 /**
@@ -40,24 +41,24 @@ export const PLAN_PROCEDURES: {
   regional?: boolean;
   admission?: boolean;
 }[] = [
-  { name: "כריתת כיס מרה בלפרוסקופיה", organ: "כיס מרה", duration: 90 },
-  { name: "תיקון בקע טבורי בלפרוסקופיה", organ: "בטן", duration: 60 },
-  { name: "תיקון בקע מפשעתי דו צידי בלפרוסקופיה", organ: "בטן", duration: 85 },
-  { name: "החלפת מפרק ברך", organ: "ברך", duration: 140, regional: true, admission: true },
-  { name: "החלפת מפרק ירך", organ: "ירך", duration: 150, regional: true, admission: true },
-  { name: "שחזור גיד אכילס", organ: "גיד אכילס", duration: 75, regional: true },
-  { name: "שרוול קיבה בלפרוסקופיה", organ: "קיבה", duration: 120, admission: true },
-  { name: "תיקון בקע ונטרלי בגישה לפרוסקופית עם שתל", organ: "בטן", duration: 95 },
-  { name: "כריתת שד חלקית", organ: "שד", duration: 100 },
-  { name: "כריתת ערמונית רדיקלית", organ: "ערמונית", duration: 160, admission: true },
-  { name: "אנדרטרקטומיה של עורק התרדמה", organ: "עורק תרדמה", duration: 130, admission: true },
-  { name: "כריתת בלוטת התריס", organ: "בלוטת התריס", duration: 110, admission: true },
-  { name: "ארתרוסקופיה של הברך", organ: "ברך", duration: 55, regional: true },
-  { name: "כריתת תוספתן בלפרוסקופיה", organ: "תוספתן", duration: 50 },
-  { name: "ניתוח קטרקט", organ: "עין", duration: 35 },
-  { name: "תיקון מחיצת האף", organ: "אף", duration: 70 },
-  { name: "כריתת מעי גס חלקית", organ: "מעי גס", duration: 165, admission: true },
-  { name: "החלפת מפרק כתף", organ: "כתף", duration: 135, regional: true, admission: true },
+  { name: m("כריתת כיס מרה בלפרוסקופיה", "Laparoscopic cholecystectomy"), organ: m("כיס מרה", "Gallbladder"), duration: 90 },
+  { name: m("תיקון בקע טבורי בלפרוסקופיה", "Laparoscopic umbilical hernia repair"), organ: m("בטן", "Abdomen"), duration: 60 },
+  { name: m("תיקון בקע מפשעתי דו צידי בלפרוסקופיה", "Laparoscopic bilateral inguinal hernia repair"), organ: m("בטן", "Abdomen"), duration: 85 },
+  { name: m("החלפת מפרק ברך", "Knee replacement"), organ: m("ברך", "Knee"), duration: 140, regional: true, admission: true },
+  { name: m("החלפת מפרק ירך", "Hip replacement"), organ: m("ירך", "Hip"), duration: 150, regional: true, admission: true },
+  { name: m("שחזור גיד אכילס", "Achilles tendon repair"), organ: m("גיד אכילס", "Achilles tendon"), duration: 75, regional: true },
+  { name: m("שרוול קיבה בלפרוסקופיה", "Laparoscopic sleeve gastrectomy"), organ: m("קיבה", "Stomach"), duration: 120, admission: true },
+  { name: m("תיקון בקע ונטרלי בגישה לפרוסקופית עם שתל", "Laparoscopic ventral hernia repair with mesh"), organ: m("בטן", "Abdomen"), duration: 95 },
+  { name: m("כריתת שד חלקית", "Partial mastectomy"), organ: m("שד", "Breast"), duration: 100 },
+  { name: m("כריתת ערמונית רדיקלית", "Radical prostatectomy"), organ: m("ערמונית", "Prostate"), duration: 160, admission: true },
+  { name: m("אנדרטרקטומיה של עורק התרדמה", "Carotid endarterectomy"), organ: m("עורק תרדמה", "Carotid artery"), duration: 130, admission: true },
+  { name: m("כריתת בלוטת התריס", "Thyroidectomy"), organ: m("בלוטת התריס", "Thyroid"), duration: 110, admission: true },
+  { name: m("ארתרוסקופיה של הברך", "Knee arthroscopy"), organ: m("ברך", "Knee"), duration: 55, regional: true },
+  { name: m("כריתת תוספתן בלפרוסקופיה", "Laparoscopic appendectomy"), organ: m("תוספתן", "Appendix"), duration: 50 },
+  { name: m("ניתוח קטרקט", "Cataract surgery"), organ: m("עין", "Eye"), duration: 35 },
+  { name: m("תיקון מחיצת האף", "Septoplasty"), organ: m("אף", "Nose"), duration: 70 },
+  { name: m("כריתת מעי גס חלקית", "Partial colectomy"), organ: m("מעי גס", "Colon"), duration: 165, admission: true },
+  { name: m("החלפת מפרק כתף", "Shoulder replacement"), organ: m("כתף", "Shoulder"), duration: 135, regional: true, admission: true },
 ];
 
 /** בתי החולים בפריסה לא אחידה - רפאל הוא המרכז הגדול ביותר */

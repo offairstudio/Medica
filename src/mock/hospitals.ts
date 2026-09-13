@@ -1,4 +1,5 @@
 import type { Hospital } from "../types";
+import { m } from "./localize";
 
 export interface HospitalInfo {
   key: Hospital;
@@ -28,9 +29,9 @@ export interface HospitalInfo {
 export const HOSPITALS: Record<Hospital, HospitalInfo> = {
   refael: {
     key: "refael",
-    name: "medica רפאל",
-    fullName: "medica רפאל, תל אביב",
-    address: "דרך השלום 53, תל אביב",
+    name: m("medica רפאל", "medica Refael"),
+    fullName: m("medica רפאל, תל אביב", "medica Refael, Tel Aviv"),
+    address: m("דרך השלום 53, תל אביב", "53 Derech HaShalom St, Tel Aviv"),
     chipClass: "bg-hospital-refael",
     dotClass: "bg-hospital-refael",
     softClass: "bg-hospital-refael-soft",
@@ -39,9 +40,9 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
   },
   elisha: {
     key: "elisha",
-    name: "medica אלישע",
-    fullName: "medica - בית חולים אלישע, חיפה",
-    address: "יאיר כץ 12, חיפה",
+    name: m("medica אלישע", "medica Elisha"),
+    fullName: m("medica - בית חולים אלישע, חיפה", "medica – Elisha Hospital, Haifa"),
+    address: m("יאיר כץ 12, חיפה", "12 Yair Katz St, Haifa"),
     chipClass: "bg-hospital-elisha",
     dotClass: "bg-hospital-elisha",
     softClass: "bg-hospital-elisha-soft",
@@ -50,9 +51,9 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
   },
   telAviv: {
     key: "telAviv",
-    name: "medica תל אביב",
-    fullName: "medica תל אביב, הברזל 28",
-    address: "הברזל 28, תל אביב",
+    name: m("medica תל אביב", "medica Tel Aviv"),
+    fullName: m("medica תל אביב, הברזל 28", "medica Tel Aviv, 28 HaBarzel St"),
+    address: m("הברזל 28, תל אביב", "28 HaBarzel St, Tel Aviv"),
     chipClass: "bg-hospital-telaviv",
     dotClass: "bg-hospital-telaviv",
     softClass: "bg-hospital-telaviv-soft",
@@ -61,9 +62,9 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
   },
   rmc: {
     key: "rmc",
-    name: "medica עפולה",
-    fullName: "medica RMC, עפולה",
-    address: "יהושע חנקין 5, עפולה",
+    name: m("medica עפולה", "medica Afula"),
+    fullName: m("medica RMC, עפולה", "medica RMC, Afula"),
+    address: m("יהושע חנקין 5, עפולה", "5 Yehoshua Hankin St, Afula"),
     chipClass: "bg-hospital-rmc",
     dotClass: "bg-hospital-rmc",
     softClass: "bg-hospital-rmc-soft",

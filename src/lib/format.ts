@@ -1,3 +1,5 @@
+import { t } from "../i18n";
+
 /** '037336278' → תצוגת ת.ז */
 export function formatIdNumber(id: string): string {
   return id;
@@ -20,7 +22,7 @@ export function maskPhone(phone: string): string {
 
 /** 75 → '75 דק\'' */
 export function formatDuration(minutes: number): string {
-  return `${minutes} דק'`;
+  return t.ui.fmt.minutes(minutes);
 }
 
 /** 420 → '420 KB' / 1740 → '1.7 MB' */

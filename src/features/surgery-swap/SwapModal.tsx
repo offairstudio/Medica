@@ -110,7 +110,7 @@ export function SwapModal({ surgery, onClose }: SwapModalProps) {
           <h3 className="mb-2 text-h3 text-ink">{t.swap.pickTime}</h3>
           {!selectedDate ? (
             <p className="rounded-md bg-surface-2 px-4 py-6 text-center text-caption text-muted">
-              יש לבחור קודם יום החלפה
+              {t.ui.swap.pickDayFirst}
             </p>
           ) : timeOptions.length === 0 ? (
             <p className="rounded-md bg-surface-2 px-4 py-6 text-center text-caption text-muted">

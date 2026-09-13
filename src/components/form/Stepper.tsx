@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { t } from "../../i18n";
 
 export interface StepperProps {
   steps: readonly string[];
@@ -16,7 +17,7 @@ export interface StepperProps {
  */
 export function Stepper({ steps, current, onStepClick, className }: StepperProps) {
   return (
-    <nav aria-label="שלבי יצירת הניתוח" className={cn("flex items-stretch gap-2", className)}>
+    <nav aria-label={t.ui.a11y.wizardSteps} className={cn("flex items-stretch gap-2", className)}>
       {steps.map((name, i) => {
         const done = i < current;
         const active = i === current;
@@ -29,7 +30,7 @@ export function Stepper({ steps, current, onStepClick, className }: StepperProps
             disabled={!clickable}
             onClick={() => onStepClick?.(i)}
             aria-current={active ? "step" : undefined}
-            aria-label={`שלב ${i + 1} מתוך ${steps.length}: ${name}`}
+            aria-label={t.ui.a11y.step(i + 1, steps.length, name)}
             className={cn(
               "group flex flex-1 flex-col gap-1.5 rounded-sm text-start",
               clickable && "cursor-pointer",

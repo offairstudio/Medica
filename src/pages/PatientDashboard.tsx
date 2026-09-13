@@ -114,7 +114,7 @@ export function PatientDashboard() {
       title={t.patient.greeting(currentPatient.firstName)}
       subtitle={
         next
-          ? `התור הקרוב שלך ${relativeDayLabel(next.date, MOCK_TODAY)} · ${next.doctorName}`
+          ? t.ui.dashboard.nextSummary(relativeDayLabel(next.date, MOCK_TODAY), next.doctorName)
           : t.patient.emptyUpcoming
       }
     />
@@ -125,8 +125,8 @@ export function PatientDashboard() {
       <div className="flex flex-col gap-8">
         {/* סיכומים */}
         <div className="grid gap-3 sm:grid-cols-2">
-          <StatTile to="/p/appointments" icon={CalendarClock} value={upcoming.length} label="תורים עתידיים" />
-          <StatTile to="/p/results" icon={ClipboardList} value={results.length} label="תוצאות וסיכומים" />
+          <StatTile to="/p/appointments" icon={CalendarClock} value={upcoming.length} label={t.ui.dashboard.upcoming} />
+          <StatTile to="/p/results" icon={ClipboardList} value={results.length} label={t.ui.dashboard.results} />
         </div>
 
         {/* התור הקרוב + הכנות */}
@@ -166,11 +166,11 @@ export function PatientDashboard() {
 
         {/* שתי עמודות: התורים הבאים + תוצאות ומסמכים */}
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
-          <section className="min-w-0" aria-label="התורים הבאים">
-            <SectionHeader title="התורים הבאים" to="/p/appointments" />
+          <section className="min-w-0" aria-label={t.ui.dashboard.nextAppointments}>
+            <SectionHeader title={t.ui.dashboard.nextAppointments} to="/p/appointments" />
             {following.length === 0 ? (
               <p className="rounded-lg border border-line bg-surface px-4 py-6 text-center text-caption text-muted">
-                אין תורים נוספים אחרי התור הקרוב
+                {t.ui.dashboard.noMore}
               </p>
             ) : (
               <div className="flex flex-col gap-3">
@@ -182,8 +182,8 @@ export function PatientDashboard() {
           </section>
 
           <div className="flex min-w-0 flex-col gap-8">
-            <section className="min-w-0" aria-label="תוצאות אחרונות">
-              <SectionHeader title="תוצאות אחרונות" to="/p/results" />
+            <section className="min-w-0" aria-label={t.ui.dashboard.recentResults}>
+              <SectionHeader title={t.ui.dashboard.recentResults} to="/p/results" />
               <ul className="rounded-lg border border-line bg-surface px-4 shadow-sm">
                 {results.slice(0, 3).map((r) => (
                   <li
@@ -198,11 +198,11 @@ export function PatientDashboard() {
                     </span>
                     <Link
                       to="/p/results"
-                      aria-label={`צפייה בתוצאה: ${r.title}`}
+                      aria-label={t.ui.a11y.viewResult(r.title)}
                       className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-md px-3 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50"
                     >
                       <Eye className="h-4 w-4" aria-hidden />
-                      צפייה
+                      {t.ui.dashboard.view}
                     </Link>
                   </li>
                 ))}

@@ -41,7 +41,7 @@ export function SurgeryRow({
     <div
       role="link"
       tabIndex={0}
-      aria-label={`צפייה בניתוח של ${patientName}`}
+      aria-label={t.ui.a11y.viewSurgery(patientName)}
       onClick={(e) => {
         if ((e.target as HTMLElement).closest("button, a, [role='menu']")) return;
         onView(surgery);
@@ -88,7 +88,7 @@ export function SurgeryRow({
                 trigger={
                   <button
                     type="button"
-                    aria-label={`פעולות לניתוח של ${patientName}`}
+                    aria-label={t.ui.a11y.surgeryActions(patientName)}
                     className="inline-flex h-10 w-10 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-surface/70 hover:text-ink"
                   >
                     <EllipsisVertical className="h-5 w-5" />

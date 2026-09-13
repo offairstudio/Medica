@@ -1,3 +1,5 @@
+import { t } from "../i18n";
+
 /**
  * גרסאות הפונט של הפרוטוטייפ. שתיהן דו-לשוניות (עברית ולטינית),
  * והבחירה נשמרת בדפדפן כדי שאפשר יהיה להשוות ביניהן לאורך זמן.
@@ -11,8 +13,8 @@ export interface FontVersion {
 }
 
 export const FONT_VERSIONS: FontVersion[] = [
-  { key: "assistant", name: "Assistant", note: "הומניסטי, עברית רחבה" },
-  { key: "heebo", name: "Heebo", note: "לטינית של Roboto, עברית של עודד עזר" },
+  { key: "assistant", name: "Assistant", note: t.ui.fonts.assistant },
+  { key: "heebo", name: "Heebo", note: t.ui.fonts.heebo },
 ];
 
 const STORAGE_KEY = "medica:font";

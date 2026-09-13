@@ -1,4 +1,5 @@
 import type { MedicalDocument } from "../types";
+import { m } from "./localize";
 
 /**
  * 12 מסמכים רפואיים של המטופלת המחוברת.
@@ -8,8 +9,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-1",
     typeKey: "imaging",
-    typeLabel: "בדיקות דימות MRI / CT / US",
-    fileName: "תוצאות MRI ברך ימין",
+    typeLabel: m("בדיקות דימות MRI / CT / US", "Imaging: MRI / CT / US"),
+    fileName: m("תוצאות MRI ברך ימין", "Right knee MRI results"),
     fileUrl: "/mock-files/mri-result.pdf",
     sizeKb: 2480,
     uploadedAt: "2026-07-14",
@@ -18,8 +19,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-2",
     typeKey: "medicalReports",
-    typeLabel: "דוחות רפואיים",
-    fileName: "מכתב שחרור - כריתת כיס מרה",
+    typeLabel: m("דוחות רפואיים", "Medical reports"),
+    fileName: m("מכתב שחרור - כריתת כיס מרה", "Discharge letter – cholecystectomy"),
     fileUrl: "/mock-files/discharge-letter.pdf",
     sizeKb: 340,
     uploadedAt: "2026-06-19",
@@ -28,8 +29,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-3",
     typeKey: "bloodTests",
-    typeLabel: "בדיקות דם",
-    fileName: "ספירת דם מלאה + כימיה",
+    typeLabel: m("בדיקות דם", "Blood tests"),
+    fileName: m("ספירת דם מלאה + כימיה", "Full blood count + chemistry"),
     fileUrl: "/mock-files/blood-test.pdf",
     sizeKb: 185,
     uploadedAt: "2026-07-08",
@@ -38,8 +39,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-4",
     typeKey: "surgeryReferral",
-    typeLabel: "הפניה לניתוח",
-    fileName: "הפניה לניתוח ברך",
+    typeLabel: m("הפניה לניתוח", "Surgery referral"),
+    fileName: m("הפניה לניתוח ברך", "Knee surgery referral"),
     fileUrl: "/mock-files/referral.pdf",
     sizeKb: 92,
     uploadedAt: "2026-07-02",
@@ -48,8 +49,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-5",
     typeKey: "ecg",
-    typeLabel: "א.ק.ג",
-    fileName: "בדיקת א.ק.ג במנוחה",
+    typeLabel: m("א.ק.ג", "ECG"),
+    fileName: m("בדיקת א.ק.ג במנוחה", "Resting ECG"),
     fileUrl: "/mock-files/blood-test.pdf",
     sizeKb: 410,
     uploadedAt: "2026-06-28",
@@ -58,8 +59,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-6",
     typeKey: "anamnesis",
-    typeLabel: "אנמנזה רפואית",
-    fileName: "סיכום אנמנזה רפואית",
+    typeLabel: m("אנמנזה רפואית", "Medical anamnesis"),
+    fileName: m("סיכום אנמנזה רפואית", "Medical anamnesis summary"),
     fileUrl: "/mock-files/referral.pdf",
     sizeKb: 156,
     uploadedAt: "2026-06-25",
@@ -68,8 +69,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-7",
     typeKey: "imaging",
-    typeLabel: "בדיקות דימות MRI / CT / US",
-    fileName: "US בטן עליונה",
+    typeLabel: m("בדיקות דימות MRI / CT / US", "Imaging: MRI / CT / US"),
+    fileName: m("US בטן עליונה", "Upper abdominal ultrasound"),
     fileUrl: "/mock-files/mri-result.pdf",
     sizeKb: 1730,
     uploadedAt: "2026-06-10",
@@ -78,8 +79,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-8",
     typeKey: "specialistConsult",
-    typeLabel: "ייעוץ רופא מומחה (קרדיולוג / רופא ריאות וכו')",
-    fileName: "סיכום ייעוץ קרדיולוג",
+    typeLabel: m("ייעוץ רופא מומחה (קרדיולוג / רופא ריאות וכו')", "Specialist consult (cardiologist / pulmonologist etc.)"),
+    fileName: m("סיכום ייעוץ קרדיולוג", "Cardiology consult summary"),
     fileUrl: "/mock-files/discharge-letter.pdf",
     sizeKb: 210,
     uploadedAt: "2026-05-30",
@@ -88,8 +89,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-9",
     typeKey: "chestXray",
-    typeLabel: "צילום חזה",
-    fileName: "צילום חזה PA",
+    typeLabel: m("צילום חזה", "Chest X-ray"),
+    fileName: m("צילום חזה PA", "Chest X-ray PA"),
     fileUrl: "/mock-files/mri-result.pdf",
     sizeKb: 980,
     uploadedAt: "2026-05-22",
@@ -98,8 +99,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-10",
     typeKey: "informedConsent",
-    typeLabel: "טופס הסכמה מדעת",
-    fileName: "הסכמה מדעת - ניתוח ברך",
+    typeLabel: m("טופס הסכמה מדעת", "Informed consent form"),
+    fileName: m("הסכמה מדעת - ניתוח ברך", "Informed consent – knee surgery"),
     fileUrl: "/mock-files/referral.pdf",
     sizeKb: 74,
     uploadedAt: "2026-05-18",
@@ -108,8 +109,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-11",
     typeKey: "medicationList",
-    typeLabel: "רשימת תרופות",
-    fileName: "רשימת תרופות קבועות",
+    typeLabel: m("רשימת תרופות", "Medication list"),
+    fileName: m("רשימת תרופות קבועות", "Regular medication list"),
     fileUrl: "/mock-files/blood-test.pdf",
     sizeKb: 48,
     uploadedAt: "2026-04-29",
@@ -118,8 +119,8 @@ export const documents: MedicalDocument[] = [
   {
     id: "docm-12",
     typeKey: "urineCulture",
-    typeLabel: "תרבית שתן",
-    fileName: "תוצאות תרבית שתן",
+    typeLabel: m("תרבית שתן", "Urine culture"),
+    fileName: m("תוצאות תרבית שתן", "Urine culture results"),
     fileUrl: "/mock-files/blood-test.pdf",
     sizeKb: 120,
     uploadedAt: "2026-04-12",

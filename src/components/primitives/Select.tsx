@@ -8,6 +8,7 @@ import {
 } from "react";
 import { Check, ChevronDown, Search, X } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { t } from "../../i18n";
 
 export interface SelectOption {
   value: string;
@@ -39,7 +40,7 @@ export function Select({
   value,
   onChange,
   label,
-  placeholder = "בחירה...",
+  placeholder = t.ui.select.placeholder,
   searchable,
   multiple,
   clearable,
@@ -142,7 +143,7 @@ export function Select({
           {clearable && selected.length > 0 && (
             <X
               className="h-4 w-4 text-muted hover:text-danger"
-              aria-label="ניקוי בחירה"
+              aria-label={t.ui.a11y.clearSelection}
               onClick={(e) => {
                 e.stopPropagation();
                 onChange(multiple ? [] : null);
@@ -164,15 +165,15 @@ export function Select({
                 ref={searchRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="חיפוש..."
-                aria-label="חיפוש באפשרויות"
+                placeholder={t.ui.select.searchPlaceholder}
+                aria-label={t.ui.a11y.searchOptions}
                 className="w-full bg-transparent text-ink outline-none placeholder:text-muted"
               />
             </div>
           )}
           <ul role="listbox" aria-multiselectable={multiple} className="max-h-56 overflow-y-auto py-1">
             {filtered.length === 0 && (
-              <li className="px-3 py-2 text-caption text-muted">לא נמצאו תוצאות</li>
+              <li className="px-3 py-2 text-caption text-muted">{t.ui.select.noResults}</li>
             )}
             {filtered.map((o) => {
               const isSelected = selectedValues.includes(o.value);

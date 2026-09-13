@@ -15,7 +15,7 @@ import {
   type WizardErrors,
   type WizardState,
 } from "./wizardState";
-import { documentTypeLabel } from "../../mock/lookups";
+import { documentTypeLabel, lookups } from "../../mock/lookups";
 import { useData } from "../../state/data";
 import { t } from "../../i18n";
 import type { ISODate, Surgery, Time } from "../../types";
@@ -131,7 +131,7 @@ function WizardInner({
       capitalEquipment: state.capitalEquipment ?? undefined,
       additionalEquipment: state.additionalEquipment || undefined,
       requirements: state.requirements as Surgery["requirements"],
-      treatmentType: state.treatmentType ?? "אשפוז יום",
+      treatmentType: state.treatmentType ?? lookups.treatmentTypes[1],
       surgeonFee: state.feeEnabled
         ? { enabled: true, amount: Number(state.feeAmount) || 0 }
         : undefined,

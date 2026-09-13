@@ -1,5 +1,6 @@
 import type { Surgery } from "../../types";
 import type { UploadedFile } from "../../components/form/FileUpload";
+import { t } from "../../i18n";
 
 export interface ProcedureDraft {
   name: string;
@@ -105,7 +106,7 @@ export function stateFromSurgery(s: Surgery): WizardState {
     additionalEquipment: s.additionalEquipment ?? "",
     treatmentType: s.treatmentType,
     requirements: [...s.requirements],
-    anamnesisFile: { name: "אנמנזה-רפואית.pdf", sizeKb: 156 },
+    anamnesisFile: { name: t.ui.validation.anamnesisFileName, sizeKb: 156 },
     extraDocs: s.documents.map((d, i) => ({
       id: i + 1,
       typeKey: d.typeKey,
@@ -116,8 +117,8 @@ export function stateFromSurgery(s: Surgery): WizardState {
 
 export type WizardErrors = Partial<Record<string, string>>;
 
-const REQUIRED = "שדה חובה";
-const INVALID = "ערך אינו חוקי";
+const REQUIRED = t.ui.validation.required;
+const INVALID = t.ui.validation.invalid;
 
 export function validateStep1(s: WizardState): WizardErrors {
   const errors: WizardErrors = {};
@@ -126,7 +127,7 @@ export function validateStep1(s: WizardState): WizardErrors {
   if (!s.idNumber.trim()) {
     errors.idNumber = REQUIRED;
   } else if (s.idType === "id" && !/^\d{8,9}$/.test(s.idNumber)) {
-    errors.idNumber = "מספר תעודת זהות אינו תקין";
+    errors.idNumber = t.ui.validation.invalidId;
   }
   if (!s.phone.trim()) errors.phone = REQUIRED;
   if (s.feeEnabled && (!s.feeAmount.trim() || Number(s.feeAmount) <= 0)) {
@@ -151,7 +152,7 @@ export function validateStep2(s: WizardState): WizardErrors {
 
 export function validateStep3(s: WizardState): WizardErrors {
   const errors: WizardErrors = {};
-  if (!s.anamnesisFile) errors.anamnesis = "חובה להעלות קובץ אנמנזה רפואית";
+  if (!s.anamnesisFile) errors.anamnesis = t.ui.validation.anamnesisRequired;
   return errors;
 }
 

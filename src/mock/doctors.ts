@@ -1,4 +1,5 @@
 import type { Doctor } from "../types";
+import { isEnglish, m } from "./localize";
 
 /**
  * "היום" של המוקאפ. כל הנתונים מסודרים סביב התאריך הזה,
@@ -9,10 +10,10 @@ export const MOCK_TODAY = "2026-07-26";
 const BASE_DOCTORS: Doctor[] = [
   {
     id: "doc-1",
-    firstName: "אולג",
-    lastName: "דוחנו",
-    displayName: 'ד"ר דוחנו אולג',
-    title: 'ד"ר',
+    firstName: m("אולג", "Oleg"),
+    lastName: m("דוחנו", "Dohno"),
+    displayName: m('ד"ר דוחנו אולג', "Dr. Oleg Dohno"),
+    title: m('ד"ר', "Dr."),
     email: "oleg.dohno@raphael.co.il",
     mobile: "0523372667",
     licenseNumber: "1-47382",
@@ -21,10 +22,10 @@ const BASE_DOCTORS: Doctor[] = [
   },
   {
     id: "doc-2",
-    firstName: "מיכאל",
-    lastName: "דרקסלר",
-    displayName: "פרופ' דרקסלר מיכאל",
-    title: "פרופ'",
+    firstName: m("מיכאל", "Michael"),
+    lastName: m("דרקסלר", "Drexler"),
+    displayName: m("פרופ' דרקסלר מיכאל", "Prof. Michael Drexler"),
+    title: m("פרופ'", "Prof."),
     email: "m.drexler@raphael.co.il",
     mobile: "0528114923",
     licenseNumber: "1-29847",
@@ -34,9 +35,9 @@ const BASE_DOCTORS: Doctor[] = [
   {
     id: "doc-3",
     firstName: "",
-    lastName: "טיינין",
-    displayName: "פרופ' טיינין",
-    title: "פרופ'",
+    lastName: m("טיינין", "Tainin"),
+    displayName: m("פרופ' טיינין", "Prof. Tainin"),
+    title: m("פרופ'", "Prof."),
     email: "tainin@raphael.co.il",
     mobile: "0542218837",
     licenseNumber: "1-31205",
@@ -45,10 +46,10 @@ const BASE_DOCTORS: Doctor[] = [
   },
   {
     id: "doc-4",
-    firstName: "שלווה",
-    lastName: "בניקם",
-    displayName: 'ד"ר בניקם שלווה',
-    title: 'ד"ר',
+    firstName: m("שלווה", "Shalva"),
+    lastName: m("בניקם", "Benikam"),
+    displayName: m('ד"ר בניקם שלווה', "Dr. Shalva Benikam"),
+    title: m('ד"ר', "Dr."),
     email: "s.benikam@raphael.co.il",
     mobile: "0537761204",
     licenseNumber: "1-52918",
@@ -57,10 +58,10 @@ const BASE_DOCTORS: Doctor[] = [
   },
   {
     id: "doc-5",
-    firstName: "דוד",
-    lastName: "חזן",
-    displayName: "פרופ' חזן דוד",
-    title: "פרופ'",
+    firstName: m("דוד", "David"),
+    lastName: m("חזן", "Hazan"),
+    displayName: m("פרופ' חזן דוד", "Prof. David Hazan"),
+    title: m("פרופ'", "Prof."),
     email: "d.hazan@raphael.co.il",
     mobile: "0509923471",
     licenseNumber: "1-18463",
@@ -69,10 +70,10 @@ const BASE_DOCTORS: Doctor[] = [
   },
   {
     id: "doc-6",
-    firstName: "אלי",
-    lastName: "תבורי",
-    displayName: 'ד"ר תבורי אלי',
-    title: 'ד"ר',
+    firstName: m("אלי", "Eli"),
+    lastName: m("תבורי", "Tavori"),
+    displayName: m('ד"ר תבורי אלי', "Dr. Eli Tavori"),
+    title: m('ד"ר', "Dr."),
     email: "e.tavori@raphael.co.il",
     mobile: "0526654389",
     licenseNumber: "1-61027",
@@ -81,10 +82,10 @@ const BASE_DOCTORS: Doctor[] = [
   },
   {
     id: "doc-7",
-    firstName: "אלון",
-    lastName: "בורג",
-    displayName: 'ד"ר בורג אלון',
-    title: 'ד"ר',
+    firstName: m("אלון", "Alon"),
+    lastName: m("בורג", "Burg"),
+    displayName: m('ד"ר בורג אלון', "Dr. Alon Burg"),
+    title: m('ד"ר', "Dr."),
     email: "a.burg@raphael.co.il",
     mobile: "0546672310",
     licenseNumber: "1-44519",
@@ -93,10 +94,10 @@ const BASE_DOCTORS: Doctor[] = [
   },
   {
     id: "doc-8",
-    firstName: "אילת",
-    lastName: "פריאל",
-    displayName: 'ד"ר פריאל אילת',
-    title: 'ד"ר',
+    firstName: m("אילת", "Ayelet"),
+    lastName: m("פריאל", "Priel"),
+    displayName: m('ד"ר פריאל אילת', "Dr. Ayelet Priel"),
+    title: m('ד"ר', "Dr."),
     email: "a.priel@raphael.co.il",
     mobile: "0503318842",
     licenseNumber: "1-58733",
@@ -109,24 +110,29 @@ const BASE_DOCTORS: Doctor[] = [
  * מנתחים נוספים שנוצרים דטרמיניסטית - כדי שהסרגל, היומן הכולל
  * והתצוגה החודשית ירגישו כמו מערכת חיה עם עשרות מנתחים.
  */
+/** בעברית התואר ושם המשפחה קודמים, באנגלית התואר ואחריו השם הפרטי */
+function displayName(title: string, first: string, last: string): string {
+  return (isEnglish ? `${title} ${first} ${last}` : `${title} ${last} ${first}`).trim();
+}
+
 const EXTRA_NAMES: [first: string, last: string][] = [
-  ["יעל", "אברמסון"], ["רון", "גולדברג"], ["מיכל", "שטרן"], ["איתן", "לביא"],
-  ["נועם", "רוזנברג"], ["דנה", "פלדמן"], ["עומר", "קציר"], ["שירה", "אלמוג"],
-  ["גיא", "ברנשטיין"], ["ליאת", "שקד"], ["אורי", "מלמד"], ["הילה", "נבון"],
-  ["יובל", "כרמי"], ["טל", "אשכנזי"], ["רועי", "זילבר"], ["מאיה", "הראל"],
-  ["אסף", "גורן"], ["ענת", "ליבוביץ"], ["ניר", "שמעוני"], ["רותם", "אדלר"],
-  ["עדי", "ברק"], ["אלה", "וייס"], ["דור", "פרידמן"], ["נטע", "רביד"],
-  ["עידו", "סגל"], ["קרן", "אופיר"], ["תומר", "גלבוע"], ["מור", "אילון"],
+  [m("יעל", "Yael"), m("אברמסון", "Abramson")], [m("רון", "Ron"), m("גולדברג", "Goldberg")], [m("מיכל", "Michal"), m("שטרן", "Stern")], [m("איתן", "Eitan"), m("לביא", "Lavi")],
+  [m("נועם", "Noam"), m("רוזנברג", "Rosenberg")], [m("דנה", "Dana"), m("פלדמן", "Feldman")], [m("עומר", "Omer"), m("קציר", "Katzir")], [m("שירה", "Shira"), m("אלמוג", "Almog")],
+  [m("גיא", "Guy"), m("ברנשטיין", "Bernstein")], [m("ליאת", "Liat"), m("שקד", "Shaked")], [m("אורי", "Uri"), m("מלמד", "Melamed")], [m("הילה", "Hila"), m("נבון", "Navon")],
+  [m("יובל", "Yuval"), m("כרמי", "Carmi")], [m("טל", "Tal"), m("אשכנזי", "Ashkenazi")], [m("רועי", "Roi"), m("זילבר", "Zilber")], [m("מאיה", "Maya"), m("הראל", "Harel")],
+  [m("אסף", "Asaf"), m("גורן", "Goren")], [m("ענת", "Anat"), m("ליבוביץ", "Leibovitz")], [m("ניר", "Nir"), m("שמעוני", "Shimoni")], [m("רותם", "Rotem"), m("אדלר", "Adler")],
+  [m("עדי", "Adi"), m("ברק", "Barak")], [m("אלה", "Ella"), m("וייס", "Weiss")], [m("דור", "Dor"), m("פרידמן", "Friedman")], [m("נטע", "Neta"), m("רביד", "Ravid")],
+  [m("עידו", "Ido"), m("סגל", "Segal")], [m("קרן", "Keren"), m("אופיר", "Ofir")], [m("תומר", "Tomer"), m("גלבוע", "Gilboa")], [m("מור", "Mor"), m("אילון", "Ilon")],
 ];
 
 const GENERATED_DOCTORS: Doctor[] = EXTRA_NAMES.map(([first, last], i) => {
-  const title = i % 5 === 0 ? ("פרופ'" as const) : ('ד"ר' as const);
+  const title = i % 5 === 0 ? m("פרופ'", "Prof.") : m('ד"ר', "Dr.");
   const id = `doc-${i + 9}`;
   return {
     id,
     firstName: first,
     lastName: last,
-    displayName: `${title} ${last} ${first}`,
+    displayName: displayName(title, first, last),
     title,
     email: `doctor${i + 9}@raphael.co.il`,
     mobile: `05${(2 + (i % 3))}${String(1000000 + i * 53791).slice(0, 7)}`,

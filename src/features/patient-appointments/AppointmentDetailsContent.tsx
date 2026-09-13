@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CalendarDays, Clock, FileText, MapPin, MessageSquareText, Info, X } from "lucide-react";
+import { Building2, CalendarDays, Clock, FileText, MapPin, MessageSquareText, Info, X } from "lucide-react";
 import { Button } from "../../components/primitives/Button";
 import { FileUpload, type UploadedFile } from "../../components/form/FileUpload";
 import { useToast } from "../../components/overlay/Toast";
@@ -27,7 +27,8 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
       label: t.patient.details.time,
       value: <span className="tnum">{appointment.time}</span>,
     },
-    { icon: MapPin, label: t.patient.details.location, value: appointment.location },
+    { icon: MapPin, label: t.patient.details.address, value: HOSPITALS[appointment.hospital].address },
+    { icon: Building2, label: t.patient.details.location, value: appointment.location },
   ];
 
   const prep = appointment.preparation ?? [];
@@ -45,12 +46,8 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
           <span aria-hidden className={cn("w-1 shrink-0 self-stretch rounded-full", hospital.accentClass)} />
           <div className="min-w-0 flex-1">
             <h3 className="text-h3 text-ink">{t.patient.detailsTitle}</h3>
-            <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            <div className="mt-2">
               <HospitalChip hospital={appointment.hospital} compact />
-              <p className="flex items-center gap-1.5 text-body">
-                <MapPin className={cn("h-4 w-4 shrink-0", hospital.textClass)} aria-hidden />
-                {hospital.address}
-              </p>
             </div>
           </div>
         </div>

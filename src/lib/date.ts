@@ -2,6 +2,7 @@ import { format, parseISO, differenceInCalendarDays } from "date-fns";
 import { he } from "date-fns/locale/he";
 import { enGB } from "date-fns/locale/en-GB";
 import { currentLocale } from "../i18n/locale";
+import { t } from "../i18n";
 import type { ISODate, Time } from "../types";
 
 /** לוקאל התאריכים נגזר משפת הממשק */
@@ -45,6 +46,11 @@ export function formatMonthYear(date: Date): string {
   return format(date, "MMMM yyyy", { locale: dateLocale });
 }
 
+/** 'יול' - חודש מקוצר לבלוק התאריך */
+export function formatShortMonth(iso: ISODate): string {
+  return format(toDate(iso), "MMM", { locale: dateLocale });
+}
+
 /** '29' + 'יולי' לבלוק תאריך בכרטיס */
 export function formatDateBlock(iso: ISODate): { day: string; month: string } {
   const d = toDate(iso);
@@ -73,7 +79,7 @@ export function timeToMinutes(time: Time): number {
 export function formatTotalHours(totalMinutes: number): string {
   const h = Math.floor(totalMinutes / 60);
   const m = totalMinutes % 60;
-  return `${h}:${String(m).padStart(2, "0")} שעות`;
+  return t.ui.fmt.hours(h, m);
 }
 
 /** מספר ימים עד תאריך, יחסית ל"היום" של המוקאפ */
@@ -84,9 +90,9 @@ export function daysUntil(iso: ISODate, from: ISODate): number {
 /** 'בעוד 3 ימים' / 'היום' / 'מחר' */
 export function relativeDayLabel(iso: ISODate, from: ISODate): string {
   const diff = daysUntil(iso, from);
-  if (diff === 0) return "היום";
-  if (diff === 1) return "מחר";
-  if (diff > 1) return `בעוד ${diff} ימים`;
-  if (diff === -1) return "אתמול";
-  return `לפני ${Math.abs(diff)} ימים`;
+  if (diff === 0) return t.ui.fmt.today;
+  if (diff === 1) return t.ui.fmt.tomorrow;
+  if (diff > 1) return t.ui.fmt.inDays(diff);
+  if (diff === -1) return t.ui.fmt.yesterday;
+  return t.ui.fmt.daysAgo(Math.abs(diff));
 }

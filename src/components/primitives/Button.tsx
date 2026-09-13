@@ -1,6 +1,7 @@
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
 import { Loader2 } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { t } from "../../i18n";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost" | "danger";
@@ -46,7 +47,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       {...rest}
     >
       {loading ? (
-        <Loader2 className="h-4 w-4 animate-spin" aria-label="טוען" />
+        <Loader2 className="h-4 w-4 animate-spin" aria-label={t.ui.a11y.loading} />
       ) : (
         icon
       )}

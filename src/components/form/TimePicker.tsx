@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Clock } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { t } from "../../i18n";
 import type { Time } from "../../types";
 
 export interface TimePickerProps {
@@ -84,7 +85,7 @@ export function TimePicker({
         )}
       >
         <Clock className="h-4 w-4 shrink-0 text-muted" />
-        <span className={cn("tnum", value ? "text-ink" : "text-muted")}>{value ?? "בחירת שעה"}</span>
+        <span className={cn("tnum", value ? "text-ink" : "text-muted")}>{value ?? t.ui.a11y.pickTime}</span>
       </button>
 
       {open && (

@@ -72,7 +72,8 @@ export function SurgeryTableView({
   }
 
   function exportCsv() {
-    const header = ["בית חולים", "קוד", "שם הניתוח", "מנתח", "שם מטופל", "ת.ז / דרכון", "תאריך", "שעה", "משך (דקות)"];
+    const cols = t.ui.table.csv;
+    const header = [cols.hospital, cols.code, cols.name, cols.surgeon, cols.patient, cols.idNumber, cols.date, cols.time, cols.duration];
     const rows = filtered.map((s) => [
       HOSPITALS[s.hospital].name,
       s.code,
@@ -118,7 +119,7 @@ export function SurgeryTableView({
       ? [
           {
             key: "doctor",
-            header: "מנתח",
+            header: t.ui.table.surgeon,
             render: (s: Surgery) => doctorById(s.doctorId)?.displayName ?? "",
             sortValue: (s: Surgery) => doctorById(s.doctorId)?.displayName ?? "",
           },
@@ -129,8 +130,8 @@ export function SurgeryTableView({
     { key: "date", header: c.date, numeric: true, render: (s) => formatNumericDate(s.date), sortValue: (s) => s.date },
     { key: "time", header: c.time, numeric: true, render: (s) => s.startTime, sortValue: (s) => s.startTime },
     { key: "duration", header: c.duration, numeric: true, className: "!px-2 text-center", render: (s) => s.durationMinutes, sortValue: (s) => s.durationMinutes },
-    { key: "summary", header: c.summary, className: "!px-1.5 text-center", render: (s) => downloadCell(s.summaryUrl, `הורדת סיכום ניתוח ${s.code}`) },
-    { key: "discharge", header: c.discharge, className: "!px-1.5 text-center", render: (s) => downloadCell(s.dischargeLetterUrl, `הורדת מכתב שחרור ${s.code}`) },
+    { key: "summary", header: c.summary, className: "!px-1.5 text-center", render: (s) => downloadCell(s.summaryUrl, t.ui.a11y.downloadSummary(s.code)) },
+    { key: "discharge", header: c.discharge, className: "!px-1.5 text-center", render: (s) => downloadCell(s.dischargeLetterUrl, t.ui.a11y.downloadDischarge(s.code)) },
     {
       key: "actions",
       header: c.actions,
@@ -141,7 +142,7 @@ export function SurgeryTableView({
           trigger={
             <button
               type="button"
-              aria-label={`פעולות לניתוח של ${s.patient.firstName} ${s.patient.lastName}`}
+              aria-label={t.ui.a11y.surgeryActions(`${s.patient.firstName} ${s.patient.lastName}`)}
               onClick={(e) => e.stopPropagation()}
               className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-primary-50 hover:text-primary-700"
             >
@@ -171,7 +172,7 @@ export function SurgeryTableView({
             onChange={(v) => setNameFilter((v as string[]) ?? [])}
             searchable
             multiple
-            placeholder="כל הניתוחים"
+            placeholder={t.ui.table.allProcedures}
           />
           <DatePicker label={t.allSurgeries.filterFrom} value={fromDate} onChange={setFromDate} />
           <DatePicker label={t.allSurgeries.filterTo} value={toDate} onChange={setToDate} />
@@ -215,7 +216,7 @@ export function SurgeryTableView({
         rows={visible}
         rowKey={(s) => s.id}
         onRowClick={onView}
-        caption="טבלת הניתוחים, כולל סינון ומיון"
+        caption={t.ui.table.caption}
         empty={
           <div className="rounded-lg border border-line bg-surface shadow-sm">
             <EmptyState

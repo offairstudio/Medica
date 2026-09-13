@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Type } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { applyFont, currentFont, otherFont, type FontVersion } from "../../lib/font";
 
@@ -19,11 +20,12 @@ export function FontVersionToggle({ className }: { className?: string }) {
       }}
       title={`${next.name} · ${next.note}`}
       className={cn(
-        "rounded-md px-2 py-1 text-caption text-muted transition-colors duration-fast hover:text-body",
+        "inline-flex items-center gap-1.5 rounded-md border border-line px-2.5 py-1.5 text-caption font-semibold text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700",
         className,
       )}
     >
-      מעבר לגרסת {next.name}
+      <Type className="h-4 w-4" aria-hidden />
+      {next.name}
     </button>
   );
 }

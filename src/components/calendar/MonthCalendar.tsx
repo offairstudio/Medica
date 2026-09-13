@@ -85,7 +85,7 @@ export function MonthCalendar({
           type="button"
           onClick={() => selectedDate && setViewMonth(startOfMonth(toDate(selectedDate)))}
           disabled={!isBrowsingAway}
-          title={isBrowsingAway ? `חזרה ל${formatFullDate(selectedDate!)}` : undefined}
+          title={isBrowsingAway ? t.ui.a11y.backToDate(formatFullDate(selectedDate!)) : undefined}
           className={cn(
             "rounded-md px-1 py-0.5 text-h3 font-semibold text-ink transition-colors duration-fast",
             isBrowsingAway && "text-primary-700 hover:bg-primary-50",
@@ -98,7 +98,7 @@ export function MonthCalendar({
           <button
             type="button"
             onClick={() => setViewMonth((m) => addMonths(m, -1))}
-            aria-label="חודש קודם"
+            aria-label={t.ui.a11y.prevMonth}
             className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted transition-colors duration-fast hover:bg-primary-50 hover:text-primary-700"
           >
             <ChevronRight className="h-4 w-4" />
@@ -106,7 +106,7 @@ export function MonthCalendar({
           <button
             type="button"
             onClick={() => setViewMonth((m) => addMonths(m, 1))}
-            aria-label="חודש הבא"
+            aria-label={t.ui.a11y.nextMonth}
             className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted transition-colors duration-fast hover:bg-primary-50 hover:text-primary-700"
           >
             <ChevronLeft className="h-4 w-4" />

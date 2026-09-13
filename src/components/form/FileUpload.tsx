@@ -33,7 +33,7 @@ export function FileUpload({ value, onChange, error, className }: FileUploadProp
     if (!file) return;
     const sizeKb = Math.round(file.size / 1024);
     if (sizeKb > MAX_SIZE_KB) {
-      setSizeError("הקובץ גדול מ-4.5 מגה");
+      setSizeError(t.ui.fileUpload.tooLarge);
       return;
     }
     setSizeError(null);
@@ -54,7 +54,7 @@ export function FileUpload({ value, onChange, error, className }: FileUploadProp
         <button
           type="button"
           onClick={() => onChange(null)}
-          aria-label={`הסרת הקובץ ${value.name}`}
+          aria-label={t.ui.a11y.removeFile(value.name)}
           className="shrink-0 rounded-md p-2 text-muted transition-colors duration-fast hover:bg-danger/10 hover:text-danger"
         >
           <X className="h-4 w-4" />
@@ -96,7 +96,7 @@ export function FileUpload({ value, onChange, error, className }: FileUploadProp
         type="file"
         accept=".pdf,.doc,.docx,.tif,.tiff,.png,.jpg,.jpeg"
         className="sr-only"
-        aria-label="בחירת קובץ"
+        aria-label={t.ui.a11y.chooseFile}
         onChange={(e) => {
           accept(e.target.files?.[0]);
           e.target.value = "";

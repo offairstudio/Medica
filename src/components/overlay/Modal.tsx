@@ -2,6 +2,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { X } from "lucide-react";
 import { ScrollArea } from "../layout/ScrollArea";
 import { cn } from "../../lib/cn";
+import { t } from "../../i18n";
 
 export interface ModalProps {
   open: boolean;
@@ -84,7 +85,7 @@ export function Modal({ open, onClose, title, size = "md", children, footer }: M
           <button
             type="button"
             onClick={onClose}
-            aria-label="סגירה"
+            aria-label={t.ui.a11y.close}
             className="rounded-md p-2 text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-ink"
           >
             <X className="h-5 w-5" />

@@ -46,7 +46,7 @@ export function Step3Documents({ state, errors, onChange }: Step3Props) {
           >
             <button
               type="button"
-              aria-label="הסרת שורת מסמך"
+              aria-label={t.ui.a11y.removeDocumentRow}
               onClick={() =>
                 onChange({ extraDocs: state.extraDocs.filter((d) => d.id !== docRow.id) })
               }

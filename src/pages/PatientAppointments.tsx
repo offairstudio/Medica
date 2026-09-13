@@ -36,18 +36,18 @@ function WelcomeBanner({ nextRelative }: { nextRelative?: string }) {
       <div className="relative z-10 max-w-xl p-6 sm:self-center sm:px-8 sm:py-5">
         <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1 text-caption font-semibold text-primary-700 shadow-sm ring-1 ring-primary-100">
           <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
-          האזור האישי שלך
+          {t.ui.welcome.badge}
         </span>
         <h2 id="patient-welcome-title" className="text-h1 text-ink">
-          היי {currentPatient.firstName}, טוב לראות אותך
+          {t.ui.welcome.greeting(currentPatient.firstName)}
         </h2>
         <p className="mt-2 max-w-lg text-body text-muted">
-          כל התורים, ההכנות והמידע הרפואי שלך מחכים כאן במקום אחד.
+          {t.ui.welcome.text}
         </p>
         {nextRelative && (
           <p className="mt-4 inline-flex items-center gap-2 text-caption font-semibold text-primary-800">
             <CalendarDays className="h-4 w-4 text-primary-500" aria-hidden />
-            התור הבא שלך {nextRelative}
+            {t.ui.welcome.next(nextRelative)}
           </p>
         )}
       </div>
@@ -87,7 +87,7 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
     <ScreenHeader
       title={t.patient.appointmentsTitle}
       start={
-        <nav className="flex items-center gap-1" aria-label="סוג התורים">
+        <nav className="flex items-center gap-1" aria-label={t.ui.a11y.appointmentsType}>
           {TABS.map((tab) => (
             <NavLink key={tab.to} to={tab.to} end={tab.end} className={({ isActive }) => tabClass(isActive)}>
               {({ isActive }) => (

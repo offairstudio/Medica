@@ -34,7 +34,7 @@ function DoctorGlyph({ className }: { className?: string }) {
   );
 }
 
-/** שני רופאים בקו אחיד - מצב "כל המנתחים". */
+/** שני רופאים בקו אחיד - מצב t.schedule.allDoctors. */
 function DoctorsGlyph({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 72 72" className={className} fill="none" aria-hidden focusable="false">
@@ -54,7 +54,7 @@ function DoctorsGlyph({ className }: { className?: string }) {
   );
 }
 
-/** אייקון בגודל אווטר עם סימון "כל המנתחים" */
+/** אייקון בגודל אווטר עם סימון t.schedule.allDoctors */
 export function AllDoctorsAvatar({
   size = "md",
   className,

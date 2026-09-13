@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CalendarDays } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { t } from "../../i18n";
 import { MonthCalendar } from "../calendar/MonthCalendar";
 import { formatNumericDate } from "../../lib/date";
 import { MOCK_TODAY } from "../../mock/doctors";
@@ -22,7 +23,7 @@ export function DatePicker({
   value,
   onChange,
   error,
-  placeholder = "בחירת תאריך",
+  placeholder = t.ui.a11y.pickDate,
   className,
   quiet,
 }: DatePickerProps) {

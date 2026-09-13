@@ -100,7 +100,7 @@ export function Verify({ audience }: { audience: "doctor" | "patient" }) {
               onPaste={onPaste}
               inputMode="numeric"
               maxLength={1}
-              aria-label={`ספרה ${i + 1}`}
+              aria-label={t.ui.a11y.otpDigit(i + 1)}
               aria-invalid={wrongCode || undefined}
               className={cn(
                 "h-12 w-11 rounded-md border bg-surface text-center text-h2 text-ink tnum transition-colors duration-fast",

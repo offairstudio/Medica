@@ -20,23 +20,24 @@ import { Button } from "../components/primitives/Button";
 import { useToast } from "../components/overlay/Toast";
 import { appointments } from "../mock/appointments";
 import { MOCK_TODAY } from "../mock/doctors";
-import { daysUntil, formatFullDate } from "../lib/date";
+import { daysUntil, formatFullDate, formatShortMonth } from "../lib/date";
+import { t } from "../i18n";
 import type { Appointment } from "../types";
 
 type ResultsTab = "tests" | "specialists";
 
 const TABS: { key: ResultsTab; label: string; icon: typeof ImageIcon }[] = [
-  { key: "tests", label: "בדיקות וצילומים", icon: ImageIcon },
-  { key: "specialists", label: "סיכומי מומחים", icon: Stethoscope },
+  { key: "tests", label: t.ui.results.tabTests, icon: ImageIcon },
+  { key: "specialists", label: t.ui.results.tabSummaries, icon: Stethoscope },
 ];
 
 /** טווחים מוכנים - קריאים יותר משני שדות תאריך, ולא תלויים בפורמט של הדפדפן */
 const PERIODS = [
-  { key: "all", label: "כל התקופות", chip: "כל התקופות", days: null },
-  { key: "30", label: "החודש האחרון", chip: "החודש האחרון", days: 30 },
-  { key: "90", label: "3 החודשים האחרונים", chip: "3 חודשים אחרונים", days: 90 },
-  { key: "180", label: "חצי השנה האחרונה", chip: "חצי שנה אחרונה", days: 180 },
-  { key: "365", label: "השנה האחרונה", chip: "שנה אחרונה", days: 365 },
+  { key: "all", label: t.ui.results.periods.all, chip: t.ui.results.periods.all, days: null },
+  { key: "30", label: t.ui.results.periods.month, chip: t.ui.results.periods.month, days: 30 },
+  { key: "90", label: t.ui.results.periods.threeMonths, chip: t.ui.results.periods.threeMonthsShort, days: 90 },
+  { key: "180", label: t.ui.results.periods.halfYear, chip: t.ui.results.periods.halfYearShort, days: 180 },
+  { key: "365", label: t.ui.results.periods.year, chip: t.ui.results.periods.yearShort, days: 365 },
 ] as const;
 
 type PeriodKey = (typeof PERIODS)[number]["key"];
@@ -81,30 +82,30 @@ export function PatientResults() {
 
   function openImaging() {
     window.open("/mock-files/mri-result.pdf", "_blank", "noopener,noreferrer");
-    toast("info", "MyVue נפתח בטאב חדש (מדומה בפרוטוטייפ)");
+    toast("info", t.ui.results.myVue);
   }
 
   const header = (
     <ScreenHeader
-      title="תוצאות וסיכומים"
-      subtitle="כל המידע הרפואי שהתקבל לאחר הביקורים והבדיקות"
+      title={t.ui.results.title}
+      subtitle={t.ui.results.subtitle}
       start={
-        <div className="flex items-center gap-1" role="tablist" aria-label="סוג תוצאה">
-          {TABS.map((t) => {
-            const active = tab === t.key;
-            const Icon = t.icon;
+        <div className="flex items-center gap-1" role="tablist" aria-label={t.ui.results.resultType}>
+          {TABS.map((item) => {
+            const active = tab === item.key;
+            const Icon = item.icon;
             return (
               <button
-                key={t.key}
+                key={item.key}
                 type="button"
                 role="tab"
                 aria-selected={active}
-                onClick={() => setTab(t.key)}
+                onClick={() => setTab(item.key)}
                 className={tabClass(active)}
               >
                 <Icon className="h-4 w-4" aria-hidden />
-                {t.label}
-                <span className={tabCountClass(active)}>{counts[t.key]}</span>
+                {item.label}
+                <span className={tabCountClass(active)}>{counts[item.key]}</span>
               </button>
             );
           })}
@@ -142,23 +143,23 @@ export function PatientResults() {
   return (
     <PatientShell header={header}>
       {filtered.length === 0 ? (
-        <EmptyState illustration="file" title="לא נמצאו תוצאות בתקופה שנבחרה" />
+        <EmptyState illustration="file" title={t.ui.results.empty} />
       ) : (
         <div className="space-y-3">
           {filtered.map((item) => (
             <article key={item.id} className="rounded-lg border border-line bg-surface p-5 shadow-sm">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
                 <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-md bg-primary-100 text-primary-700">
-                  <span className="text-caption font-semibold">{new Date(`${item.date}T12:00:00`).toLocaleDateString("he-IL", { month: "short" })}</span>
+                  <span className="text-caption font-semibold">{formatShortMonth(item.date)}</span>
                   <span className="text-h2 font-bold leading-none tnum">{item.date.slice(-2)}</span>
                 </div>
                 <div className="min-w-0 flex-1">
                   <h2 className="text-h3 text-ink">{item.title}</h2>
                   <p className="mt-1 text-caption text-muted">{formatFullDate(item.date)}</p>
                   <div className="mt-4 flex flex-wrap gap-2 border-t border-line pt-4">
-                    <Button icon={<Eye className="h-4 w-4" />} onClick={() => openResult(item)}>צפייה בתוצאה</Button>
+                    <Button icon={<Eye className="h-4 w-4" />} onClick={() => openResult(item)}>{t.ui.results.view}</Button>
                     {item.imagingAvailable && (
-                      <Button variant="ghost" icon={<ImageIcon className="h-4 w-4" />} onClick={openImaging}>צפייה בצילום</Button>
+                      <Button variant="ghost" icon={<ImageIcon className="h-4 w-4" />} onClick={openImaging}>{t.ui.results.viewImaging}</Button>
                     )}
                   </div>
                 </div>

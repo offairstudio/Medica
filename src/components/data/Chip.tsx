@@ -37,7 +37,7 @@ export function Chip({ color = "neutral", onRemove, className, children, ...rest
         <button
           type="button"
           onClick={onRemove}
-          aria-label="הסרה"
+          aria-label={t.ui.a11y.remove}
           className="rounded-full p-0.5 transition-colors duration-fast hover:bg-black/10"
         >
           <X className="h-3 w-3" />
@@ -142,7 +142,7 @@ export function FilterChip({ active, onClick, onClear, children, ariaExpanded, a
         <button
           type="button"
           onClick={onClear}
-          aria-label="ניקוי סינון"
+          aria-label={t.ui.a11y.clearFilter}
           className="inline-flex min-h-[44px] items-center rounded-e-full border border-s-0 border-primary-700 bg-primary-700 pe-3 ps-1 text-white transition-colors duration-fast hover:bg-primary-800"
         >
           <X className="h-4 w-4" />

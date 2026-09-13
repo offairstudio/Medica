@@ -60,7 +60,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
           {i > 0 && (
             <button
               type="button"
-              aria-label={`הסרת ניתוח ${i + 1}`}
+              aria-label={t.ui.a11y.removeSurgery(i + 1)}
               onClick={() =>
                 onChange({ procedures: state.procedures.filter((_, j) => j !== i) })
               }
@@ -149,7 +149,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
             value={state.duration}
             onChange={(e) => onChange({ duration: e.target.value })}
             error={errors.duration}
-            hint={firstDuration ? `ממוצע לפרוצדורה זו: ${firstDuration} דק'` : undefined}
+            hint={firstDuration ? t.ui.wizard.avgDuration(firstDuration) : undefined}
           />
         </div>
         <Input

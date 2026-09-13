@@ -6,9 +6,11 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  Languages,
   LogOut,
   Search,
   Smartphone,
+  Type,
 } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { Avatar, AllDoctorsAvatar } from "../data/Avatar";
@@ -20,6 +22,8 @@ import { departmentName } from "../../mock/departments";
 import { useData } from "../../state/data";
 import { formatPhone } from "../../lib/format";
 import { t } from "../../i18n";
+import { currentLocale, otherLocale, setLocale } from "../../i18n/locale";
+import { applyFont, currentFont, otherFont } from "../../lib/font";
 
 const STORAGE_KEY = "medica:doctor-nav-collapsed";
 
@@ -33,6 +37,9 @@ function readCollapsed(): boolean {
 
 function AccountMenu({ collapsed }: { collapsed?: boolean }) {
   const navigate = useNavigate();
+  // גרסת הפונט נשמרת בסטייט מקומי כדי שתווית הפריט תתעדכן מיד אחרי המעבר
+  const [font, setFont] = useState(() => currentFont());
+  const nextFont = otherFont(font);
 
   return (
     <Dropdown
@@ -43,7 +50,7 @@ function AccountMenu({ collapsed }: { collapsed?: boolean }) {
       trigger={
         <button
           type="button"
-          aria-label={`תפריט המשתמש: ${currentDoctor.displayName}`}
+          aria-label={t.ui.a11y.userMenu(currentDoctor.displayName)}
           title={collapsed ? currentDoctor.displayName : undefined}
           className={cn(
             "flex min-h-[52px] items-center gap-2.5 text-start transition-colors duration-fast hover:bg-surface-2",
@@ -83,12 +90,27 @@ function AccountMenu({ collapsed }: { collapsed?: boolean }) {
             </span>
             <span className="flex items-center gap-2">
               <BadgeCheck className="h-3.5 w-3.5 shrink-0" aria-hidden />
-              מספר רישיון <span dir="ltr" className="tnum">{currentDoctor.licenseNumber}</span>
+              {t.ui.nav.license} <span dir="ltr" className="tnum">{currentDoctor.licenseNumber}</span>
             </span>
           </div>
         </div>
       }
       items={[
+        {
+          key: "language",
+          label: `${t.ui.auth.language}: ${otherLocale(currentLocale()).name}`,
+          icon: <Languages />,
+          onSelect: () => setLocale(otherLocale(currentLocale()).key),
+        },
+        {
+          key: "font",
+          label: `${t.ui.auth.font}: ${nextFont.name}`,
+          icon: <Type />,
+          onSelect: () => {
+            applyFont(nextFont);
+            setFont(nextFont);
+          },
+        },
         {
           key: "logout",
           label: t.common.logout,
@@ -164,16 +186,16 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
           <Link
             to={`/doctor/${doctorId}/schedule`}
             className="inline-flex min-h-[44px] items-center rounded-md"
-            aria-label="Medica - מסך הבית"
+            aria-label={t.ui.a11y.brandHomeDoctor}
           >
             <BrandMark mark={collapsed} />
           </Link>
           <button
             type="button"
             onClick={() => setCollapsed((c) => !c)}
-            aria-label={collapsed ? "הרחבת סרגל הניווט" : "מזעור סרגל הניווט"}
+            aria-label={collapsed ? t.ui.a11y.expandNav : t.ui.a11y.collapseNav}
             aria-expanded={!collapsed}
-            title={collapsed ? "הרחבת סרגל הניווט" : "מזעור סרגל הניווט"}
+            title={collapsed ? t.ui.a11y.expandNav : t.ui.a11y.collapseNav}
             className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-body"
           >
             <ToggleIcon className="h-5 w-5" aria-hidden />
@@ -293,7 +315,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
         <Link
           to={`/doctor/${doctorId}/schedule`}
           className="inline-flex min-h-[44px] items-center rounded-md"
-          aria-label="Medica - מסך הבית"
+          aria-label={t.ui.a11y.brandHomeDoctor}
         >
           <BrandMark />
         </Link>
@@ -305,7 +327,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
             trigger={
               <button
                 type="button"
-                aria-label={`בחירת מנתח. נבחר כעת: ${doctorId === "all" ? t.schedule.allDoctors : activeDoctor?.displayName ?? ""}`}
+                aria-label={t.ui.a11y.pickSurgeon(doctorId === "all" ? t.schedule.allDoctors : activeDoctor?.displayName ?? "")}
                 className="flex min-h-[44px] max-w-44 items-center gap-2 rounded-md border border-line bg-surface px-2.5 font-semibold text-ink transition-colors duration-fast hover:border-primary-300"
               >
                 {doctorId === "all" ? (

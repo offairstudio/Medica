@@ -8,6 +8,7 @@ import {
 } from "react";
 import { CheckCircle2, Info, XCircle, X } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { t } from "../../i18n";
 
 export interface ToastItem {
   id: number;
@@ -59,33 +60,33 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         aria-live="polite"
         className="pointer-events-none fixed inset-x-4 bottom-4 z-[100] flex flex-col-reverse gap-2 sm:inset-x-auto sm:end-4 sm:w-[420px]"
       >
-        {toasts.map((t) => {
-          const { icon: Icon, bar, text } = kindStyles[t.kind];
+        {toasts.map((item) => {
+          const { icon: Icon, bar, text } = kindStyles[item.kind];
           return (
             <div
-              key={t.id}
+              key={item.id}
               role="status"
               className="toast-in pointer-events-auto relative flex items-center gap-3 overflow-hidden rounded-md border border-line bg-surface py-3 pe-3 ps-4 shadow-lg"
             >
               <span className={cn("absolute inset-y-0 start-0 w-1", bar)} />
               <Icon className={cn("h-5 w-5 shrink-0", text)} aria-hidden />
-              <p className="flex-1 text-ink">{t.message}</p>
-              {t.undo && (
+              <p className="flex-1 text-ink">{item.message}</p>
+              {item.undo && (
                 <button
                   type="button"
                   onClick={() => {
-                    t.undo!.onUndo();
-                    dismiss(t.id);
+                    item.undo!.onUndo();
+                    dismiss(item.id);
                   }}
                   className="shrink-0 rounded px-2 py-1 text-caption font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50"
                 >
-                  {t.undo.label}
+                  {item.undo.label}
                 </button>
               )}
               <button
                 type="button"
-                onClick={() => dismiss(t.id)}
-                aria-label="סגירת ההודעה"
+                onClick={() => dismiss(item.id)}
+                aria-label={t.ui.a11y.closeToast}
                 className="shrink-0 rounded p-1 text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-ink"
               >
                 <X className="h-4 w-4" />
