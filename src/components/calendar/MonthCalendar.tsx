@@ -115,8 +115,9 @@ export function MonthCalendar({
       </div>
 
       <div className="grid grid-cols-7 gap-1 text-center">
-        {WEEKDAYS.map((d) => (
-          <span key={d} className="pb-1 text-caption font-semibold text-muted">
+        {/* באנגלית יש ראשי תיבות חוזרים (S,T), ולכן המפתח הוא המיקום */}
+        {WEEKDAYS.map((d, i) => (
+          <span key={i} className="pb-1 text-caption font-semibold text-muted">
             {d}
           </span>
         ))}
