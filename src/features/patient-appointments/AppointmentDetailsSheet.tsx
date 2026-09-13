@@ -1,4 +1,5 @@
 import { Sheet } from "../../components/overlay/Sheet";
+import { HOSPITALS } from "../../mock/hospitals";
 import { AppointmentDetailsContent } from "./AppointmentDetailsContent";
 import type { Appointment } from "../../types";
 
@@ -18,6 +19,8 @@ export function AppointmentDetailsSheet({
       open
       onClose={onClose}
       title={appointment.doctorName}
+      // הזהות של המרכז - בגוון של ראש המגירה כולה
+      headerClassName={HOSPITALS[appointment.hospital].softClass}
       titleSlot={
         <div className="flex flex-col gap-0.5">
           <h2 className="text-h2 text-ink">{appointment.doctorName}</h2>

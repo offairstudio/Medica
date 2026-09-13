@@ -18,9 +18,11 @@ export interface TableProps<T> {
   caption: string;
   onRowClick?: (row: T) => void;
   empty?: ReactNode;
+  /** תוכן בתוך אזור הגלילה, מתחת לשורה האחרונה - למשל "טען עוד" */
+  footer?: ReactNode;
 }
 
-export function Table<T>({ columns, rows, rowKey, caption, onRowClick, empty }: TableProps<T>) {
+export function Table<T>({ columns, rows, rowKey, caption, onRowClick, empty, footer }: TableProps<T>) {
   const [sort, setSort] = useState<{ key: string; dir: "asc" | "desc" } | null>(null);
 
   const sorted = (() => {
@@ -106,6 +108,8 @@ export function Table<T>({ columns, rows, rowKey, caption, onRowClick, empty }: 
           ))}
         </tbody>
       </table>
+
+      {footer}
     </div>
   );
 }

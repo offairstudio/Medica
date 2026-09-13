@@ -13,6 +13,8 @@ export interface SheetProps {
   title: string;
   /** אזור כותרת עשיר - למשל כותרת + צ'יפים */
   titleSlot?: ReactNode;
+  /** גוון לראש המגירה - למשל צבע המרכז, כזהות של התוכן */
+  headerClassName?: string;
   size?: "md" | "lg" | "xl";
   children: ReactNode;
   footer?: ReactNode;
@@ -36,6 +38,7 @@ export function Sheet({
   onClose,
   title,
   titleSlot,
+  headerClassName,
   subheader,
   size = "lg",
   children,
@@ -126,13 +129,14 @@ export function Sheet({
         )}
       >
         {/* ידית גרירה - מובייל בלבד */}
-        <div className="flex justify-center pt-2.5 md:hidden" aria-hidden>
+        <div className={cn("flex justify-center pt-2.5 md:hidden", headerClassName)} aria-hidden>
           <span className="h-1 w-10 rounded-full bg-line" />
         </div>
 
         <div
           className={cn(
-            "flex items-center justify-between gap-3 bg-surface-2/60 px-5 py-4 md:px-6",
+            "flex items-center justify-between gap-3 px-5 py-4 md:px-6",
+            headerClassName ?? "bg-surface-2/60",
             // עם שורת התקדמות שתי השורות נקראות כגוש כותרת אחד
             subheader ? "pb-3" : "border-b border-line",
           )}

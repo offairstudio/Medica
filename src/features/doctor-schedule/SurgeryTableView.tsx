@@ -260,6 +260,16 @@ export function SurgeryTableView({
           rowKey={(s) => s.id}
           onRowClick={onView}
           caption={t.ui.table.caption}
+          footer={
+            remaining > 0 ? (
+              // במובייל "טען עוד" יושב בתוך אזור הגלילה של הטבלה, בסופה
+              <div className="flex justify-center border-t border-line p-3 md:hidden">
+                <Button variant="secondary" size="sm" onClick={() => setVisibleCount((n) => n + 30)}>
+                  {t.schedule.moreCount(remaining)}
+                </Button>
+              </div>
+            ) : undefined
+          }
           empty={
             <div className="rounded-lg border border-line bg-surface shadow-sm">
               <EmptyState
@@ -278,7 +288,7 @@ export function SurgeryTableView({
         />
 
         {remaining > 0 && (
-          <div className="flex justify-center">
+          <div className="hidden justify-center md:flex">
             <Button variant="secondary" onClick={() => setVisibleCount((n) => n + 30)}>
               {t.schedule.moreCount(remaining)}
             </Button>

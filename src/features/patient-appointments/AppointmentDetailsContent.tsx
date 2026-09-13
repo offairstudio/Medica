@@ -6,7 +6,6 @@ import { useToast } from "../../components/overlay/Toast";
 import { DocumentRow } from "../patient-documents/DocumentRow";
 import { CentreSignature } from "../../components/data/CentreArt";
 import { HOSPITALS } from "../../mock/hospitals";
-import { cn } from "../../lib/cn";
 import { formatFullDate } from "../../lib/date";
 import { formatFileSize } from "../../lib/format";
 import { t } from "../../i18n";
@@ -44,7 +43,6 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
 
   const prep = appointment.preparation ?? [];
   const isUpcoming = appointment.status === "upcoming";
-  const hospital = HOSPITALS[appointment.hospital];
 
   return (
     <div className="flex flex-col gap-5">
@@ -53,11 +51,8 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
         aria-label={t.patient.detailsTitle}
         className="overflow-hidden rounded-lg border border-line bg-surface shadow-sm"
       >
-        <div className={cn("flex items-start gap-3 px-5 py-4", hospital.softClass)}>
-          <span aria-hidden className={cn("w-1 shrink-0 self-stretch rounded-full", hospital.accentClass)} />
-          <div className="min-w-0 flex-1">
-            <h3 className="text-h3 text-ink">{t.patient.detailsTitle}</h3>
-          </div>
+        <div className="border-b border-line bg-surface-2/60 px-5 py-3.5">
+          <h3 className="text-h3 text-ink">{t.patient.detailsTitle}</h3>
         </div>
 
         <div className="px-5 pb-4 pt-1">
