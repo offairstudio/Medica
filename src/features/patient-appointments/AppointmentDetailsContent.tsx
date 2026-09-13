@@ -41,14 +41,17 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
         aria-label={t.patient.detailsTitle}
         className="overflow-hidden rounded-lg border border-line bg-surface shadow-sm"
       >
-        <div className={cn("flex items-center gap-3 px-5 py-4", hospital.softClass)}>
-          <span aria-hidden className={cn("h-9 w-1 shrink-0 rounded-full", hospital.accentClass)} />
+        <div className={cn("flex items-start gap-3 px-5 py-4", hospital.softClass)}>
+          <span aria-hidden className={cn("w-1 shrink-0 self-stretch rounded-full", hospital.accentClass)} />
           <div className="min-w-0 flex-1">
-            <HospitalChip hospital={appointment.hospital} compact />
-            <p className="mt-1.5 flex items-center gap-1.5 text-body">
-              <MapPin className={cn("h-4 w-4 shrink-0", hospital.textClass)} aria-hidden />
-              {hospital.address}
-            </p>
+            <h3 className="text-h3 text-ink">{t.patient.detailsTitle}</h3>
+            <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+              <HospitalChip hospital={appointment.hospital} compact />
+              <p className="flex items-center gap-1.5 text-body">
+                <MapPin className={cn("h-4 w-4 shrink-0", hospital.textClass)} aria-hidden />
+                {hospital.address}
+              </p>
+            </div>
           </div>
         </div>
 
