@@ -164,8 +164,11 @@ export function Sheet({
           {children}
         </ScrollArea>
 
+        {/* הפעולות תמיד בקצה השורה; פריט ברוחב מלא (כמו באשף) מנהל את עצמו */}
         {footer && (
-          <div className="border-t border-line px-5 py-4 md:px-6">{footer}</div>
+          <div className="flex items-center justify-end gap-2 border-t border-line px-5 py-4 md:px-6">
+            {footer}
+          </div>
         )}
       </div>
     </div>

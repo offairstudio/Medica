@@ -95,7 +95,7 @@ export function Modal({ open, onClose, title, size = "md", children, footer }: M
           {children}
         </ScrollArea>
         {footer && (
-          <div className="flex items-center justify-end gap-3 border-t border-line px-6 py-4">
+          <div className="flex items-center justify-end gap-2 border-t border-line px-6 py-4">
             {footer}
           </div>
         )}

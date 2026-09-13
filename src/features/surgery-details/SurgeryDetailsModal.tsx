@@ -125,18 +125,11 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
             </Button>
           </>
         ) : (
-          <>
-            <Button variant="ghost" onClick={onClose}>
-              {t.common.close}
-            </Button>
-            <Button
-              variant="secondary"
-              icon={<Pencil className="h-4 w-4" />}
-              onClick={startEdit}
-            >
-              {t.surgeryView.edit}
-            </Button>
-          </>
+          // בצפייה אין מה לאשר או לבטל: היציאה היא ה-X בראש המגירה,
+          // ולכן בפוטר נשארת רק הפעולה עצמה
+          <Button icon={<Pencil className="h-4 w-4" />} onClick={startEdit}>
+            {t.surgeryView.edit}
+          </Button>
         )
       }
     >
