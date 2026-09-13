@@ -53,7 +53,7 @@ function AccountMenu({
       portal
       align="start"
       menuClassName="w-72 max-w-[calc(100vw-2rem)]"
-      className={collapsed ? undefined : "w-full"}
+      className={collapsed || variant ? undefined : "w-full"}
       trigger={
         <button
           type="button"
