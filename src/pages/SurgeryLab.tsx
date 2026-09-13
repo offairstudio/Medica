@@ -107,6 +107,80 @@ const execution: { icon: LucideIcon; label: string; value: ReactNode }[] = [
   { icon: Users, label: t.ui.fields.combined, value: surgery.backupDoctorName },
 ];
 
+
+/* ---------- אפשרויות לכותרת המגירה ---------- */
+
+const patientName = `${surgery.patient.firstName} ${surgery.patient.lastName}`;
+const procedureName = surgery.procedures.map((p) => p.name).join(" + ");
+const codeText = `${t.swap.codeLabel} ${surgery.code}`;
+
+/** פס העובדות הקצר שמופיע בחלק מהאפשרויות */
+function FactsRow() {
+  return (
+    <span className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
+      <span className="rounded-full bg-surface px-2 py-0.5 font-semibold tnum">{codeText}</span>
+      <span>{formatFullDate(surgery.date)}</span>
+      <span dir="ltr" className="tnum font-semibold text-ink">
+        {timeRange(surgery.startTime, surgery.durationMinutes)}
+      </span>
+      <CentreSignature hospital={surgery.hospital} tone="centre" height={11} />
+    </span>
+  );
+}
+
+const HEADERS: { n: string; title: string; note: string; recommended?: boolean; render: ReactNode }[] = [
+  {
+    n: "1",
+    title: "הפרוצדורה ראשית",
+    note: "כמו היום: שם הניתוח והקוד. המטופל אינו מופיע בכותרת אלא רק בתוך הפרטים.",
+    render: <h2 className="text-h2 text-ink">{`${procedureName} · ${codeText}`}</h2>,
+  },
+  {
+    n: "2",
+    title: "שם המטופל ראשי",
+    note: "המטופל הוא מה שמזהה את הרשומה, והניתוח הוא מה שעושים לו.",
+    render: (
+      <>
+        <h2 className="text-h2 text-ink">{patientName}</h2>
+        <span className="mt-0.5 block text-muted">
+          {procedureName} · <span className="tnum">{codeText}</span>
+        </span>
+      </>
+    ),
+  },
+  {
+    n: "3",
+    title: "מטופל, ומתחת שורת עובדות",
+    note: "שם המטופל בגדול, הניתוח מתחתיו, ושורה קצרה עם קוד, תאריך, שעה והמרכז - כך שהכותרת עונה על \"מי, מה, מתי ואיפה\" עוד לפני הגלילה.",
+    recommended: true,
+    render: (
+      <>
+        <h2 className="text-h2 text-ink">{patientName}</h2>
+        <span className="block text-muted">{procedureName}</span>
+        <FactsRow />
+      </>
+    ),
+  },
+  {
+    n: "4",
+    title: "מטופל ומועד",
+    note: "בלי שם הניתוח בכותרת - הוא ממילא מופיע בכרטיס הניתוחים. מתאים אם רוצים כותרת שקטה.",
+    render: (
+      <>
+        <h2 className="text-h2 text-ink">{patientName}</h2>
+        <span className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
+          <span>{formatFullDate(surgery.date)}</span>
+          <span dir="ltr" className="tnum font-semibold text-ink">
+            {timeRange(surgery.startTime, surgery.durationMinutes)}
+          </span>
+          <CentreSignature hospital={surgery.hospital} tone="centre" height={11} />
+          <span className="tnum">{codeText}</span>
+        </span>
+      </>
+    ),
+  },
+];
+
 /* ---------- אבני בניין ---------- */
 
 function Frame({ children }: { children: ReactNode }) {
@@ -341,7 +415,38 @@ export default function SurgeryLab() {
         </p>
       </header>
 
-      <div className="mx-auto mt-8 grid max-w-6xl gap-10">
+      <section className="mx-auto mt-8 max-w-6xl">
+        <h2 className="text-h2 text-ink">מה כתוב בראש המגירה</h2>
+        <p className="mb-4 mt-1 max-w-3xl text-caption text-muted">
+          ארבע אפשרויות לכותרת, כולן על גוון המרכז. שימו לב: ככל שהכותרת נושאת יותר פרטי זיהוי,
+          כך הכרטיס "מועד ומקום" שבגוף המגירה נחוץ פחות.
+        </p>
+        <div className="grid max-w-[720px] gap-4">
+          {HEADERS.map((h) => (
+            <div key={h.n}>
+              <div className="mb-1.5 flex flex-wrap items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-100 text-caption font-bold text-primary-700">
+                  {h.n}
+                </span>
+                <h3 className="text-h3 text-ink">{h.title}</h3>
+                {h.recommended && (
+                  <span className="rounded-full bg-success/10 px-2.5 py-0.5 text-caption font-semibold text-success">
+                    ההמלצה שלי
+                  </span>
+                )}
+              </div>
+              <p className="mb-2 text-caption text-muted">{h.note}</p>
+              <div className="overflow-hidden rounded-xl border border-line shadow-sm">
+                <div className={cn("px-5 py-4", hospital.softClass)}>{h.render}</div>
+                <div className="bg-canvas px-5 py-3 text-caption text-muted">גוף המגירה...</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="mx-auto mt-12 grid max-w-6xl gap-10">
+        <h2 className="text-h2 text-ink">איך מסודר גוף המגירה</h2>
         {OPTIONS.map((o) => (
           <section key={o.letter}>
             <div className="flex flex-wrap items-center gap-2">
