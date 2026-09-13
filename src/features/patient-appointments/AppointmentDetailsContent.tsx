@@ -36,39 +36,36 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
 
   return (
     <div className="flex flex-col gap-5">
-      {/* המרכז שבו מתקיים הטיפול - בצבע שלו, עם הכתובת המלאה */}
-      <div className={cn("flex items-start gap-4 rounded-lg p-4", hospital.softClass)}>
-        <span aria-hidden className={cn("w-1 shrink-0 self-stretch rounded-full", hospital.accentClass)} />
-        <div className="min-w-0 flex-1">
-          <HospitalChip hospital={appointment.hospital} />
-          <p className="mt-2 flex items-start gap-1.5 text-body">
-            <MapPin className={cn("mt-0.5 h-4 w-4 shrink-0", hospital.textClass)} aria-hidden />
-            <span>
-              {hospital.address}
-              <span className="block text-caption text-muted">{appointment.location}</span>
-            </span>
-          </p>
-        </div>
-      </div>
-
-      {/* כרטיס פרטים - אפיון 7.11 סעיף 3 */}
+      {/* כרטיס אחד: המרכז בראשו בגוון שלו, ומתחתיו פרטי התור */}
       <section
         aria-label={he.patient.detailsTitle}
-        className="rounded-lg border border-line bg-surface p-5 shadow-sm"
+        className="overflow-hidden rounded-lg border border-line bg-surface shadow-sm"
       >
-        <h3 className="mb-2 text-h3 text-ink">{he.patient.detailsTitle}</h3>
-        <dl>
-          {rows.map((row) => (
-            <div
-              key={row.label}
-              className="flex min-h-[52px] items-center gap-3 border-b border-line py-3 last:border-b-0"
-            >
-              <row.icon className="h-5 w-5 shrink-0 text-primary-600" aria-hidden />
-              <dt className="w-28 shrink-0 font-semibold text-body">{row.label}</dt>
-              <dd className="font-semibold text-ink">{row.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className={cn("flex items-center gap-3 px-5 py-4", hospital.softClass)}>
+          <span aria-hidden className={cn("h-9 w-1 shrink-0 rounded-full", hospital.accentClass)} />
+          <div className="min-w-0 flex-1">
+            <HospitalChip hospital={appointment.hospital} compact />
+            <p className="mt-1.5 flex items-center gap-1.5 text-body">
+              <MapPin className={cn("h-4 w-4 shrink-0", hospital.textClass)} aria-hidden />
+              {hospital.address}
+            </p>
+          </div>
+        </div>
+
+        <div className="px-5 pb-4 pt-1">
+          <dl>
+            {rows.map((row) => (
+              <div
+                key={row.label}
+                className="flex min-h-[52px] items-center gap-3 border-b border-line py-3 last:border-b-0"
+              >
+                <row.icon className="h-5 w-5 shrink-0 text-primary-600" aria-hidden />
+                <dt className="w-28 shrink-0 font-semibold text-body">{row.label}</dt>
+                <dd className="font-semibold text-ink">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </section>
 
       {/* הנחיות הכנה */}
