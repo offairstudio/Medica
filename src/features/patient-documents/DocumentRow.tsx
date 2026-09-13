@@ -3,7 +3,7 @@ import { Check, Download, Eye, FileText, FileImage, Loader2 } from "lucide-react
 import { cn } from "../../lib/cn";
 import { formatFileSize } from "../../lib/format";
 import { formatNumericDate } from "../../lib/date";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import type { MedicalDocument } from "../../types";
 
 function typeIcon(doc: MedicalDocument) {
@@ -52,11 +52,11 @@ export function DocumentRow({ doc, compact }: { doc: MedicalDocument; compact?: 
           href={doc.fileUrl}
           target="_blank"
           rel="noreferrer"
-          aria-label={`${he.patient.viewImaging}: ${doc.fileName}`}
+          aria-label={`${t.patient.viewImaging}: ${doc.fileName}`}
           className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-md px-2.5 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50"
         >
           <Eye className="h-4 w-4" aria-hidden />
-          <span className={cn(compact ? "hidden" : "max-sm:hidden")}>{he.patient.viewImaging}</span>
+          <span className={cn(compact ? "hidden" : "max-sm:hidden")}>{t.patient.viewImaging}</span>
         </a>
       )}
       <button
@@ -77,7 +77,7 @@ export function DocumentRow({ doc, compact }: { doc: MedicalDocument; compact?: 
         ) : (
           <Download className="h-4 w-4" aria-hidden />
         )}
-        <span className={cn(compact ? "hidden" : "max-sm:hidden")}>{he.common.download}</span>
+        <span className={cn(compact ? "hidden" : "max-sm:hidden")}>{t.common.download}</span>
       </button>
     </li>
   );

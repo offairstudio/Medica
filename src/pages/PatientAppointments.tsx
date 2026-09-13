@@ -15,7 +15,7 @@ import {
   tabCountClass,
 } from "../components/layout/ScreenHeader";
 import { useFakeLoading } from "../lib/useFakeLoading";
-import { he } from "../i18n/he";
+import { t } from "../i18n";
 
 export type AppointmentsMode = "upcoming" | "past";
 
@@ -23,8 +23,8 @@ const upcomingCount = appointments.filter((a) => a.status === "upcoming").length
 const pastCount = appointments.filter((a) => a.status !== "upcoming").length;
 
 const TABS: { to: string; label: string; count: number; end: boolean }[] = [
-  { to: "/p/appointments", label: he.patient.segUpcoming, count: upcomingCount, end: true },
-  { to: "/p/appointments/past", label: he.patient.segPast, count: pastCount, end: false },
+  { to: "/p/appointments", label: t.patient.segUpcoming, count: upcomingCount, end: true },
+  { to: "/p/appointments/past", label: t.patient.segPast, count: pastCount, end: false },
 ];
 
 function WelcomeBanner({ nextRelative }: { nextRelative?: string }) {
@@ -85,7 +85,7 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
 
   const header = (
     <ScreenHeader
-      title={he.patient.appointmentsTitle}
+      title={t.patient.appointmentsTitle}
       start={
         <nav className="flex items-center gap-1" aria-label="סוג התורים">
           {TABS.map((tab) => (
@@ -115,9 +115,9 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
             <Skeleton variant="block" className="h-32" />
           </div>
         ) : (
-          <section aria-label={he.patient.appointmentsTitle}>
+          <section aria-label={t.patient.appointmentsTitle}>
             {all.length === 0 ? (
-              <EmptyState illustration="calendar" title={he.patient.emptyUpcoming} />
+              <EmptyState illustration="calendar" title={t.patient.emptyUpcoming} />
             ) : (
               <div className="flex flex-col gap-6">
                 {groups.map((group) => (
@@ -133,7 +133,7 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
                           appointment={a}
                           muted={mode === "past"}
                           featured={a.id === next?.id}
-                          featuredBadge={a.id === next?.id ? he.patient.nextAppointment : undefined}
+                          featuredBadge={a.id === next?.id ? t.patient.nextAppointment : undefined}
                         />
                       ))}
                     </div>

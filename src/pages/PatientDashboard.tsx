@@ -17,7 +17,7 @@ import { currentPatient } from "../mock/patients";
 import { MOCK_TODAY } from "../mock/doctors";
 import { useFakeLoading } from "../lib/useFakeLoading";
 import { formatFullDate, relativeDayLabel } from "../lib/date";
-import { he } from "../i18n/he";
+import { t } from "../i18n";
 
 /** אריח סיכום שמוביל לאזור המתאים */
 function StatTile({
@@ -57,7 +57,7 @@ function SectionHeader({ title, to }: { title: string; to?: string }) {
           to={to}
           className="-me-2 inline-flex min-h-[44px] shrink-0 items-center gap-1 rounded-md px-2 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50 hover:text-primary-800"
         >
-          {he.common.showAll}
+          {t.common.showAll}
           <ArrowLeft className="h-4 w-4" aria-hidden />
         </Link>
       )}
@@ -111,11 +111,11 @@ export function PatientDashboard() {
 
   const header = (
     <ScreenHeader
-      title={he.patient.greeting(currentPatient.firstName)}
+      title={t.patient.greeting(currentPatient.firstName)}
       subtitle={
         next
           ? `התור הקרוב שלך ${relativeDayLabel(next.date, MOCK_TODAY)} · ${next.doctorName}`
-          : he.patient.emptyUpcoming
+          : t.patient.emptyUpcoming
       }
     />
   );
@@ -131,8 +131,8 @@ export function PatientDashboard() {
 
         {/* התור הקרוב + הכנות */}
         {next ? (
-          <section aria-label={he.patient.nextAppointment}>
-            <SectionHeader title={he.patient.nextAppointment} />
+          <section aria-label={t.patient.nextAppointment}>
+            <SectionHeader title={t.patient.nextAppointment} />
             <AppointmentCard
               appointment={next}
               featured
@@ -142,7 +142,7 @@ export function PatientDashboard() {
                   <>
                     <span className="flex items-center gap-2 text-caption font-semibold text-primary-800">
                       <Info className="h-4 w-4 shrink-0 text-primary-500" aria-hidden />
-                      {he.patient.preparation} · {prep.length}
+                      {t.patient.preparation} · {prep.length}
                     </span>
                     <span className="mt-2 flex flex-col gap-1">
                       {prep.map((p) => (
@@ -161,7 +161,7 @@ export function PatientDashboard() {
             />
           </section>
         ) : (
-          <EmptyState illustration="calendar" title={he.patient.emptyUpcoming} />
+          <EmptyState illustration="calendar" title={t.patient.emptyUpcoming} />
         )}
 
         {/* שתי עמודות: התורים הבאים + תוצאות ומסמכים */}

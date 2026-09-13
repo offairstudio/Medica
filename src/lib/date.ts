@@ -1,6 +1,12 @@
 import { format, parseISO, differenceInCalendarDays } from "date-fns";
 import { he } from "date-fns/locale/he";
+import { enGB } from "date-fns/locale/en-GB";
+import { currentLocale } from "../i18n/locale";
 import type { ISODate, Time } from "../types";
+
+/** לוקאל התאריכים נגזר משפת הממשק */
+const isHebrew = currentLocale() === "he";
+const dateLocale = isHebrew ? he : enGB;
 
 /** '2026-07-29' → Date */
 export function toDate(iso: ISODate): Date {
@@ -24,23 +30,25 @@ export function formatNumericDate(iso: ISODate): string {
 
 /** 'יום רביעי' */
 export function formatWeekday(iso: ISODate): string {
-  return format(toDate(iso), "EEEE", { locale: he });
+  return format(toDate(iso), "EEEE", { locale: dateLocale });
 }
 
 /** 'יום רביעי, 29 ביולי 2026' */
 export function formatFullDate(iso: ISODate): string {
-  return format(toDate(iso), "EEEE, d בMMMM yyyy", { locale: he });
+  return format(toDate(iso), isHebrew ? "EEEE, d בMMMM yyyy" : "EEEE, d MMMM yyyy", {
+    locale: dateLocale,
+  });
 }
 
 /** 'יולי 2026' */
 export function formatMonthYear(date: Date): string {
-  return format(date, "MMMM yyyy", { locale: he });
+  return format(date, "MMMM yyyy", { locale: dateLocale });
 }
 
 /** '29' + 'יולי' לבלוק תאריך בכרטיס */
 export function formatDateBlock(iso: ISODate): { day: string; month: string } {
   const d = toDate(iso);
-  return { day: format(d, "d"), month: format(d, "MMMM", { locale: he }) };
+  return { day: format(d, "d"), month: format(d, "MMMM", { locale: dateLocale }) };
 }
 
 /** '16:00' + משך → '16:00-17:15' */

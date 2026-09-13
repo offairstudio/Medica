@@ -10,10 +10,10 @@ import { DatePicker } from "../../components/form/DatePicker";
 import { TimePicker } from "../../components/form/TimePicker";
 import { lookups } from "../../mock/lookups";
 import { doctors } from "../../mock/doctors";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import { typicalDurations, type WizardErrors, type WizardState } from "./wizardState";
 
-const t = he.wizard.step2;
+const s2 = t.wizard.step2;
 
 export interface Step2Props {
   state: WizardState;
@@ -53,7 +53,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
   return (
     <div className="flex flex-col gap-5">
       {/* אזור א - הניתוח */}
-      <SectionTitle>{t.sectionSurgery}</SectionTitle>
+      <SectionTitle>{s2.sectionSurgery}</SectionTitle>
 
       {state.procedures.map((proc, i) => (
         <div key={i} className="relative rounded-md border border-line bg-surface-2/60 p-4">
@@ -72,7 +72,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2" data-error={errors[`procedure-${i}`] ? "true" : undefined}>
               <Select
-                label={t.surgeryName}
+                label={s2.surgeryName}
                 options={lookups.surgeryNames.map((n) => ({ value: n, label: n }))}
                 value={proc.name || null}
                 onChange={(v) => pickProcedureName(i, (v as string) ?? "")}
@@ -81,18 +81,18 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
               />
             </div>
             <Select
-              label={t.organ}
+              label={s2.organ}
               options={lookups.organs.map((o) => ({ value: o, label: o }))}
               value={proc.organ}
               onChange={(v) => updateProcedure(i, { organ: v as string | null })}
               clearable
             />
             <Select
-              label={t.side}
+              label={s2.side}
               options={[
-                { value: "right", label: t.sideRight },
-                { value: "left", label: t.sideLeft },
-                { value: "none", label: t.sideNone },
+                { value: "right", label: s2.sideRight },
+                { value: "left", label: s2.sideLeft },
+                { value: "none", label: s2.sideNone },
               ]}
               value={proc.side}
               onChange={(v) => updateProcedure(i, { side: v as string | null })}
@@ -112,14 +112,14 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
             })
           }
         >
-          {t.addProcedure}
+          {s2.addProcedure}
         </Button>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div data-error={errors.date ? "true" : undefined}>
           <DatePicker
-            label={t.date}
+            label={s2.date}
             value={state.date}
             onChange={(d) => onChange({ date: d })}
             error={errors.date}
@@ -127,7 +127,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
         </div>
         <div data-error={errors.time ? "true" : undefined}>
           <TimePicker
-            label={t.time}
+            label={s2.time}
             value={state.time}
             onChange={(v) => onChange({ time: v })}
             error={errors.time}
@@ -136,12 +136,12 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
       </div>
 
       {/* אזור ב - ביצוע */}
-      <SectionTitle>{t.sectionExecution}</SectionTitle>
+      <SectionTitle>{s2.sectionExecution}</SectionTitle>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div data-error={errors.duration ? "true" : undefined}>
           <Input
-            label={t.duration}
+            label={s2.duration}
             type="number"
             inputMode="numeric"
             min={1}
@@ -153,7 +153,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
           />
         </div>
         <Input
-          label={t.backupDoctor}
+          label={s2.backupDoctor}
           value={state.backupDoctorName}
           list="backup-doctors"
           autoComplete="off"
@@ -169,15 +169,15 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
       <Toggle
         checked={state.combined}
         onChange={(v) => onChange({ combined: v })}
-        label={t.combined}
+        label={s2.combined}
       />
 
       {/* אזור ג - הרדמה, ציוד ודרישות */}
-      <SectionTitle>{t.sectionAnesthesia}</SectionTitle>
+      <SectionTitle>{s2.sectionAnesthesia}</SectionTitle>
 
       <div data-error={errors.anesthesia ? "true" : undefined}>
         <RadioGroup
-          label={t.anesthesia}
+          label={s2.anesthesia}
           name="anesthesia"
           options={lookups.anesthesiaTypes.map((a) => ({ value: a.key, label: a.label }))}
           value={state.anesthesia}
@@ -188,14 +188,14 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Select
-          label={t.capitalEquipment}
+          label={s2.capitalEquipment}
           options={lookups.capitalEquipment.map((c) => ({ value: c, label: c }))}
           value={state.capitalEquipment}
           onChange={(v) => onChange({ capitalEquipment: v as string | null })}
           clearable
         />
         <RadioGroup
-          label={t.treatmentType}
+          label={s2.treatmentType}
           name="treatmentType"
           options={lookups.treatmentTypes.map((x) => ({ value: x, label: x }))}
           value={state.treatmentType}
@@ -204,14 +204,14 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
       </div>
 
       <Textarea
-        label={t.additionalEquipment}
+        label={s2.additionalEquipment}
         rows={2}
         value={state.additionalEquipment}
         onChange={(e) => onChange({ additionalEquipment: e.target.value })}
       />
 
       <fieldset>
-        <legend className="mb-1 text-caption font-semibold text-body">{t.requirements}</legend>
+        <legend className="mb-1 text-caption font-semibold text-body">{s2.requirements}</legend>
         <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
           {lookups.requirements.map((r) => (
             <Checkbox

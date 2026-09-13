@@ -12,7 +12,7 @@ import { HOSPITALS, HOSPITAL_LIST } from "../../mock/hospitals";
 import { doctorById } from "../../mock/doctors";
 import { lookups } from "../../mock/lookups";
 import { formatNumericDate } from "../../lib/date";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import type { ISODate, Surgery } from "../../types";
 
 export interface SurgeryTableViewProps {
@@ -91,7 +91,7 @@ export function SurgeryTableView({
     a.download = "surgeries.csv";
     a.click();
     URL.revokeObjectURL(url);
-    toast("success", he.toast.exportStarted);
+    toast("success", t.toast.exportStarted);
   }
 
   function downloadCell(url: string | undefined, label: string) {
@@ -109,7 +109,7 @@ export function SurgeryTableView({
     );
   }
 
-  const c = he.allSurgeries.columns;
+  const c = t.allSurgeries.columns;
   const columns: TableColumn<Surgery>[] = [
     { key: "hospital", header: c.hospital, render: (s) => <HospitalChip hospital={s.hospital} compact />, sortValue: (s) => s.hospital },
     { key: "code", header: c.code, numeric: true, className: "!px-2", render: (s) => s.code, sortValue: (s) => s.code },
@@ -149,10 +149,10 @@ export function SurgeryTableView({
             </button>
           }
           items={[
-            { key: "view", label: he.schedule.actions.view, icon: <Monitor />, onSelect: () => onView(s) },
-            { key: "edit", label: he.schedule.actions.edit, icon: <Pencil />, onSelect: () => onEdit(s) },
-            { key: "swap", label: he.schedule.actions.swap, icon: <ArrowLeftRight />, onSelect: () => onSwap(s) },
-            { key: "delete", label: he.schedule.actions.delete, icon: <Trash2 />, danger: true, onSelect: () => onDelete(s) },
+            { key: "view", label: t.schedule.actions.view, icon: <Monitor />, onSelect: () => onView(s) },
+            { key: "edit", label: t.schedule.actions.edit, icon: <Pencil />, onSelect: () => onEdit(s) },
+            { key: "swap", label: t.schedule.actions.swap, icon: <ArrowLeftRight />, onSelect: () => onSwap(s) },
+            { key: "delete", label: t.schedule.actions.delete, icon: <Trash2 />, danger: true, onSelect: () => onDelete(s) },
           ]}
         />
       ),
@@ -165,7 +165,7 @@ export function SurgeryTableView({
       <div className="rounded-lg border border-line bg-surface p-4 shadow-sm">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Select
-            label={he.allSurgeries.filterSurgeryName}
+            label={t.allSurgeries.filterSurgeryName}
             options={lookups.surgeryNames.map((n) => ({ value: n, label: n }))}
             value={nameFilter}
             onChange={(v) => setNameFilter((v as string[]) ?? [])}
@@ -173,15 +173,15 @@ export function SurgeryTableView({
             multiple
             placeholder="כל הניתוחים"
           />
-          <DatePicker label={he.allSurgeries.filterFrom} value={fromDate} onChange={setFromDate} />
-          <DatePicker label={he.allSurgeries.filterTo} value={toDate} onChange={setToDate} />
+          <DatePicker label={t.allSurgeries.filterFrom} value={fromDate} onChange={setFromDate} />
+          <DatePicker label={t.allSurgeries.filterTo} value={toDate} onChange={setToDate} />
           <Select
-            label={he.allSurgeries.filterHospital}
+            label={t.allSurgeries.filterHospital}
             options={HOSPITAL_LIST.map((h) => ({ value: h.key, label: h.name }))}
             value={hospitalFilter}
             onChange={(v) => setHospitalFilter(v as string | null)}
             clearable
-            placeholder={he.allSurgeries.allHospitals}
+            placeholder={t.allSurgeries.allHospitals}
           />
         </div>
         {hasFilter && (
@@ -190,14 +190,14 @@ export function SurgeryTableView({
             onClick={clearFilters}
             className="mt-3 rounded text-caption font-semibold text-primary-600 transition-colors duration-fast hover:text-primary-800"
           >
-            {he.common.clearFilter}
+            {t.common.clearFilter}
           </button>
         )}
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-caption text-muted tnum" aria-live="polite">
-          {he.allSurgeries.resultsCount(filtered.length)}
+          {t.allSurgeries.resultsCount(filtered.length)}
         </p>
         <Button
           variant="secondary"
@@ -206,7 +206,7 @@ export function SurgeryTableView({
           onClick={exportCsv}
           disabled={filtered.length === 0}
         >
-          {he.allSurgeries.exportXl}
+          {t.allSurgeries.exportXl}
         </Button>
       </div>
 
@@ -220,11 +220,11 @@ export function SurgeryTableView({
           <div className="rounded-lg border border-line bg-surface shadow-sm">
             <EmptyState
               illustration="search"
-              title={he.allSurgeries.emptyTitle}
+              title={t.allSurgeries.emptyTitle}
               action={
                 hasFilter ? (
                   <Button variant="secondary" onClick={clearFilters}>
-                    {he.common.clearFilter}
+                    {t.common.clearFilter}
                   </Button>
                 ) : undefined
               }
@@ -236,7 +236,7 @@ export function SurgeryTableView({
       {remaining > 0 && (
         <div className="flex justify-center">
           <Button variant="secondary" onClick={() => setVisibleCount((n) => n + 30)}>
-            {he.schedule.moreCount(remaining)}
+            {t.schedule.moreCount(remaining)}
           </Button>
         </div>
       )}

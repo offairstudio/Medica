@@ -1,9 +1,10 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { IdCard } from "lucide-react";
 import { AuthLayout } from "../features/auth/AuthLayout";
 import { Input } from "../components/primitives/Input";
 import { Button } from "../components/primitives/Button";
-import { he } from "../i18n/he";
+import { t } from "../i18n";
 
 export function LoginDoctor() {
   const navigate = useNavigate();
@@ -14,11 +15,11 @@ export function LoginDoctor() {
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!idNumber.trim()) {
-      setError(he.common.requiredField);
+      setError(t.common.requiredField);
       return;
     }
     if (idNumber.length < 9) {
-      setError(he.login.idInvalid);
+      setError(t.login.idInvalid);
       return;
     }
     setSubmitting(true);
@@ -30,18 +31,16 @@ export function LoginDoctor() {
     <AuthLayout>
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
         <div>
-          <h1 className="text-h1 text-ink">{he.login.doctorTitle}</h1>
-          <p className="mt-1 text-caption text-muted">{he.login.doctorSubtitle}</p>
+          <h1 className="text-h1 text-ink">{t.login.doctorTitle}</h1>
+          <p className="mt-1 text-caption text-muted">{t.login.doctorSubtitle}</p>
         </div>
 
         <Input
-          label={he.login.idLabel}
-          placeholder={he.login.idPlaceholder}
+          label={t.login.idLabel}
+          icon={<IdCard />}
           inputMode="numeric"
           autoComplete="off"
           maxLength={9}
-          dir="ltr"
-          className="[&_input]:text-right"
           value={idNumber}
           onChange={(e) => {
             setIdNumber(e.target.value.replace(/\D/g, "").slice(0, 9));
@@ -51,14 +50,14 @@ export function LoginDoctor() {
         />
 
         <Button type="submit" fullWidth loading={submitting}>
-          {he.common.continue}
+          {t.common.continue}
         </Button>
 
         <Link
           to="/p/login"
           className="text-center text-caption font-semibold text-primary-600 transition-colors duration-fast hover:text-primary-800"
         >
-          {he.login.patientLink}
+          {t.login.patientLink}
         </Link>
       </form>
     </AuthLayout>

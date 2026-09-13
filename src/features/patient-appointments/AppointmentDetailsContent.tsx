@@ -9,7 +9,7 @@ import { HOSPITALS } from "../../mock/hospitals";
 import { cn } from "../../lib/cn";
 import { formatFullDate } from "../../lib/date";
 import { formatFileSize } from "../../lib/format";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import type { Appointment } from "../../types";
 
 /**
@@ -21,13 +21,13 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
 
   // הדרישות מגדירות לבדיקה: תאריך, שעה, שם שיווקי (הכותרת) וכתובת המכון בלבד
   const rows = [
-    { icon: CalendarDays, label: he.patient.details.date, value: formatFullDate(appointment.date) },
+    { icon: CalendarDays, label: t.patient.details.date, value: formatFullDate(appointment.date) },
     {
       icon: Clock,
-      label: he.patient.details.time,
+      label: t.patient.details.time,
       value: <span className="tnum">{appointment.time}</span>,
     },
-    { icon: MapPin, label: he.patient.details.location, value: appointment.location },
+    { icon: MapPin, label: t.patient.details.location, value: appointment.location },
   ];
 
   const prep = appointment.preparation ?? [];
@@ -38,7 +38,7 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
     <div className="flex flex-col gap-5">
       {/* כרטיס אחד: המרכז בראשו בגוון שלו, ומתחתיו פרטי התור */}
       <section
-        aria-label={he.patient.detailsTitle}
+        aria-label={t.patient.detailsTitle}
         className="overflow-hidden rounded-lg border border-line bg-surface shadow-sm"
       >
         <div className={cn("flex items-center gap-3 px-5 py-4", hospital.softClass)}>
@@ -71,12 +71,12 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
       {/* הנחיות הכנה */}
       {prep.length > 0 && (
         <section
-          aria-label={he.patient.preparation}
+          aria-label={t.patient.preparation}
           className="rounded-lg border border-primary-200 bg-primary-50 p-5"
         >
           <h3 className="mb-2 flex items-center gap-2 text-h3 text-primary-800">
             <Info className="h-4 w-4 text-primary-500" aria-hidden />
-            {he.patient.preparation}
+            {t.patient.preparation}
           </h3>
           <ul className="list-inside list-disc text-primary-800">
             {prep.map((p) => (
@@ -88,9 +88,9 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
               variant="secondary"
               className="mt-4"
               icon={<MessageSquareText className="h-4 w-4" />}
-              onClick={() => toast("success", he.patient.instructionsSent)}
+              onClick={() => toast("success", t.patient.instructionsSent)}
             >
-              {he.patient.sendInstructionsSms}
+              {t.patient.sendInstructionsSms}
             </Button>
           )}
         </section>
@@ -98,13 +98,13 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
 
       {/* מסמכים מבית החולים - הונפקו על ידי המוסד, לקריאה בלבד */}
       <section
-        aria-label={he.patient.documentsSection}
+        aria-label={t.patient.documentsSection}
         className="rounded-lg border border-line bg-surface p-5 shadow-sm"
       >
-        <h3 className="text-h3 text-ink">{he.patient.documentsSection}</h3>
-        <p className="mt-0.5 text-caption text-muted">{he.patient.documentsSectionHint}</p>
+        <h3 className="text-h3 text-ink">{t.patient.documentsSection}</h3>
+        <p className="mt-0.5 text-caption text-muted">{t.patient.documentsSectionHint}</p>
         {appointment.documents.length === 0 ? (
-          <p className="mt-3 text-muted">{he.patient.noAppointmentDocuments}</p>
+          <p className="mt-3 text-muted">{t.patient.noAppointmentDocuments}</p>
         ) : (
           <ul className="mt-2">
             {appointment.documents.map((d) => (
@@ -117,11 +117,11 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
       {/* המסמכים של המטופל - מקור אחר, ולכן מסגרת נפרדת */}
       {isUpcoming && (
         <section
-          aria-label={he.patient.myDocuments}
+          aria-label={t.patient.myDocuments}
           className="rounded-lg border border-line bg-surface p-5 shadow-sm"
         >
-          <h3 className="text-h3 text-ink">{he.patient.myDocuments}</h3>
-          <p className="mt-0.5 text-caption text-muted">{he.patient.myDocumentsHint}</p>
+          <h3 className="text-h3 text-ink">{t.patient.myDocuments}</h3>
+          <p className="mt-0.5 text-caption text-muted">{t.patient.myDocumentsHint}</p>
 
           {myDocs.length > 0 && (
             <ul className="mt-3">
@@ -142,7 +142,7 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
                   <button
                     type="button"
                     onClick={() => setMyDocs((list) => list.filter((_, idx) => idx !== i))}
-                    aria-label={`${he.patient.removeUpload}: ${file.name}`}
+                    aria-label={`${t.patient.removeUpload}: ${file.name}`}
                     className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted transition-colors duration-fast hover:bg-surface-2 hover:text-danger"
                   >
                     <X className="h-4 w-4" aria-hidden />
@@ -154,14 +154,14 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
 
           <div className="mt-3">
             {myDocs.length > 0 && (
-              <p className="mb-2 font-semibold text-ink">{he.patient.addAnotherDocument}</p>
+              <p className="mb-2 font-semibold text-ink">{t.patient.addAnotherDocument}</p>
             )}
             <FileUpload
               value={null}
               onChange={(file) => {
                 if (!file) return;
                 setMyDocs((list) => [...list, file]);
-                toast("success", he.patient.uploadDone);
+                toast("success", t.patient.uploadDone);
               }}
             />
           </div>
@@ -170,10 +170,10 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
 
       {appointment.status === "completed" && appointment.resultSummary && (
         <section
-          aria-label={he.patient.resultSummary}
+          aria-label={t.patient.resultSummary}
           className="rounded-lg border border-line bg-surface p-5 shadow-sm"
         >
-          <h3 className="text-h3 text-ink">{he.patient.resultSummary}</h3>
+          <h3 className="text-h3 text-ink">{t.patient.resultSummary}</h3>
           <p className="mt-2 text-body">{appointment.resultSummary}</p>
         </section>
       )}

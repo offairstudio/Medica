@@ -4,7 +4,7 @@ import { Sheet } from "../../components/overlay/Sheet";
 import { Button } from "../../components/primitives/Button";
 import { useToast } from "../../components/overlay/Toast";
 import { useData } from "../../state/data";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import {
   SurgeryViewContent,
   SurgeryEditForm,
@@ -68,20 +68,20 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
     const errs = validateDraft(draft);
     setErrors(errs);
     if (Object.keys(errs).length > 0) {
-      toast("error", he.wizard.fixErrors);
+      toast("error", t.wizard.fixErrors);
       return;
     }
     setSaving(true);
     window.setTimeout(() => {
       updateSurgery(surgery.id, draftToPatch(draft, surgery));
-      toast("success", he.toast.saved);
+      toast("success", t.toast.saved);
       setSaving(false);
       setDraft(null);
       setEditing(false);
     }, 400);
   }
 
-  const title = `${surgery.procedures.map((p) => p.name).join(" + ")} · ${he.swap.codeLabel} ${surgery.code}`;
+  const title = `${surgery.procedures.map((p) => p.name).join(" + ")} · ${t.swap.codeLabel} ${surgery.code}`;
 
   return (
     <Sheet
@@ -93,23 +93,23 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
         editing && draft ? (
           <>
             <Button variant="ghost" onClick={cancelEdit} disabled={saving}>
-              {he.common.cancel}
+              {t.common.cancel}
             </Button>
             <Button onClick={save} loading={saving} className="min-w-24">
-              {he.common.save}
+              {t.common.save}
             </Button>
           </>
         ) : (
           <>
             <Button variant="ghost" onClick={onClose}>
-              {he.common.close}
+              {t.common.close}
             </Button>
             <Button
               variant="secondary"
               icon={<Pencil className="h-4 w-4" />}
               onClick={startEdit}
             >
-              {he.surgeryView.edit}
+              {t.surgeryView.edit}
             </Button>
           </>
         )

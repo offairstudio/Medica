@@ -3,7 +3,7 @@ import { PatientShell } from "../components/layout/AppShell";
 import { PageHeader } from "../components/layout/PageHeader";
 import { AppointmentDetailsContent } from "../features/patient-appointments/AppointmentDetailsContent";
 import { appointments } from "../mock/appointments";
-import { he } from "../i18n/he";
+import { t } from "../i18n";
 
 /**
  * עמוד פרטי תור מלא - נשמר לכניסה ישירה לקישור או לרענון.
@@ -23,7 +23,7 @@ export function AppointmentDetails() {
         title={appointment.doctorName}
         subtitle={appointment.title}
         display
-        backTo={{ to: isUpcoming ? "/p/appointments" : "/p/appointments/past", label: he.patient.backToAppointments }}
+        backTo={{ to: isUpcoming ? "/p/appointments" : "/p/appointments/past", label: t.patient.backToAppointments }}
       />
       <AppointmentDetailsContent appointment={appointment} />
     </PatientShell>

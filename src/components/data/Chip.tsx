@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 import { cn } from "../../lib/cn";
 import type { Appointment, Hospital } from "../../types";
 import { HOSPITALS } from "../../mock/hospitals";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 
 /* ---------- צ'יפ כללי ---------- */
 
@@ -104,7 +104,7 @@ export function KindChip({ kind, className }: { kind: Appointment["kind"]; class
         className,
       )}
     >
-      {he.patient.kinds[kind]}
+      {t.patient.kinds[kind]}
     </span>
   );
 }

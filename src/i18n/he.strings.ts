@@ -1,8 +1,7 @@
 /**
- * כל מחרוזות הממשק של המערכת.
- * מזהים באנגלית, טקסט בעברית.
+ * מחרוזות הממשק בעברית. השפה הפעילה נבחרת ב-src/i18n/index.ts.
  */
-export const he = {
+export const heStrings = {
   common: {
     appName: "Medica",
     continue: "המשך",
@@ -307,6 +306,7 @@ export const he = {
     noAccessTitle: "אין הרשאת גישה",
     noAccessBody: "אין לך הרשאה לצפות בעמוד זה. אם נדרשת גישה, פנו למנהל המערכת.",
   },
-} as const;
+};
 
-export type HeStrings = typeof he;
+/** צורת מילון המחרוזות - כל שפה חייבת לספק את כל המפתחות */
+export type Strings = typeof heStrings;

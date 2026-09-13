@@ -37,7 +37,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             aria-invalid={error ? true : undefined}
             aria-describedby={describedBy}
             className={cn(
-              "w-full rounded-md border text-ink placeholder:text-muted transition-colors duration-fast",
+              // דפדפנים מכריחים LTR על tel/email/number; יורשים את כיוון הדף
+              // כדי שהאייקון והריפוד יישבו תמיד בתחילת השדה
+              "w-full rounded-md border text-ink placeholder:text-muted transition-colors duration-fast [direction:inherit]",
               quiet ? "h-10 bg-transparent px-2" : "bg-surface px-3",
               quiet ? "" : tall ? "h-[52px]" : "h-11",
               icon && "ps-9",

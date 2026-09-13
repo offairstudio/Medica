@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { FontVersionToggle } from "./FontVersionToggle";
+import { LocaleToggle } from "./LocaleToggle";
 
 /**
  * מסך מפוצל RTL: הטופס מימין וארט המותג משמאל.
@@ -43,8 +44,12 @@ export function AuthLayout({ children }: { children: ReactNode }) {
           {children}
         </div>
 
-        {/* מעבר בין גרסאות הפונט - בפינה, בקטן */}
-        <FontVersionToggle className="absolute bottom-3 start-4 md:start-6" />
+        {/* מעבר בין גרסאות הפונט ובין שפות - בפינה, בקטן */}
+        <div className="absolute bottom-3 start-4 flex items-center gap-1 md:start-6">
+          <FontVersionToggle />
+          <span aria-hidden className="text-caption text-line">·</span>
+          <LocaleToggle />
+        </div>
       </div>
     </div>
   );

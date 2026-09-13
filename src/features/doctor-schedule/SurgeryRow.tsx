@@ -5,7 +5,7 @@ import { HOSPITALS } from "../../mock/hospitals";
 import { Dropdown } from "../../components/overlay/Dropdown";
 import { addMinutes } from "../../lib/date";
 import { formatDuration } from "../../lib/format";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import type { Surgery } from "../../types";
 
 export interface SurgeryRowProps {
@@ -95,10 +95,10 @@ export function SurgeryRow({
                   </button>
                 }
                 items={[
-                  { key: "view", label: he.schedule.actions.view, icon: <Monitor />, onSelect: () => onView(surgery) },
-                  { key: "edit", label: he.schedule.actions.edit, icon: <Pencil />, onSelect: () => onEdit(surgery) },
-                  { key: "swap", label: he.schedule.actions.swap, icon: <ArrowLeftRight />, onSelect: () => onSwap(surgery) },
-                  { key: "delete", label: he.schedule.actions.delete, icon: <Trash2 />, danger: true, onSelect: () => onDelete(surgery) },
+                  { key: "view", label: t.schedule.actions.view, icon: <Monitor />, onSelect: () => onView(surgery) },
+                  { key: "edit", label: t.schedule.actions.edit, icon: <Pencil />, onSelect: () => onEdit(surgery) },
+                  { key: "swap", label: t.schedule.actions.swap, icon: <ArrowLeftRight />, onSelect: () => onSwap(surgery) },
+                  { key: "delete", label: t.schedule.actions.delete, icon: <Trash2 />, danger: true, onSelect: () => onDelete(surgery) },
                 ]}
               />
             </span>

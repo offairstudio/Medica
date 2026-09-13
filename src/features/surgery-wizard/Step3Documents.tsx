@@ -3,10 +3,10 @@ import { Select } from "../../components/primitives/Select";
 import { Button } from "../../components/primitives/Button";
 import { FileUpload } from "../../components/form/FileUpload";
 import { lookups } from "../../mock/lookups";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import type { WizardErrors, WizardState } from "./wizardState";
 
-const t = he.wizard.step3;
+const s3 = t.wizard.step3;
 
 export interface Step3Props {
   state: WizardState;
@@ -27,7 +27,7 @@ export function Step3Documents({ state, errors, onChange }: Step3Props) {
     <div className="flex flex-col gap-6">
       {/* אזור עליון - חובה */}
       <section data-error={errors.anamnesis ? "true" : undefined}>
-        <p className="mb-2 text-body-strong font-semibold text-ink">{t.anamnesisLabel}</p>
+        <p className="mb-2 text-body-strong font-semibold text-ink">{s3.anamnesisLabel}</p>
         <FileUpload
           value={state.anamnesisFile}
           onChange={(f) => onChange({ anamnesisFile: f })}
@@ -37,7 +37,7 @@ export function Step3Documents({ state, errors, onChange }: Step3Props) {
 
       {/* מסמכים נוספים */}
       <section className="flex flex-col gap-3">
-        <p className="text-body-strong font-semibold text-ink">{t.moreDocuments}</p>
+        <p className="text-body-strong font-semibold text-ink">{s3.moreDocuments}</p>
 
         {state.extraDocs.map((docRow) => (
           <div
@@ -55,7 +55,7 @@ export function Step3Documents({ state, errors, onChange }: Step3Props) {
               <X className="h-4 w-4" />
             </button>
             <Select
-              label={t.docType}
+              label={s3.docType}
               options={lookups.documentTypes.map((d) => ({ value: d.key, label: d.label }))}
               value={docRow.typeKey}
               onChange={(v) => updateDoc(docRow.id, { typeKey: v as string | null })}
@@ -81,11 +81,11 @@ export function Step3Documents({ state, errors, onChange }: Step3Props) {
               })
             }
           >
-            {t.addDocument}
+            {s3.addDocument}
           </Button>
         </div>
 
-        <p className="text-caption text-muted">{t.limitsNote}</p>
+        <p className="text-caption text-muted">{s3.limitsNote}</p>
       </section>
     </div>
   );

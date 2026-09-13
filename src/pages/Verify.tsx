@@ -11,7 +11,7 @@ import { AuthLayout } from "../features/auth/AuthLayout";
 import { Button } from "../components/primitives/Button";
 import { cn } from "../lib/cn";
 import { maskPhone } from "../lib/format";
-import { he } from "../i18n/he";
+import { t } from "../i18n";
 
 const CODE_LENGTH = 6;
 const RESEND_SECONDS = 47;
@@ -81,9 +81,9 @@ export function Verify({ audience }: { audience: "doctor" | "patient" }) {
     <AuthLayout>
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
         <div className="text-center">
-          <h1 className="text-h1 text-ink">{he.otp.title}</h1>
+          <h1 className="text-h1 text-ink">{t.otp.title}</h1>
           <p className="mt-1 text-caption text-muted">
-            {he.otp.sentTo} <span dir="ltr" className="tnum">{maskPhone("0523372667")}</span>
+            {t.otp.sentTo} <span dir="ltr" className="tnum">{maskPhone("0523372667")}</span>
           </p>
         </div>
 
@@ -114,14 +114,14 @@ export function Verify({ audience }: { audience: "doctor" | "patient" }) {
 
         {wrongCode && (
           <p role="alert" className="text-center text-caption text-danger">
-            {he.otp.wrongCode}
+            {t.otp.wrongCode}
           </p>
         )}
 
         <div className="text-center text-caption text-muted">
           {secondsLeft > 0 ? (
             <>
-              {he.otp.resendIn}{" "}
+              {t.otp.resendIn}{" "}
               <span dir="ltr" className="tnum font-semibold">
                 00:{String(secondsLeft).padStart(2, "0")}
               </span>
@@ -132,13 +132,13 @@ export function Verify({ audience }: { audience: "doctor" | "patient" }) {
               onClick={() => setSecondsLeft(RESEND_SECONDS)}
               className="rounded font-semibold text-primary-600 transition-colors duration-fast hover:text-primary-800"
             >
-              {he.otp.resend}
+              {t.otp.resend}
             </button>
           )}
         </div>
 
         <Button type="submit" fullWidth loading={submitting}>
-          {he.otp.submit}
+          {t.otp.submit}
         </Button>
       </form>
     </AuthLayout>

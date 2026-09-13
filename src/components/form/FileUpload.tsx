@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { FileText, FileImage, File as FileIcon, UploadCloud, X } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { formatFileSize } from "../../lib/format";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 
 export interface UploadedFile {
   name: string;
@@ -89,7 +89,7 @@ export function FileUpload({ value, onChange, error, className }: FileUploadProp
         )}
       >
         <UploadCloud className="h-6 w-6 text-primary-400" aria-hidden />
-        <span className="text-body">{he.wizard.step3.dropHere}</span>
+        <span className="text-body">{t.wizard.step3.dropHere}</span>
       </button>
       <input
         ref={inputRef}

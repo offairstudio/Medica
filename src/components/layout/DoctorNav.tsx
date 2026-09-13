@@ -19,7 +19,7 @@ import { currentDoctor, doctors, MOCK_TODAY } from "../../mock/doctors";
 import { departmentName } from "../../mock/departments";
 import { useData } from "../../state/data";
 import { formatPhone } from "../../lib/format";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 
 const STORAGE_KEY = "medica:doctor-nav-collapsed";
 
@@ -91,7 +91,7 @@ function AccountMenu({ collapsed }: { collapsed?: boolean }) {
       items={[
         {
           key: "logout",
-          label: he.common.logout,
+          label: t.common.logout,
           icon: <LogOut />,
           danger: true,
           onSelect: () => navigate("/login"),
@@ -182,13 +182,13 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
 
         <nav
           className={cn("flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto", collapsed ? "px-2" : "px-3")}
-          aria-label={he.schedule.managedDoctors}
+          aria-label={t.schedule.managedDoctors}
         >
           {/* מנתחים בניהולי - הקטגוריה היחידה בתפריט */}
           {collapsed ? (
             <div className="flex flex-col items-center gap-1">
               {/* בתצוגה מצומצמת השם מופיע בבועית לצד האווטר */}
-              <Tooltip content={he.schedule.allDoctors} placement="end">
+              <Tooltip content={t.schedule.allDoctors} placement="end">
                 <Link
                   to="/doctor/all/schedule"
                   aria-current={doctorId === "all" ? "page" : undefined}
@@ -198,7 +198,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                   )}
                 >
                   <AllDoctorsAvatar size="sm" className={doctorId === "all" ? undefined : "opacity-80"} />
-                  <span className="sr-only">{he.schedule.allDoctors}</span>
+                  <span className="sr-only">{t.schedule.allDoctors}</span>
                 </Link>
               </Tooltip>
               {managed.map((d) => (
@@ -230,8 +230,8 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                   <input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder={he.schedule.searchDoctor}
-                    aria-label={he.schedule.searchDoctor}
+                    placeholder={t.schedule.searchDoctor}
+                    aria-label={t.schedule.searchDoctor}
                       className="h-10 w-full rounded-md border border-line bg-surface ps-9 pe-3 text-caption text-ink placeholder:text-muted focus:border-primary-500"
                     />
                   </div>
@@ -249,11 +249,11 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                 )}
               >
                 <AllDoctorsAvatar size="sm" />
-                <span className="min-w-0 flex-1 truncate">{he.schedule.allDoctors}</span>
+                <span className="min-w-0 flex-1 truncate">{t.schedule.allDoctors}</span>
               </Link>
 
               {visibleDoctors.length === 0 ? (
-                <p className="px-3 py-2 text-caption text-muted">{he.schedule.noDoctorsFound}</p>
+                <p className="px-3 py-2 text-caption text-muted">{t.schedule.noDoctorsFound}</p>
               ) : (
                 visibleDoctors.map((d) => {
                   const isActive = d.id === doctorId;
@@ -305,7 +305,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
             trigger={
               <button
                 type="button"
-                aria-label={`בחירת מנתח. נבחר כעת: ${doctorId === "all" ? he.schedule.allDoctors : activeDoctor?.displayName ?? ""}`}
+                aria-label={`בחירת מנתח. נבחר כעת: ${doctorId === "all" ? t.schedule.allDoctors : activeDoctor?.displayName ?? ""}`}
                 className="flex min-h-[44px] max-w-44 items-center gap-2 rounded-md border border-line bg-surface px-2.5 font-semibold text-ink transition-colors duration-fast hover:border-primary-300"
               >
                 {doctorId === "all" ? (
@@ -314,7 +314,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
                   <Avatar name={activeDoctor?.displayName ?? ""} src={activeDoctor?.avatarUrl} size="sm" />
                 )}
                 <span className="min-w-0 flex-1 truncate text-caption">
-                  {doctorId === "all" ? he.schedule.allDoctors : activeDoctor?.displayName}
+                  {doctorId === "all" ? t.schedule.allDoctors : activeDoctor?.displayName}
                 </span>
                 <ChevronDown className="h-4 w-4 shrink-0 text-muted" aria-hidden />
               </button>
@@ -325,7 +325,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
               className="flex min-h-[44px] items-center gap-2.5 rounded-md px-3 text-body transition-colors duration-fast hover:bg-surface-2"
             >
               <AllDoctorsAvatar size="sm" />
-              {he.schedule.allDoctors}
+              {t.schedule.allDoctors}
             </Link>
             {managed.map((d) => (
               <Link

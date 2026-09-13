@@ -9,7 +9,7 @@ import {
 import { Drawer } from "../../components/overlay/Drawer";
 import { formatFullDate } from "../../lib/date";
 import { formatPhone } from "../../lib/format";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import type { Patient } from "../../types";
 
 export interface ProfileDrawerProps {
@@ -23,13 +23,13 @@ export interface ProfileDrawerProps {
  * הנתונים מגיעים ממערכת בתי החולים ואינם ניתנים לעריכה באזור האישי.
  */
 export function ProfileDrawer({ patient, open, onClose }: ProfileDrawerProps) {
-  const t = he.patient.profile;
+  const p = t.patient.profile;
 
   const rows = [
-    { icon: UserRound, label: t.fullName, value: `${patient.firstName} ${patient.lastName}` },
+    { icon: UserRound, label: p.fullName, value: `${patient.firstName} ${patient.lastName}` },
     {
       icon: BadgeCheck,
-      label: t.idNumber,
+      label: p.idNumber,
       value: (
         <span dir="ltr" className="tnum">
           {patient.idNumber}
@@ -38,20 +38,20 @@ export function ProfileDrawer({ patient, open, onClose }: ProfileDrawerProps) {
     },
     {
       icon: Phone,
-      label: t.phone,
+      label: p.phone,
       value: (
         <span dir="ltr" className="tnum">
           {formatPhone(patient.phone)}
         </span>
       ),
     },
-    { icon: CakeSlice, label: t.birthDate, value: formatFullDate(patient.birthDate) },
-    { icon: ShieldPlus, label: t.hmo, value: patient.hmo },
-    { icon: CreditCard, label: t.payer, value: patient.payer },
+    { icon: CakeSlice, label: p.birthDate, value: formatFullDate(patient.birthDate) },
+    { icon: ShieldPlus, label: p.hmo, value: patient.hmo },
+    { icon: CreditCard, label: p.payer, value: patient.payer },
   ];
 
   return (
-    <Drawer open={open} onClose={onClose} title={t.title}>
+    <Drawer open={open} onClose={onClose} title={p.title}>
       <dl>
         {rows.map((row) => (
           <div
@@ -66,7 +66,7 @@ export function ProfileDrawer({ patient, open, onClose }: ProfileDrawerProps) {
       </dl>
 
       <p className="mt-5 rounded-md bg-primary-50 px-4 py-3 text-caption text-primary-800">
-        {t.note}
+        {p.note}
       </p>
     </Drawer>
   );

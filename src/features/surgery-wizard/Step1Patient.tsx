@@ -7,11 +7,11 @@ import { DatePicker } from "../../components/form/DatePicker";
 import { Chip } from "../../components/data/Chip";
 import { lookups } from "../../mock/lookups";
 import { searchPatients } from "../../mock/patients";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import type { Patient } from "../../types";
 import type { WizardErrors, WizardState } from "./wizardState";
 
-const t = he.wizard.step1;
+const s1 = t.wizard.step1;
 
 export interface Step1Props {
   state: WizardState;
@@ -62,7 +62,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
       {state.existingPatientId && (
         <div>
           <Chip color="primary" onRemove={clearExisting}>
-            {he.wizard.existingPatient}
+            {t.wizard.existingPatient}
           </Chip>
         </div>
       )}
@@ -70,7 +70,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="relative" data-error={errors.firstName ? "true" : undefined}>
           <Input
-            label={t.firstName}
+            label={s1.firstName}
             value={state.firstName}
             autoComplete="off"
             onChange={(e) => {
@@ -105,7 +105,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
 
         <div data-error={errors.lastName ? "true" : undefined}>
           <Input
-            label={t.lastName}
+            label={s1.lastName}
             value={state.lastName}
             autoComplete="off"
             onChange={(e) => onChange({ lastName: e.target.value })}
@@ -116,18 +116,18 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <RadioGroup
-          label={t.idType}
+          label={s1.idType}
           name="idType"
           options={[
-            { value: "id", label: t.idTypeId },
-            { value: "passport", label: t.idTypePassport },
+            { value: "id", label: s1.idTypeId },
+            { value: "passport", label: s1.idTypePassport },
           ]}
           value={state.idType}
           onChange={(v) => onChange({ idType: v as "id" | "passport" })}
         />
         <div data-error={errors.idNumber ? "true" : undefined}>
           <Input
-            label={t.idNumber}
+            label={s1.idNumber}
             inputMode={state.idType === "id" ? "numeric" : "text"}
             dir="ltr"
             maxLength={9}
@@ -148,7 +148,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
       <div className="grid gap-4 sm:grid-cols-2">
         <div data-error={errors.phone ? "true" : undefined}>
           <Input
-            label={t.phone}
+            label={s1.phone}
             type="tel"
             inputMode="tel"
             dir="ltr"
@@ -158,7 +158,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
           />
         </div>
         <DatePicker
-          label={t.birthDate}
+          label={s1.birthDate}
           value={state.birthDate}
           onChange={(d) => onChange({ birthDate: d })}
         />
@@ -166,11 +166,11 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <RadioGroup
-          label={t.gender}
+          label={s1.gender}
           name="gender"
           options={[
-            { value: "male", label: t.male },
-            { value: "female", label: t.female },
+            { value: "male", label: s1.male },
+            { value: "female", label: s1.female },
           ]}
           value={state.gender}
           onChange={(v) => onChange({ gender: v })}
@@ -179,13 +179,13 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Select
-          label={t.hmo}
+          label={s1.hmo}
           options={lookups.hmos.map((h) => ({ value: h, label: h }))}
           value={state.hmo}
           onChange={(v) => onChange({ hmo: v as string | null })}
         />
         <Select
-          label={t.payer}
+          label={s1.payer}
           options={lookups.payers.map((p) => ({ value: p, label: p }))}
           value={state.payer}
           onChange={(v) => onChange({ payer: v as string | null })}
@@ -196,18 +196,18 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
         <Toggle
           checked={state.feeEnabled}
           onChange={(v) => onChange({ feeEnabled: v })}
-          label={t.surgeonFee}
+          label={s1.surgeonFee}
         />
         {state.feeEnabled && (
           <div className="mt-2 max-w-56" data-error={errors.feeAmount ? "true" : undefined}>
             <Input
-              label={t.feeAmount}
+              label={s1.feeAmount}
               inputMode="numeric"
               dir="ltr"
               value={state.feeAmount}
               onChange={(e) => onChange({ feeAmount: e.target.value.replace(/\D/g, "") })}
               error={errors.feeAmount}
-              hint={t.surgeonFeeNote}
+              hint={s1.surgeonFeeNote}
             />
           </div>
         )}

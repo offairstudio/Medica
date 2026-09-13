@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ShieldAlert } from "lucide-react";
 import { Button } from "../components/primitives/Button";
-import { he } from "../i18n/he";
+import { t } from "../i18n";
 
 export function NoAccess() {
   const navigate = useNavigate();
@@ -12,10 +12,10 @@ export function NoAccess() {
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-danger/10">
             <ShieldAlert className="h-8 w-8 text-danger" aria-hidden />
           </span>
-          <p className="text-h3 text-ink">{he.errors.noAccessTitle}</p>
-          <p className="max-w-sm text-body text-muted">{he.errors.noAccessBody}</p>
+          <p className="text-h3 text-ink">{t.errors.noAccessTitle}</p>
+          <p className="max-w-sm text-body text-muted">{t.errors.noAccessBody}</p>
           <div className="mt-2">
-            <Button onClick={() => navigate(-1)}>{he.common.back}</Button>
+            <Button onClick={() => navigate(-1)}>{t.common.back}</Button>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { cn } from "../../lib/cn";
 import { HospitalChip } from "../../components/data/Chip";
 import { HOSPITALS } from "../../mock/hospitals";
 import { formatDateBlock } from "../../lib/date";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import type { Appointment } from "../../types";
 
 export interface AppointmentCardProps {
@@ -100,11 +100,11 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel, f
             {appointment.documents.length > 0 && (
               <span className="flex shrink-0 items-center gap-1">
                 <Paperclip className="h-3.5 w-3.5" aria-hidden />
-                {he.patient.documentsAttached(appointment.documents.length)}
+                {t.patient.documentsAttached(appointment.documents.length)}
               </span>
             )}
             <span className="ms-auto flex shrink-0 items-center gap-1 font-semibold text-primary-600 transition-colors duration-fast group-hover:text-primary-800">
-              {he.patient.toAppointment}
+              {t.patient.toAppointment}
               <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-fast group-hover:-translate-x-0.5" aria-hidden />
             </span>
           </span>

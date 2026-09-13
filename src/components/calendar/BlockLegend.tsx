@@ -1,6 +1,6 @@
 import { cn } from "../../lib/cn";
 import { HOSPITAL_LIST } from "../../mock/hospitals";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 
 /**
  * מקרא הלוח: משמעות תג השעות, ומפתח הצבעים של בתי החולים -
@@ -9,7 +9,7 @@ import { he } from "../../i18n/he";
 export function BlockLegend({ className }: { className?: string }) {
   return (
     <div className={cn("flex flex-col gap-4 text-caption text-body", className)}>
-      <p>{he.schedule.calendarLegend.hours}</p>
+      <p>{t.schedule.calendarLegend.hours}</p>
 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
         {HOSPITAL_LIST.map((h) => (

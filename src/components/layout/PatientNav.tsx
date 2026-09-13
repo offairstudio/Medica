@@ -12,7 +12,7 @@ import {
 import { cn } from "../../lib/cn";
 import { currentPatient } from "../../mock/patients";
 import { appointments } from "../../mock/appointments";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import { BrandMark } from "./BrandMark";
 import { Dropdown } from "../overlay/Dropdown";
 import { ProfileDrawer } from "../../features/patient-profile/ProfileDrawer";
@@ -29,14 +29,14 @@ const resultsCount = appointments.filter(
 const tabs = [
   {
     to: "/p/appointments",
-    label: he.patient.tabs.appointments,
+    label: t.patient.tabs.appointments,
     icon: CalendarClock,
     count: upcomingCount,
     match: (p: string) => p === "/p" || p.startsWith("/p/appointments") || p.startsWith("/p/appointment/"),
   },
   {
     to: "/p/results",
-    label: he.patient.tabs.results,
+    label: t.patient.tabs.results,
     icon: ClipboardList,
     count: resultsCount,
     match: (p: string) => p.startsWith("/p/results"),
@@ -106,13 +106,13 @@ function AccountMenu({
       items={[
         {
           key: "profile",
-          label: he.patient.profile.menuLabel,
+          label: t.patient.profile.menuLabel,
           icon: <UserRound />,
           onSelect: onProfile,
         },
         {
           key: "logout",
-          label: he.common.logout,
+          label: t.common.logout,
           icon: <LogOut />,
           danger: true,
           onSelect: () => navigate("/p/login"),

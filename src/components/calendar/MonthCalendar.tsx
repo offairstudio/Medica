@@ -13,7 +13,8 @@ import { ChevronRight, ChevronLeft } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { formatFullDate, formatMonthYear, toDate, toISO } from "../../lib/date";
 import { HOSPITALS } from "../../mock/hospitals";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
+import { currentLocale } from "../../i18n/locale";
 import type { Hospital, ISODate } from "../../types";
 
 export interface MonthCalendarProps {
@@ -30,7 +31,11 @@ export interface MonthCalendarProps {
   className?: string;
 }
 
-const WEEKDAYS = ["א", "ב", "ג", "ד", "ה", "ו", "ש"];
+/** ראשי ימות השבוע לפי שפת הממשק, ראשון עד שבת */
+const WEEKDAYS =
+  currentLocale() === "he"
+    ? ["א", "ב", "ג", "ד", "ה", "ו", "ש"]
+    : ["S", "M", "T", "W", "T", "F", "S"];
 
 /**
  * תג העומס נקרא בתוך משבצת של 28px, ולכן הוא מעוגל לשעה שלמה
@@ -38,7 +43,7 @@ const WEEKDAYS = ["א", "ב", "ג", "ד", "ה", "ו", "ש"];
  * נמסר במקביל ב-title וב-aria-label של היום.
  */
 function loadBadgeLabel(minutes: number): string {
-  return minutes < 60 ? he.schedule.load.badgeMinutes(minutes) : he.schedule.load.badgeHours(Math.round(minutes / 60));
+  return minutes < 60 ? t.schedule.load.badgeMinutes(minutes) : t.schedule.load.badgeHours(Math.round(minutes / 60));
 }
 
 export function MonthCalendar({
@@ -130,8 +135,8 @@ export function MonthCalendar({
               type="button"
               disabled={disabled && !isToday}
               onClick={() => onSelect?.(iso)}
-              aria-label={minutes ? `${iso}, ${he.schedule.load.exact(minutes)}` : iso}
-              title={minutes ? he.schedule.load.exact(minutes) : undefined}
+              aria-label={minutes ? `${iso}, ${t.schedule.load.exact(minutes)}` : iso}
+              title={minutes ? t.schedule.load.exact(minutes) : undefined}
               aria-pressed={isSelected}
               className={cn(
                 "relative mx-auto flex h-12 w-full flex-col items-center justify-start rounded-md pt-1 transition-colors duration-fast",

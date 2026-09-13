@@ -17,7 +17,7 @@ import {
 } from "./wizardState";
 import { documentTypeLabel } from "../../mock/lookups";
 import { useData } from "../../state/data";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import type { ISODate, Surgery, Time } from "../../types";
 
 export interface WizardPrefill {
@@ -78,7 +78,7 @@ function WizardInner({
     const stepErrors = validators[step](state);
     setErrors(stepErrors);
     if (Object.keys(stepErrors).length > 0) {
-      toast("error", he.wizard.fixErrors);
+      toast("error", t.wizard.fixErrors);
       window.setTimeout(() => {
         bodyRef.current
           ?.querySelector('[data-error="true"]')
@@ -152,7 +152,7 @@ function WizardInner({
 
     window.setTimeout(() => {
       addSurgery(surgery);
-      toast("success", he.wizard.created);
+      toast("success", t.wizard.created);
       setHighlightId(id);
       window.setTimeout(() => setHighlightId(null), 2000);
       onCreated?.(surgery);
@@ -170,11 +170,11 @@ function WizardInner({
     <Sheet
       open
       onClose={onClose}
-      title={he.schedule.createSurgery}
+      title={t.schedule.createSurgery}
       size="xl"
       subheader={
         <Stepper
-          steps={he.wizard.stepNames}
+          steps={t.wizard.stepNames}
           current={step}
           onStepClick={(i) => {
             setStep(i);
@@ -194,13 +194,13 @@ function WizardInner({
               className="inline-flex min-h-[44px] items-center gap-1 rounded-md px-3 font-semibold text-primary-600 transition-colors duration-fast hover:bg-primary-50"
             >
               <ArrowRight className="h-4 w-4" aria-hidden />
-              {he.common.back}
+              {t.common.back}
             </button>
           ) : (
             <span />
           )}
           <Button onClick={tryAdvance} loading={submitting} className="min-w-32">
-            {step === 2 ? he.wizard.finish : he.common.continue}
+            {step === 2 ? t.wizard.finish : t.common.continue}
           </Button>
         </div>
       }

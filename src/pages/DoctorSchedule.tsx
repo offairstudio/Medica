@@ -46,7 +46,7 @@ import {
   toISO,
 } from "../lib/date";
 import { cn } from "../lib/cn";
-import { he } from "../i18n/he";
+import { t } from "../i18n";
 import type { Hospital, ISODate, Surgery } from "../types";
 
 /** משך חלון פנוי בניסוח קריא: "45 דק'" / "שעה" / "2:40 שעות" */
@@ -168,7 +168,7 @@ export function DoctorSchedule() {
     setDeleteTarget(null);
     toast(
       "success",
-      he.schedule.deleteSuccess,
+      t.schedule.deleteSuccess,
       removed ? { label: "ביטול פעולה", onUndo: () => restoreSurgery(removed) } : undefined,
     );
   }
@@ -196,7 +196,7 @@ export function DoctorSchedule() {
         <ScreenHeader
           compact
           divider={false}
-          title={isAll ? he.schedule.combinedSchedule : doctor.displayName}
+          title={isAll ? t.schedule.combinedSchedule : doctor.displayName}
           media={
             isAll ? (
               <AllDoctorsAvatar size="lg" />
@@ -229,7 +229,7 @@ export function DoctorSchedule() {
               onClick={() => toast("info", "שינוי הל\"ז אינו חלק מהפרוטוטייפ")}
               className="inline-flex h-10 shrink-0 items-center rounded-md border border-line px-3 font-semibold text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
             >
-              {he.schedule.changeSchedule}
+              {t.schedule.changeSchedule}
             </button>
           }
           start={
@@ -238,7 +238,7 @@ export function DoctorSchedule() {
               <span className="text-h3 font-semibold text-ink">{formatFullDate(selectedDate)}</span>
               {daySurgeries.length > 0 && (
                 <span className="text-h3 font-semibold text-muted">
-                  {he.schedule.daySummary(daySurgeries.length, formatTotalHours(totalMinutes))}
+                  {t.schedule.daySummary(daySurgeries.length, formatTotalHours(totalMinutes))}
                 </span>
               )}
             </div>
@@ -262,7 +262,7 @@ export function DoctorSchedule() {
                   disabled={selectedDate === MOCK_TODAY}
                   className={cn(navButtonClass, "w-auto px-3 font-semibold disabled:cursor-default disabled:opacity-45 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-body")}
                 >
-                  {he.schedule.backToToday}
+                  {t.schedule.backToToday}
                 </button>
                 <button
                   type="button"
@@ -279,8 +279,8 @@ export function DoctorSchedule() {
                 type="button"
                 onClick={() => setCalendarOpen((open) => !open)}
                 aria-pressed={calendarOpen}
-                aria-label={he.schedule.calendar}
-                title={he.schedule.calendar}
+                aria-label={t.schedule.calendar}
+                title={t.schedule.calendar}
                 className={cn(
                   // הלוח עצמו מוצג רק במסך רחב, ולכן גם הכפתור שמפעיל אותו
                   "hidden h-10 w-10 items-center justify-center rounded-md transition-colors duration-fast xl:inline-flex",
@@ -327,14 +327,14 @@ export function DoctorSchedule() {
                 ) : daySurgeries.length === 0 && freeSlots.length === 0 ? (
                   <EmptyState
                     illustration="calendar"
-                    title={he.schedule.emptyDay}
+                    title={t.schedule.emptyDay}
                     action={
                       <Button
                         variant="secondary"
                         icon={<Plus className="h-4 w-4" />}
                         onClick={() => setWizardPrefill({ date: selectedDate })}
                       >
-                        {he.schedule.createSurgery}
+                        {t.schedule.createSurgery}
                       </Button>
                     }
                   />
@@ -391,7 +391,7 @@ export function DoctorSchedule() {
                             </span>
 
                             <span className="min-w-0 flex-1">
-                              <span className="block text-h3 text-muted">{he.schedule.free}</span>
+                              <span className="block text-h3 text-muted">{t.schedule.free}</span>
                               <span className="mt-0.5 block truncate text-muted">
                                 {freeDurationLabel(item.slot)}
                                 {isAll && item.slot.doctorIds.length > 0 && (
@@ -399,7 +399,7 @@ export function DoctorSchedule() {
                                     {" · "}
                                     {item.slot.doctorIds.length === 1
                                       ? doctorById(item.slot.doctorIds[0])?.displayName
-                                      : he.schedule.freeDoctorsCount(item.slot.doctorIds.length)}
+                                      : t.schedule.freeDoctorsCount(item.slot.doctorIds.length)}
                                   </>
                                 )}
                               </span>
@@ -407,7 +407,7 @@ export function DoctorSchedule() {
                                 <HospitalChip hospital={item.slot.hospital} compact />
                                 <span className="ms-auto flex shrink-0 items-center gap-1 font-semibold text-primary-600 transition-colors duration-fast group-hover:text-primary-800">
                                   <Plus className="h-4 w-4" aria-hidden />
-                                  {he.schedule.createSurgery}
+                                  {t.schedule.createSurgery}
                                 </span>
                               </span>
                             </span>
@@ -423,13 +423,13 @@ export function DoctorSchedule() {
                   <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-primary-200 bg-primary-50 px-4 py-3">
                     <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary-500" aria-hidden />
                     <p className="text-caption text-primary-800">
-                      {he.schedule.combinedBanner('ד"ר בורג אלון')}{" "}
+                      {t.schedule.combinedBanner('ד"ר בורג אלון')}{" "}
                       <button
                         type="button"
                         onClick={() => setWizardPrefill({ date: selectedDate })}
                         className="font-semibold text-primary-600 underline underline-offset-2 transition-colors duration-fast hover:text-primary-800"
                       >
-                        {he.schedule.clickHere}
+                        {t.schedule.clickHere}
                       </button>
                     </p>
                   </div>
@@ -486,22 +486,22 @@ export function DoctorSchedule() {
       <Modal
         open={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}
-        title={he.schedule.deleteConfirmTitle}
+        title={t.schedule.deleteConfirmTitle}
         size="sm"
         footer={
           <>
             <Button variant="ghost" onClick={() => setDeleteTarget(null)}>
-              {he.common.cancel}
+              {t.common.cancel}
             </Button>
             <Button variant="danger" onClick={confirmDelete}>
-              {he.schedule.actions.delete}
+              {t.schedule.actions.delete}
             </Button>
           </>
         }
       >
         {deleteTarget && (
           <p className="text-body">
-            {he.schedule.deleteConfirmBody(
+            {t.schedule.deleteConfirmBody(
               `${deleteTarget.patient.firstName} ${deleteTarget.patient.lastName}`,
             )}
           </p>

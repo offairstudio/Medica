@@ -11,7 +11,7 @@ import { blocks } from "../../mock/blocks";
 import { useData } from "../../state/data";
 import { useToast } from "../../components/overlay/Toast";
 import { computeFreeSlots, slotStartOptions } from "../doctor-schedule/slots";
-import { he } from "../../i18n/he";
+import { t } from "../../i18n";
 import { HOSPITALS } from "../../mock/hospitals";
 import type { Hospital, ISODate, Surgery, Time } from "../../types";
 
@@ -55,25 +55,25 @@ export function SwapModal({ surgery, onClose }: SwapModalProps) {
     swapSurgery(surgery.id, selectedDate, selectedTime);
     setHighlightId(surgery.id);
     window.setTimeout(() => setHighlightId(null), 1500);
-    toast("success", he.swap.success(formatNumericDate(selectedDate), selectedTime));
+    toast("success", t.swap.success(formatNumericDate(selectedDate), selectedTime));
     onClose();
   }
 
   const summaryItems = [
-    { icon: Hash, label: `${he.swap.codeLabel} ${surgery.code}` },
+    { icon: Hash, label: `${t.swap.codeLabel} ${surgery.code}` },
     { icon: User, label: `${surgery.patient.firstName} ${surgery.patient.lastName}` },
     { icon: CalendarDays, label: formatNumericDate(surgery.date) },
     { icon: Clock, label: surgery.startTime },
-    { icon: CreditCard, label: `${he.swap.idLabel} ${surgery.patient.idNumber}` },
+    { icon: CreditCard, label: `${t.swap.idLabel} ${surgery.patient.idNumber}` },
   ];
 
   return (
-    <Sheet open onClose={onClose} title={he.swap.title} size="xl"
+    <Sheet open onClose={onClose} title={t.swap.title} size="xl"
       footer={
         <>
-          <Button variant="ghost" onClick={onClose}>{he.common.cancel}</Button>
+          <Button variant="ghost" onClick={onClose}>{t.common.cancel}</Button>
           <Button disabled={!selectedDate || !selectedTime} onClick={confirm}>
-            {he.swap.submit}
+            {t.swap.submit}
           </Button>
         </>
       }
@@ -93,7 +93,7 @@ export function SwapModal({ surgery, onClose }: SwapModalProps) {
 
       <div className="grid gap-6 md:grid-cols-2">
         <section>
-          <h3 className="mb-2 text-h3 text-ink">{he.swap.pickDay}</h3>
+          <h3 className="mb-2 text-h3 text-ink">{t.swap.pickDay}</h3>
           <MonthCalendar
             today={MOCK_TODAY}
             selectedDate={selectedDate}
@@ -107,14 +107,14 @@ export function SwapModal({ surgery, onClose }: SwapModalProps) {
         </section>
 
         <section>
-          <h3 className="mb-2 text-h3 text-ink">{he.swap.pickTime}</h3>
+          <h3 className="mb-2 text-h3 text-ink">{t.swap.pickTime}</h3>
           {!selectedDate ? (
             <p className="rounded-md bg-surface-2 px-4 py-6 text-center text-caption text-muted">
               יש לבחור קודם יום החלפה
             </p>
           ) : timeOptions.length === 0 ? (
             <p className="rounded-md bg-surface-2 px-4 py-6 text-center text-caption text-muted">
-              {he.swap.noSlots}
+              {t.swap.noSlots}
             </p>
           ) : (
             <div className="grid grid-cols-3 gap-2">
