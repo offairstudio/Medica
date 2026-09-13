@@ -8,23 +8,15 @@ import {
 } from "react";
 import {
   Banknote,
-  Bed,
   FileText,
   IdCard,
-  Package,
   Phone,
   Plus,
   ShieldCheck,
-  Syringe,
   UserRound,
-  Users,
   Wallet,
   X,
   CalendarDays,
-  Clock,
-  Hospital,
-  Stethoscope,
-  Timer,
   type LucideIcon,
 } from "lucide-react";
 import { Avatar } from "../../components/data/Avatar";
@@ -382,9 +374,8 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
-        {/* מטופל */}
-        <Section title={t.surgeryView.patient}>
+      {/* מטופל - שורות רחבות, בדיוק כמו בצפייה */}
+      <Section title={t.surgeryView.patient}>
           <div>
             <EditRow icon={UserRound} label={t.wizard.step1.firstName}>
               <Input
@@ -453,87 +444,91 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
               </EditRow>
             )}
           </div>
-        </Section>
+      </Section>
 
-        {/* ביצוע */}
-        <Section title={t.surgeryView.execution}>
-          <div>
-            <EditRow icon={Stethoscope} label={t.ui.fields.surgeon}>
-              <Select
-                quiet
-                options={doctors.map((d) => ({ value: d.id, label: d.displayName }))}
-                value={draft.doctorId}
-                onChange={(v) => patch({ doctorId: (v as string) ?? draft.doctorId })}
-                searchable
-              />
-            </EditRow>
-            <EditRow icon={Hospital} label={t.ui.fields.hospital}>
-              <Select
-                quiet
-                options={[
-                  ...HOSPITAL_LIST.map((h) => ({ value: h.key, label: h.name })),
-                ]}
-                value={draft.hospital}
-                onChange={(v) => patch({ hospital: (v as string) ?? "refael" })}
-              />
-            </EditRow>
-            <EditRow icon={CalendarDays} label={t.wizard.step2.date}>
-              <DatePicker
-                quiet value={draft.date} onChange={(d) => patch({ date: d })} error={errors.date} />
-            </EditRow>
-            <EditRow icon={Clock} label={t.wizard.step2.time}>
-              <TimePicker
-                quiet value={draft.time} onChange={(t) => patch({ time: t })} error={errors.time} />
-            </EditRow>
-            <EditRow icon={Timer} label={t.wizard.step2.duration}>
-              <Input
-                quiet type="number" dir="ltr" min={1} value={draft.duration} onChange={(e) => patch({ duration: e.target.value })} error={errors.duration} />
-            </EditRow>
-            <EditRow icon={Syringe} label={t.wizard.step2.anesthesia}>
-              <Select
-                quiet
-                options={lookups.anesthesiaTypes.map((a) => ({ value: a.key, label: a.label }))}
-                value={draft.anesthesia}
-                onChange={(v) => patch({ anesthesia: (v as string) ?? "general" })}
-              />
-            </EditRow>
-            <EditRow icon={Bed} label={t.wizard.step2.treatmentType}>
-              <Select
-                quiet
-                options={lookups.treatmentTypes.map((t) => ({ value: t, label: t }))}
-                value={draft.treatmentType}
-                onChange={(v) => patch({ treatmentType: v as string | null })}
-              />
-            </EditRow>
-            <EditRow icon={Package} label={t.wizard.step2.capitalEquipment}>
-              <Select
-                quiet
-                options={lookups.capitalEquipment.map((c) => ({ value: c, label: c }))}
-                value={draft.capitalEquipment}
-                onChange={(v) => patch({ capitalEquipment: v as string | null })}
-                clearable
-              />
-            </EditRow>
-            <div className="border-b border-line py-1 last:border-b-0">
-              <Toggle checked={draft.combined} onChange={(v) => patch({ combined: v })} label={t.wizard.step2.combined} />
-            </div>
-            {draft.combined && (
-              <EditRow icon={Users} label={t.wizard.step2.backupDoctor}>
-                <Input
-                  quiet value={draft.backupDoctorName} onChange={(e) => patch({ backupDoctorName: e.target.value })} />
-              </EditRow>
-            )}
-            <div className="pt-2">
-              <Textarea
-                label={t.wizard.step2.additionalEquipment}
-                rows={2}
-                value={draft.additionalEquipment}
-                onChange={(e) => patch({ additionalEquipment: e.target.value })}
-              />
-            </div>
+      {/* ביצוע - שדות דחוסים ברשת, כמו הצפייה */}
+      <Section title={t.surgeryView.execution}>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <Select
+            label={t.ui.fields.surgeon}
+            options={doctors.map((d) => ({ value: d.id, label: d.displayName }))}
+            value={draft.doctorId}
+            onChange={(v) => patch({ doctorId: (v as string) ?? draft.doctorId })}
+            searchable
+          />
+          <Select
+            label={t.ui.fields.hospital}
+            options={HOSPITAL_LIST.map((h) => ({ value: h.key, label: h.name }))}
+            value={draft.hospital}
+            onChange={(v) => patch({ hospital: (v as string) ?? "refael" })}
+          />
+          <DatePicker
+            label={t.wizard.step2.date}
+            required
+            value={draft.date}
+            onChange={(d) => patch({ date: d })}
+            error={errors.date}
+          />
+          <TimePicker
+            label={t.wizard.step2.time}
+            required
+            value={draft.time}
+            onChange={(v) => patch({ time: v })}
+            error={errors.time}
+          />
+          <Input
+            label={t.wizard.step2.duration}
+            required
+            type="number"
+            dir="ltr"
+            min={1}
+            value={draft.duration}
+            onChange={(e) => patch({ duration: e.target.value })}
+            error={errors.duration}
+          />
+          <Select
+            label={t.wizard.step2.anesthesia}
+            options={lookups.anesthesiaTypes.map((a) => ({ value: a.key, label: a.label }))}
+            value={draft.anesthesia}
+            onChange={(v) => patch({ anesthesia: (v as string) ?? "general" })}
+          />
+          <Select
+            label={t.wizard.step2.treatmentType}
+            options={lookups.treatmentTypes.map((type) => ({ value: type, label: type }))}
+            value={draft.treatmentType}
+            onChange={(v) => patch({ treatmentType: v as string | null })}
+          />
+          <Select
+            label={t.wizard.step2.capitalEquipment}
+            options={lookups.capitalEquipment.map((c) => ({ value: c, label: c }))}
+            value={draft.capitalEquipment}
+            onChange={(v) => patch({ capitalEquipment: v as string | null })}
+            clearable
+          />
+          {draft.combined && (
+            <Input
+              label={t.wizard.step2.backupDoctor}
+              value={draft.backupDoctorName}
+              onChange={(e) => patch({ backupDoctorName: e.target.value })}
+            />
+          )}
+          <div className="sm:col-span-2 lg:col-span-3">
+            <Textarea
+              label={t.wizard.step2.additionalEquipment}
+              rows={2}
+              value={draft.additionalEquipment}
+              onChange={(e) => patch({ additionalEquipment: e.target.value })}
+            />
           </div>
-        </Section>
-      </div>
+          <div className="sm:col-span-2 lg:col-span-3">
+            <Toggle
+              checked={draft.combined}
+              onChange={(v) => patch({ combined: v })}
+              label={t.wizard.step2.combined}
+            />
+          </div>
+        </div>
+      </Section>
 
       {/* הניתוחים */}
       <Section title={t.surgeryView.procedures}>
