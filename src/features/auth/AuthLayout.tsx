@@ -32,7 +32,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
               כל המידע הרפואי.<br />במקום אחד.
             </h2>
             <p className="mt-3 hidden max-w-sm text-white/80 md:block">
-              תורים, הכנות, מסמכים ותוצאות — זמינים בצורה ברורה ובטוחה לאורך כל הדרך.
+              תורים, הכנות, מסמכים ותוצאות זמינים בצורה ברורה ובטוחה לאורך כל הדרך.
             </p>
           </div>
         </div>
