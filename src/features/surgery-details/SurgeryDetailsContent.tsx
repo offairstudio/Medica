@@ -11,7 +11,6 @@ import {
   Bed,
   FileText,
   IdCard,
-  Info,
   Package,
   Phone,
   Plus,
@@ -30,6 +29,7 @@ import {
 } from "lucide-react";
 import { Avatar } from "../../components/data/Avatar";
 import { Chip } from "../../components/data/Chip";
+import { SectionCard as Section } from "../../components/data/SectionCard";
 import { DocumentRow } from "../patient-documents/DocumentRow";
 import { HOSPITAL_LIST } from "../../mock/hospitals";
 import { Button } from "../../components/primitives/Button";
@@ -45,7 +45,6 @@ import { documentTypeLabel, lookups } from "../../mock/lookups";
 import { doctorById, doctors } from "../../mock/doctors";
 import { departmentName } from "../../mock/departments";
 import { formatFileSize } from "../../lib/format";
-import { cn } from "../../lib/cn";
 import { t } from "../../i18n";
 import type { MedicalDocument, RequirementKey, Surgery } from "../../types";
 
@@ -199,56 +198,6 @@ function DetailRow({
   );
 }
 
-/**
- * כרטיסיית מקטע במגירה - אותו כרטיס של מגירת התור באזור המטופל:
- * הכותרת יושבת בפס עליון משלה, כדי שגבול הכרטיס יהיה חד וברור.
- * variant="accent" שמור למקטע הדרישות, בגוון המותג.
- */
-function Section({
-  title,
-  hint,
-  variant = "card",
-  className,
-  children,
-}: {
-  title: string;
-  hint?: string;
-  variant?: "card" | "accent";
-  className?: string;
-  children: ReactNode;
-}) {
-  if (variant === "accent") {
-    return (
-      <section
-        aria-label={title}
-        className={cn("min-w-0 rounded-lg border border-primary-200 bg-primary-50 p-5", className)}
-      >
-        <h3 className="flex items-center gap-2 text-h3 text-primary-800">
-          <Info className="h-4 w-4 shrink-0 text-primary-500" aria-hidden />
-          {title}
-        </h3>
-        {hint && <p className="mt-0.5 text-caption text-muted">{hint}</p>}
-        <div className="mt-2">{children}</div>
-      </section>
-    );
-  }
-
-  return (
-    <section
-      aria-label={title}
-      className={cn(
-        "min-w-0 overflow-hidden rounded-lg border border-line bg-surface shadow-sm",
-        className,
-      )}
-    >
-      <div className="border-b border-line bg-surface-2/60 px-5 py-3.5">
-        <h3 className="text-h3 text-ink">{title}</h3>
-        {hint && <p className="mt-0.5 text-caption text-muted">{hint}</p>}
-      </div>
-      <div className="px-5 py-3">{children}</div>
-    </section>
-  );
-}
 
 /** שדה דחוס: תווית קטנה מעל הערך - לפרטים שסורקים ולא קוראים אחד-אחד */
 function CompactField({ label, children }: { label: string; children: ReactNode }) {

@@ -2,6 +2,7 @@ import { X } from "lucide-react";
 import { Select } from "../../components/primitives/Select";
 import { Button } from "../../components/primitives/Button";
 import { FileUpload } from "../../components/form/FileUpload";
+import { SectionCard } from "../../components/data/SectionCard";
 import { lookups } from "../../mock/lookups";
 import { t } from "../../i18n";
 import type { WizardErrors, WizardState } from "./wizardState";
@@ -26,23 +27,23 @@ export function Step3Documents({ state, errors, onChange }: Step3Props) {
   return (
     <div className="flex flex-col gap-6">
       {/* אזור עליון - חובה */}
-      <section data-error={errors.anamnesis ? "true" : undefined}>
-        <p className="mb-2 text-body-strong font-semibold text-ink">{s3.anamnesisLabel}</p>
-        <FileUpload
-          value={state.anamnesisFile}
-          onChange={(f) => onChange({ anamnesisFile: f })}
-          error={errors.anamnesis}
-        />
-      </section>
+      <div data-error={errors.anamnesis ? "true" : undefined}>
+        <SectionCard title={s3.anamnesisLabel}>
+          <FileUpload
+            value={state.anamnesisFile}
+            onChange={(f) => onChange({ anamnesisFile: f })}
+            error={errors.anamnesis}
+          />
+        </SectionCard>
+      </div>
 
       {/* מסמכים נוספים */}
-      <section className="flex flex-col gap-3">
-        <p className="text-body-strong font-semibold text-ink">{s3.moreDocuments}</p>
+      <SectionCard title={s3.moreDocuments} bodyClassName="flex flex-col gap-3 px-5 py-4">
 
         {state.extraDocs.map((docRow) => (
           <div
             key={docRow.id}
-            className="relative grid gap-3 rounded-md border border-line bg-surface-2/60 p-4 sm:grid-cols-[240px,1fr]"
+            className="relative grid gap-3 rounded-md border border-line bg-canvas p-4 sm:grid-cols-[240px,1fr]"
           >
             <button
               type="button"
@@ -86,7 +87,7 @@ export function Step3Documents({ state, errors, onChange }: Step3Props) {
         </div>
 
         <p className="text-caption text-muted">{s3.limitsNote}</p>
-      </section>
+      </SectionCard>
     </div>
   );
 }

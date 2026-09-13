@@ -8,6 +8,7 @@ import { Textarea } from "../../components/primitives/Textarea";
 import { Button } from "../../components/primitives/Button";
 import { DatePicker } from "../../components/form/DatePicker";
 import { TimePicker } from "../../components/form/TimePicker";
+import { SectionCard } from "../../components/data/SectionCard";
 import { lookups } from "../../mock/lookups";
 import { doctors } from "../../mock/doctors";
 import { t } from "../../i18n";
@@ -19,14 +20,6 @@ export interface Step2Props {
   state: WizardState;
   errors: WizardErrors;
   onChange: (patch: Partial<WizardState>) => void;
-}
-
-function SectionTitle({ children }: { children: string }) {
-  return (
-    <div className="mt-2 border-b border-line pb-2">
-      <h3 className="text-h3 text-ink">{children}</h3>
-    </div>
-  );
 }
 
 export function Step2Surgery({ state, errors, onChange }: Step2Props) {
@@ -53,10 +46,9 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
   return (
     <div className="flex flex-col gap-5">
       {/* אזור א - הניתוח */}
-      <SectionTitle>{s2.sectionSurgery}</SectionTitle>
-
+      <SectionCard title={s2.sectionSurgery} bodyClassName="flex flex-col gap-4 px-5 py-4">
       {state.procedures.map((proc, i) => (
-        <div key={i} className="relative rounded-md border border-line bg-surface-2/60 p-4">
+        <div key={i} className="relative rounded-md border border-line bg-canvas p-4">
           {i > 0 && (
             <button
               type="button"
@@ -135,8 +127,10 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
         </div>
       </div>
 
+      </SectionCard>
+
       {/* אזור ב - ביצוע */}
-      <SectionTitle>{s2.sectionExecution}</SectionTitle>
+      <SectionCard title={s2.sectionExecution} bodyClassName="flex flex-col gap-4 px-5 py-4">
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div data-error={errors.duration ? "true" : undefined}>
@@ -172,8 +166,10 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
         label={s2.combined}
       />
 
+      </SectionCard>
+
       {/* אזור ג - הרדמה, ציוד ודרישות */}
-      <SectionTitle>{s2.sectionAnesthesia}</SectionTitle>
+      <SectionCard title={s2.sectionAnesthesia} bodyClassName="flex flex-col gap-4 px-5 py-4">
 
       <div data-error={errors.anesthesia ? "true" : undefined}>
         <RadioGroup
@@ -229,6 +225,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
           ))}
         </div>
       </fieldset>
+      </SectionCard>
     </div>
   );
 }

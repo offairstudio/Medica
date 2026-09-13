@@ -58,7 +58,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {children}
       <div
         aria-live="polite"
-        className="pointer-events-none fixed inset-x-4 bottom-4 z-[100] flex flex-col-reverse gap-2 sm:inset-x-auto sm:end-4 sm:w-[420px]"
+        // ההודעות יורדות מלמעלה: בתחתית המסך יושבים סרגל הפעולות של המגירות
+        // וסרגל הניווט במובייל, וההודעה הייתה מכסה בדיוק את הכפתור שנלחץ
+        className="pointer-events-none fixed inset-x-4 top-4 z-[100] flex flex-col-reverse gap-2 sm:inset-x-auto sm:end-4 sm:w-[420px]"
       >
         {toasts.map((item) => {
           const { icon: Icon, bar, text } = kindStyles[item.kind];

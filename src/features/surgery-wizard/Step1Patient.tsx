@@ -5,6 +5,7 @@ import { RadioGroup } from "../../components/primitives/Radio";
 import { Toggle } from "../../components/primitives/Toggle";
 import { DatePicker } from "../../components/form/DatePicker";
 import { Chip } from "../../components/data/Chip";
+import { SectionCard } from "../../components/data/SectionCard";
 import { lookups } from "../../mock/lookups";
 import { searchPatients } from "../../mock/patients";
 import { t } from "../../i18n";
@@ -67,6 +68,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
         </div>
       )}
 
+      <SectionCard title={s1.sectionDetails} bodyClassName="flex flex-col gap-4 px-5 py-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="relative" data-error={errors.firstName ? "true" : undefined}>
           <Input
@@ -177,6 +179,9 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
         />
       </div>
 
+      </SectionCard>
+
+      <SectionCard title={s1.sectionBilling} bodyClassName="flex flex-col gap-4 px-5 py-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <Select
           label={s1.hmo}
@@ -212,6 +217,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
           </div>
         )}
       </div>
+      </SectionCard>
     </div>
   );
 }

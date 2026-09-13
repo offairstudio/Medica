@@ -159,6 +159,8 @@ export const enStrings: Strings = {
     updated: "Surgery updated",
     existingPatient: "Existing patient",
     step1: {
+      sectionDetails: "Patient details",
+      sectionBilling: "Coverage and billing",
       firstName: "First name",
       lastName: "Last name",
       idType: "ID type",

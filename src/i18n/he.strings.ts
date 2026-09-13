@@ -159,6 +159,8 @@ export const heStrings = {
     updated: "הניתוח עודכן בהצלחה",
     existingPatient: "מטופל קיים",
     step1: {
+      sectionDetails: "פרטי המטופל",
+      sectionBilling: "שיוך וחיוב",
       firstName: "שם פרטי",
       lastName: "שם משפחה",
       idType: "סוג מזהה",
