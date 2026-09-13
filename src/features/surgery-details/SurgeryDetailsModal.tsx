@@ -100,9 +100,14 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
       return;
     }
     setSaving(true);
+    // צילום מצב לפני השמירה, כדי שאפשר יהיה לחזור ממנו דרך ההודעה
+    const before = surgery;
     window.setTimeout(() => {
       updateSurgery(surgery.id, draftToPatch(draft, surgery));
-      toast("success", t.toast.saved);
+      toast("success", t.toast.saved, {
+        label: t.common.undo,
+        onUndo: () => updateSurgery(before.id, before),
+      });
       setSaving(false);
       setDraft(null);
       setEditing(false);

@@ -52,10 +52,14 @@ export function SwapModal({ surgery, onClose }: SwapModalProps) {
 
   function confirm() {
     if (!surgery || !selectedDate || !selectedTime) return;
+    const previous = { date: surgery.date, time: surgery.startTime };
     swapSurgery(surgery.id, selectedDate, selectedTime);
     setHighlightId(surgery.id);
     window.setTimeout(() => setHighlightId(null), 1500);
-    toast("success", t.swap.success(formatNumericDate(selectedDate), selectedTime));
+    toast("success", t.swap.success(formatNumericDate(selectedDate), selectedTime), {
+      label: t.common.undo,
+      onUndo: () => swapSurgery(surgery.id, previous.date, previous.time),
+    });
     onClose();
   }
 

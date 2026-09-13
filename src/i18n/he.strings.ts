@@ -10,6 +10,7 @@ export const heStrings = {
     discardBody: "הפרטים שהוזנו כאן לא יישמרו.",
     discardConfirm: "יציאה בלי לשמור",
     keepEditing: "המשך עריכה",
+    undo: "ביטול השינוי",
     requiredNote: "שדות המסומנים בכוכבית (*) הם שדות חובה",
     cancel: "ביטול",
     confirm: "אישור",
