@@ -3,9 +3,6 @@ import {
   Banknote,
   Bed,
   Boxes,
-  CalendarDays,
-  Clock,
-  Hospital,
   IdCard,
   Info,
   Package,
@@ -53,43 +50,8 @@ const anesthesia = lookups.anesthesiaTypes.find((a) => a.key === surgery.anesthe
 const requirementLabels = surgery.requirements
   .map((k) => lookups.requirements.find((r) => r.key === k)?.label)
   .filter(Boolean) as string[];
-const title = `${surgery.procedures.map((p) => p.name).join(" + ")} · ${t.swap.codeLabel} ${surgery.code}`;
 
 /** נתוני המגירה, כדי שכל האפשרויות יציגו בדיוק את אותו תוכן */
-const when: { icon: LucideIcon; label: string; value: ReactNode }[] = [
-  { icon: CalendarDays, label: t.ui.fields.date, value: formatFullDate(surgery.date) },
-  {
-    icon: Clock,
-    label: t.ui.fields.time,
-    value: (
-      <span dir="ltr" className="tnum">
-        {timeRange(surgery.startTime, surgery.durationMinutes)}
-      </span>
-    ),
-  },
-  { icon: Timer, label: t.ui.fields.duration, value: <span className="tnum">{t.ui.fmt.minutes(surgery.durationMinutes)}</span> },
-  {
-    icon: Hospital,
-    label: t.ui.fields.centre,
-    value: (
-      <span className="inline-flex items-center gap-1.5">
-        <CentreSignature hospital={surgery.hospital} tone="centre" height={12} />
-        <span className="sr-only">{hospital.name}</span>
-      </span>
-    ),
-  },
-  {
-    icon: Stethoscope,
-    label: t.ui.fields.surgeon,
-    value: doctor ? (
-      <>
-        {doctor.displayName}
-        <span className="font-normal text-muted"> · {departmentName(doctor.departmentId)}</span>
-      </>
-    ) : null,
-  },
-];
-
 const patient: { icon: LucideIcon; label: string; value: ReactNode }[] = [
   { icon: UserRound, label: t.ui.fields.fullName, value: `${surgery.patient.firstName} ${surgery.patient.lastName}` },
   { icon: IdCard, label: t.ui.fields.idNumber, value: <span className="tnum">{surgery.patient.idNumber}</span> },
@@ -100,6 +62,17 @@ const patient: { icon: LucideIcon; label: string; value: ReactNode }[] = [
 ];
 
 const execution: { icon: LucideIcon; label: string; value: ReactNode }[] = [
+  {
+    icon: Stethoscope,
+    label: t.ui.fields.surgeon,
+    value: doctor ? (
+      <>
+        {doctor.displayName}
+        <span className="font-normal text-muted"> · {departmentName(doctor.departmentId)}</span>
+      </>
+    ) : null,
+  },
+  { icon: Timer, label: t.ui.fields.duration, value: <span className="tnum">{t.ui.fmt.minutes(surgery.durationMinutes)}</span> },
   { icon: Syringe, label: t.ui.fields.anesthesia, value: anesthesia },
   { icon: Bed, label: t.ui.fields.treatmentType, value: surgery.treatmentType },
   { icon: Package, label: t.wizard.step2.capitalEquipment, value: surgery.capitalEquipment },
@@ -187,7 +160,9 @@ function Frame({ children }: { children: ReactNode }) {
   return (
     <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-md">
       <div className={cn("px-5 py-4", hospital.softClass)}>
-        <h2 className="text-h2 text-ink">{title}</h2>
+        <h2 className="text-h2 text-ink">{patientName}</h2>
+        <span className="block text-muted">{procedureName}</span>
+        <FactsRow />
       </div>
       <div className="bg-canvas p-5">{children}</div>
       <div className="flex items-center justify-end gap-2 border-t border-line px-5 py-3">
@@ -260,19 +235,12 @@ function Documents() {
   );
 }
 
-/* ---------- האפשרויות ---------- */
+/* ---------- האפשרויות לגוף המגירה, מותאמות לכותרת 3 ---------- */
 
-/** א · כמו היום: כרטיס מועד מלא, ומתחתיו שני כרטיסים */
+/** א · שורות רחבות - שני כרטיסים זה לצד זה */
 function OptionA() {
   return (
     <div className="flex flex-col gap-6">
-      <Card title={t.surgeryView.when}>
-        <dl>
-          {when.map((r) => (
-            <WideRow key={r.label} {...r} />
-          ))}
-        </dl>
-      </Card>
       <div className="grid gap-6 sm:grid-cols-2">
         <Card title={t.surgeryView.patient}>
           <dl>
@@ -295,57 +263,9 @@ function OptionA() {
   );
 }
 
-/** ב · פס סיכום למעלה, ואז הפרטים */
+/** ב · רשימה אחת רציפה - קופסה אחת, קבוצות מופרדות בקו */
 function OptionB() {
-  return (
-    <div className="flex flex-col gap-6">
-      <div className="rounded-lg border border-line bg-surface p-5 shadow-sm">
-        <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
-          <StackedField label={t.ui.fields.date} value={formatFullDate(surgery.date)} />
-          <StackedField
-            label={t.ui.fields.time}
-            value={
-              <span dir="ltr" className="tnum">
-                {timeRange(surgery.startTime, surgery.durationMinutes)}
-              </span>
-            }
-          />
-          <StackedField label={t.ui.fields.duration} value={<span className="tnum">{t.ui.fmt.minutes(surgery.durationMinutes)}</span>} />
-          <StackedField
-            label={t.ui.fields.centre}
-            value={<CentreSignature hospital={surgery.hospital} tone="centre" height={12} />}
-          />
-          <StackedField label={t.ui.fields.surgeon} value={doctor?.displayName} />
-          <StackedField label={t.ui.fields.anesthesia} value={anesthesia} />
-        </dl>
-      </div>
-
-      <div className="grid gap-6 sm:grid-cols-2">
-        <Card title={t.surgeryView.patient}>
-          <dl>
-            {patient.map((r) => (
-              <WideRow key={r.label} {...r} />
-            ))}
-          </dl>
-        </Card>
-        <Card title={t.surgeryView.execution}>
-          <dl>
-            {execution.map((r) => (
-              <WideRow key={r.label} {...r} />
-            ))}
-          </dl>
-        </Card>
-      </div>
-      <Requirements />
-      <Documents />
-    </div>
-  );
-}
-
-/** ג · רשימה אחת רציפה, בלי קופסאות פנימיות */
-function OptionC() {
-  const groups: { title: string; rows: typeof when }[] = [
-    { title: t.surgeryView.when, rows: when },
+  const groups = [
     { title: t.surgeryView.patient, rows: patient },
     { title: t.surgeryView.execution, rows: execution },
   ];
@@ -354,7 +274,7 @@ function OptionC() {
       <section className="rounded-lg border border-line bg-surface px-5 shadow-sm">
         {groups.map((g) => (
           <div key={g.title} className="border-b border-line py-4 last:border-b-0">
-            <h3 className="mb-1 text-caption font-bold uppercase tracking-wide text-muted">{g.title}</h3>
+            <h3 className="mb-1 text-caption font-bold tracking-wide text-muted">{g.title}</h3>
             <dl>
               {g.rows.map((r) => (
                 <div key={r.label} className="flex min-h-[40px] items-center gap-3 py-1">
@@ -373,10 +293,9 @@ function OptionC() {
   );
 }
 
-/** ד · כרטיסים דחוסים: תווית מעל הערך, שניים בשורה */
-function OptionD() {
-  const cards: { title: string; rows: typeof when }[] = [
-    { title: t.surgeryView.when, rows: when },
+/** ג · כרטיסים דחוסים - תווית קטנה מעל הערך */
+function OptionC() {
+  const cards = [
     { title: t.surgeryView.patient, rows: patient },
     { title: t.surgeryView.execution, rows: execution },
   ];
@@ -397,11 +316,55 @@ function OptionD() {
   );
 }
 
+/** ד · היררכיה: המטופל בשורות רחבות, הביצוע דחוס */
+function OptionD() {
+  return (
+    <div className="flex flex-col gap-6">
+      <Card title={t.surgeryView.patient}>
+        <dl>
+          {patient.map((r) => (
+            <WideRow key={r.label} {...r} />
+          ))}
+        </dl>
+      </Card>
+      <Card title={t.surgeryView.execution}>
+        <dl className="mt-2 grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
+          {execution.map((r) => (
+            <StackedField key={r.label} label={r.label} value={r.value} />
+          ))}
+        </dl>
+      </Card>
+      <Requirements />
+      <Documents />
+    </div>
+  );
+}
+
 const OPTIONS = [
-  { letter: "א", title: "כמו היום", note: "כרטיס מועד מלא בשורות רחבות, ומתחתיו מטופל וביצוע זה לצד זה.", render: <OptionA /> },
-  { letter: "ב", title: "פס סיכום למעלה", note: "מה שצריך במבט ראשון - תאריך, שעה, משך, מרכז, מנתח והרדמה - בשורה אחת דחוסה; הפרטים המלאים מתחת.", render: <OptionB /> },
-  { letter: "ג", title: "רשימה אחת רציפה", note: "קופסה אחת במקום שלוש. הקבוצות מופרדות בכותרת קטנה ובקו, והעין קוראת בעמודה אחת.", render: <OptionC /> },
-  { letter: "ד", title: "כרטיסים דחוסים", note: "תווית קטנה מעל הערך, שניים-שלושה בשורה. הכי קצר לגלילה, פחות הפרדה בין שדה לשדה.", render: <OptionD /> },
+  {
+    letter: "א",
+    title: "שורות רחבות, שני כרטיסים",
+    note: "סגנון השורות של היום - אייקון, תווית וערך - בשני כרטיסים זה לצד זה. הכי קרוב למה שקיים.",
+    render: <OptionA />,
+  },
+  {
+    letter: "ב",
+    title: "רשימה אחת רציפה",
+    note: "קופסה אחת במקום שתיים, שורות נמוכות יותר, והקבוצות מופרדות בכותרת קטנה ובקו. עמודה אחת לקריאה.",
+    render: <OptionB />,
+  },
+  {
+    letter: "ג",
+    title: "כרטיסים דחוסים",
+    note: "תווית קטנה מעל הערך, שניים-שלושה בשורה. הכי קצר לגלילה; פחות הפרדה בין שדה לשדה.",
+    render: <OptionC />,
+  },
+  {
+    letter: "ד",
+    title: "היררכיה: מטופל בעיון, ביצוע בסריקה",
+    note: "פרטי המטופל בשורות רחבות כי אותם קוראים ומאמתים, ופרטי הביצוע דחוסים כי אותם רק סורקים.",
+    render: <OptionD />,
+  },
 ];
 
 export default function SurgeryLab() {
@@ -431,7 +394,7 @@ export default function SurgeryLab() {
                 <h3 className="text-h3 text-ink">{h.title}</h3>
                 {h.recommended && (
                   <span className="rounded-full bg-success/10 px-2.5 py-0.5 text-caption font-semibold text-success">
-                    ההמלצה שלי
+                    נבחרה לבדיקה
                   </span>
                 )}
               </div>
@@ -446,7 +409,13 @@ export default function SurgeryLab() {
       </section>
 
       <div className="mx-auto mt-12 grid max-w-6xl gap-10">
-        <h2 className="text-h2 text-ink">איך מסודר גוף המגירה</h2>
+        <div>
+          <h2 className="text-h2 text-ink">איך מסודר גוף המגירה</h2>
+          <p className="mt-1 max-w-3xl text-caption text-muted">
+            כל האפשרויות כאן יושבות מתחת לכותרת 3, ולכן אין בהן עוד כרטיס "מועד ומקום": התאריך,
+            השעה והמרכז כבר בכותרת, ומה שנשאר ממנו - המנתח ומשך הניתוח - עבר לכרטיס הביצוע.
+          </p>
+        </div>
         {OPTIONS.map((o) => (
           <section key={o.letter}>
             <div className="flex flex-wrap items-center gap-2">
