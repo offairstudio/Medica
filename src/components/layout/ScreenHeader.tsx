@@ -77,7 +77,7 @@ export function ScreenHeader({
       {hasControls ? (
         <div
           className={cn(
-            "mt-4 flex flex-col gap-1 md:flex-row md:items-end md:justify-between md:gap-6",
+            "mt-2 flex flex-col gap-1 md:flex-row md:items-end md:justify-between md:gap-6",
             divider && "border-b border-line",
           )}
         >
@@ -85,7 +85,7 @@ export function ScreenHeader({
           <div className="min-w-0">{end}</div>
         </div>
       ) : (
-        divider && <div className="mt-4 border-b border-line" />
+        divider && <div className="mt-2 border-b border-line" />
       )}
     </>
   );
