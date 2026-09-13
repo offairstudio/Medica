@@ -6,6 +6,8 @@ export interface HospitalInfo {
   name: string;
   /** השם המלא כפי שהוא מופיע באתר הרשת */
   fullName: string;
+  /** כתובת המרכז - נתון דמה, יש להחליף בכתובות האמיתיות */
+  address: string;
   /** רקע הצ'יפ - טקסט לבן על כולם */
   chipClass: string;
   /** נקודת סימון בלוח ובפס הימים */
@@ -28,6 +30,7 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
     key: "refael",
     name: "medica רפאל",
     fullName: "medica רפאל, תל אביב",
+    address: "דרך השלום 53, תל אביב",
     chipClass: "bg-hospital-refael",
     dotClass: "bg-hospital-refael",
     softClass: "bg-hospital-refael-soft",
@@ -38,6 +41,7 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
     key: "elisha",
     name: "medica אלישע",
     fullName: "medica - בית חולים אלישע, חיפה",
+    address: "יאיר כץ 12, חיפה",
     chipClass: "bg-hospital-elisha",
     dotClass: "bg-hospital-elisha",
     softClass: "bg-hospital-elisha-soft",
@@ -48,6 +52,7 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
     key: "telAviv",
     name: "medica תל אביב",
     fullName: "medica תל אביב, הברזל 28",
+    address: "הברזל 28, תל אביב",
     chipClass: "bg-hospital-telaviv",
     dotClass: "bg-hospital-telaviv",
     softClass: "bg-hospital-telaviv-soft",
@@ -58,6 +63,7 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
     key: "rmc",
     name: "medica עפולה",
     fullName: "medica RMC, עפולה",
+    address: "יהושע חנקין 5, עפולה",
     chipClass: "bg-hospital-rmc",
     dotClass: "bg-hospital-rmc",
     softClass: "bg-hospital-rmc-soft",

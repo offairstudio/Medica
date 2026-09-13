@@ -4,6 +4,9 @@ import { Button } from "../../components/primitives/Button";
 import { FileUpload, type UploadedFile } from "../../components/form/FileUpload";
 import { useToast } from "../../components/overlay/Toast";
 import { DocumentRow } from "../patient-documents/DocumentRow";
+import { HospitalChip } from "../../components/data/Chip";
+import { HOSPITALS } from "../../mock/hospitals";
+import { cn } from "../../lib/cn";
 import { formatFullDate } from "../../lib/date";
 import { formatFileSize } from "../../lib/format";
 import { he } from "../../i18n/he";
@@ -29,9 +32,25 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
 
   const prep = appointment.preparation ?? [];
   const isUpcoming = appointment.status === "upcoming";
+  const hospital = HOSPITALS[appointment.hospital];
 
   return (
     <div className="flex flex-col gap-5">
+      {/* המרכז שבו מתקיים הטיפול - בצבע שלו, עם הכתובת המלאה */}
+      <div className={cn("flex items-start gap-4 rounded-lg p-4", hospital.softClass)}>
+        <span aria-hidden className={cn("w-1 shrink-0 self-stretch rounded-full", hospital.accentClass)} />
+        <div className="min-w-0 flex-1">
+          <HospitalChip hospital={appointment.hospital} />
+          <p className="mt-2 flex items-start gap-1.5 text-body">
+            <MapPin className={cn("mt-0.5 h-4 w-4 shrink-0", hospital.textClass)} aria-hidden />
+            <span>
+              {hospital.address}
+              <span className="block text-caption text-muted">{appointment.location}</span>
+            </span>
+          </p>
+        </div>
+      </div>
+
       {/* כרטיס פרטים - אפיון 7.11 סעיף 3 */}
       <section
         aria-label={he.patient.detailsTitle}
