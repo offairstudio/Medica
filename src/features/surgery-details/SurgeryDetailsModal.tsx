@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Pencil } from "lucide-react";
 import { Sheet } from "../../components/overlay/Sheet";
+import { Modal } from "../../components/overlay/Modal";
 import { HOSPITALS } from "../../mock/hospitals";
 import { CentreSignature } from "../../components/data/CentreArt";
 import { formatFullDate, timeRange } from "../../lib/date";
@@ -39,6 +40,13 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  // אזהרה לפני ויתור על שינויים שלא נשמרו: "close" סוגר את המגירה,
+  // "cancel" חוזר לצפייה בלי לסגור אותה
+  const [leaveIntent, setLeaveIntent] = useState<"close" | "cancel" | null>(null);
+  const dirty =
+    editing && draft && surgery
+      ? JSON.stringify(draft) !== JSON.stringify(draftFromSurgery(surgery))
+      : false;
 
   if (!surgery) return null;
 
@@ -61,6 +69,23 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
   }
 
   function cancelEdit() {
+    if (dirty) {
+      setLeaveIntent("cancel");
+      return;
+    }
+    setDraft(null);
+    setErrors({});
+    setEditing(false);
+  }
+
+  /** ויתור על השינויים אחרי אישור: או חזרה לצפייה, או סגירת המגירה */
+  function discardChanges() {
+    const intent = leaveIntent;
+    setLeaveIntent(null);
+    if (intent === "close") {
+      onClose();
+      return;
+    }
     setDraft(null);
     setErrors({});
     setEditing(false);
@@ -91,9 +116,15 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
   const title = `${patientName} · ${procedureName}`;
 
   return (
+    <>
     <Sheet
       open
       onClose={onClose}
+      beforeClose={() => {
+        if (!dirty) return true;
+        setLeaveIntent("close");
+        return false;
+      }}
       title={title}
       titleSlot={
         <div className="min-w-0">
@@ -139,5 +170,25 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
         <SurgeryViewContent surgery={surgery} />
       )}
     </Sheet>
+
+    <Modal
+      open={leaveIntent !== null}
+      onClose={() => setLeaveIntent(null)}
+      title={t.common.discardTitle}
+      size="sm"
+      footer={
+        <>
+          <Button variant="ghost" onClick={() => setLeaveIntent(null)}>
+            {t.common.keepEditing}
+          </Button>
+          <Button variant="danger" onClick={discardChanges}>
+            {t.common.discardConfirm}
+          </Button>
+        </>
+      }
+    >
+      <p className="text-body">{t.common.discardBody}</p>
+    </Modal>
+    </>
   );
 }

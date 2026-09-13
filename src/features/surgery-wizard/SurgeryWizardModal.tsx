@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Sheet } from "../../components/overlay/Sheet";
+import { Modal } from "../../components/overlay/Modal";
 import { Stepper } from "../../components/form/Stepper";
 import { Button } from "../../components/primitives/Button";
 import { useToast } from "../../components/overlay/Toast";
@@ -58,6 +59,10 @@ function WizardInner({
   const [state, setState] = useState<WizardState>(() => emptyWizardState(prefill));
   const [errors, setErrors] = useState<WizardErrors>({});
   const [submitting, setSubmitting] = useState(false);
+  // אזהרה לפני יציאה: רק אם המשתמש כבר הזין משהו מעבר למה שהגיע מוכן מראש
+  const [confirmLeave, setConfirmLeave] = useState(false);
+  const pristine = useMemo(() => emptyWizardState(prefill), [prefill]);
+  const dirty = JSON.stringify(state) !== JSON.stringify(pristine);
 
   const validators = useMemo(() => [validateStep1, validateStep2, validateStep3], []);
 
@@ -167,9 +172,15 @@ function WizardInner({
   ];
 
   return (
+    <>
     <Sheet
       open
       onClose={onClose}
+      beforeClose={() => {
+        if (!dirty) return true;
+        setConfirmLeave(true);
+        return false;
+      }}
       title={t.schedule.createSurgery}
       size="xl"
       subheader={
@@ -207,5 +218,25 @@ function WizardInner({
     >
       <div ref={bodyRef}>{stepContent[step]}</div>
     </Sheet>
+
+    <Modal
+      open={confirmLeave}
+      onClose={() => setConfirmLeave(false)}
+      title={t.common.discardTitle}
+      size="sm"
+      footer={
+        <>
+          <Button variant="ghost" onClick={() => setConfirmLeave(false)}>
+            {t.common.keepEditing}
+          </Button>
+          <Button variant="danger" onClick={onClose}>
+            {t.common.discardConfirm}
+          </Button>
+        </>
+      }
+    >
+      <p className="text-body">{t.common.discardBody}</p>
+    </Modal>
+    </>
   );
 }

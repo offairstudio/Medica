@@ -41,12 +41,11 @@ export function SectionCard({
   return (
     <section
       aria-label={title}
-      className={cn(
-        "min-w-0 overflow-hidden rounded-lg border border-line bg-surface shadow-sm",
-        className,
-      )}
+      // בלי overflow-hidden: תפריטים נפתחים בתוך הכרטיס (תאריך, שעה, בחירה)
+      // חייבים לחרוג ממנו. הפינות של פס הכותרת מעוגלות בנפרד.
+      className={cn("min-w-0 rounded-lg border border-line bg-surface shadow-sm", className)}
     >
-      <div className="border-b border-line bg-surface-2/60 px-5 py-3.5">
+      <div className="rounded-t-lg border-b border-line bg-surface-2/60 px-5 py-3.5">
         <h3 className="text-h3 text-ink">{title}</h3>
         {hint && <p className="mt-0.5 text-caption text-muted">{hint}</p>}
       </div>

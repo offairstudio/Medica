@@ -15,6 +15,11 @@ export interface SheetProps {
   titleSlot?: ReactNode;
   /** גוון לראש המגירה - למשל צבע המרכז, כזהות של התוכן */
   headerClassName?: string;
+  /**
+   * נקרא לפני כל סגירה (X, Esc או לחיצה על הרקע). החזרת false עוצרת את
+   * הסגירה - כך אפשר לשאול קודם אם לוותר על מה שהוזן.
+   */
+  beforeClose?: () => boolean;
   size?: "md" | "lg" | "xl";
   children: ReactNode;
   footer?: ReactNode;
@@ -39,6 +44,7 @@ export function Sheet({
   title,
   titleSlot,
   headerClassName,
+  beforeClose,
   subheader,
   size = "lg",
   children,
@@ -53,7 +59,10 @@ export function Sheet({
     if (open) setClosing(false);
   }, [open]);
 
-  const requestClose = useCallback(() => setClosing(true), []);
+  const requestClose = useCallback(() => {
+    if (beforeClose && beforeClose() === false) return;
+    setClosing(true);
+  }, [beforeClose]);
 
   useEffect(() => {
     if (!closing) return;

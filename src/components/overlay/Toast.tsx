@@ -58,9 +58,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {children}
       <div
         aria-live="polite"
-        // ההודעות יורדות מלמעלה: בתחתית המסך יושבים סרגל הפעולות של המגירות
-        // וסרגל הניווט במובייל, וההודעה הייתה מכסה בדיוק את הכפתור שנלחץ
-        className="pointer-events-none fixed inset-x-4 top-4 z-[100] flex flex-col-reverse gap-2 sm:inset-x-auto sm:end-4 sm:w-[420px]"
+        // במרכז הרוחב ובתחתית המסך: הפעולות במגירות יושבות בקצה השורה,
+        // ולכן הודעה ממורכזת אינה מכסה אותן. במובייל היא מורמת מעל סרגל הניווט.
+        className="pointer-events-none fixed bottom-20 left-1/2 z-[100] flex w-[min(92vw,420px)] -translate-x-1/2 flex-col-reverse gap-2 sm:bottom-6"
       >
         {toasts.map((item) => {
           const { icon: Icon, bar, text } = kindStyles[item.kind];

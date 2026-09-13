@@ -59,14 +59,15 @@
     animation: flash-success 1.2s ease-out 1;
   }
 
+  /* ההודעה ממורכזת אופקית, ולכן האנימציה שומרת על ההיסט האופקי */
   @keyframes toast-in {
     from {
       opacity: 0;
-      transform: translateY(-12px);
+      transform: translate(-50%, 12px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translate(-50%, 0);
     }
   }
 
