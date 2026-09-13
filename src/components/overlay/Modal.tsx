@@ -18,6 +18,10 @@ const sizes = { sm: "max-w-md", md: "max-w-xl", lg: "max-w-[720px]" };
 export function Modal({ open, onClose, title, size = "md", children, footer }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
+  // onClose מגיע כרוב ככלל כפונקציה חדשה בכל רינדור; שמירה ב-ref מונעת
+  // מאפקט מלכודת הפוקוס לרוץ מחדש ולגנוב את הפוקוס משדה שמקלידים בו
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return;
@@ -28,7 +32,7 @@ export function Modal({ open, onClose, title, size = "md", children, footer }: M
 
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
-        onClose();
+        onCloseRef.current();
         return;
       }
       // מלכודת focus בתוך המודל
@@ -56,7 +60,7 @@ export function Modal({ open, onClose, title, size = "md", children, footer }: M
       document.body.style.overflow = "";
       restoreFocusRef.current?.focus();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
 

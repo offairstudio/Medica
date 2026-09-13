@@ -59,10 +59,16 @@ export function Sheet({
     if (open) setClosing(false);
   }, [open]);
 
+  // השומר נשמר ב-ref כדי ש-requestClose יישאר יציב: הוא נמצא בתלויות של
+  // אפקט מלכודת הפוקוס, וזהות משתנה הייתה מחזירה את הפוקוס לפאנל בכל הקלדה
+  const beforeCloseRef = useRef(beforeClose);
+  beforeCloseRef.current = beforeClose;
+
   const requestClose = useCallback(() => {
-    if (beforeClose && beforeClose() === false) return;
+    const guard = beforeCloseRef.current;
+    if (guard && guard() === false) return;
     setClosing(true);
-  }, [beforeClose]);
+  }, []);
 
   useEffect(() => {
     if (!closing) return;
