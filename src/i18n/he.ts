@@ -231,7 +231,7 @@ export const he = {
     toAppointment: "לפרטי התור",
     tabs: {
       home: "ראשי",  // דף הבית - סקירה
-      appointments: "תורים",
+      appointments: "התורים שלי",
       results: "תוצאות",
       documents: "מסמכים",
     },

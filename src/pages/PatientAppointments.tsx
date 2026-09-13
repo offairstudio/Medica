@@ -85,7 +85,7 @@ export function PatientAppointments({ mode }: { mode: AppointmentsMode }) {
 
   const header = (
     <ScreenHeader
-      title={he.patient.tabs.appointments}
+      title={he.patient.appointmentsTitle}
       start={
         <nav className="flex items-center gap-1" aria-label="סוג התורים">
           {TABS.map((tab) => (
