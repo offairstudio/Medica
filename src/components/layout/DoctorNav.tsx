@@ -35,7 +35,14 @@ function readCollapsed(): boolean {
   }
 }
 
-function AccountMenu({ collapsed }: { collapsed?: boolean }) {
+function AccountMenu({
+  collapsed,
+  variant,
+}: {
+  collapsed?: boolean;
+  /** "avatar" - האווטר בלבד עם חץ, לאדר העליון במובייל */
+  variant?: "avatar";
+}) {
   const navigate = useNavigate();
   // גרסת הפונט נשמרת בסטייט מקומי כדי שתווית הפריט תתעדכן מיד אחרי המעבר
   const [font, setFont] = useState(() => currentFont());
@@ -53,12 +60,15 @@ function AccountMenu({ collapsed }: { collapsed?: boolean }) {
           aria-label={t.ui.a11y.userMenu(currentDoctor.displayName)}
           title={collapsed ? currentDoctor.displayName : undefined}
           className={cn(
-            "flex min-h-[52px] items-center gap-2.5 text-start transition-colors duration-fast hover:bg-surface-2",
-            collapsed ? "justify-center rounded-full p-1.5" : "w-full rounded-md p-2 pe-3",
+            "flex min-h-[44px] items-center gap-1.5 text-start transition-colors duration-fast hover:bg-surface-2",
+            collapsed && "min-h-[52px] justify-center rounded-full p-1.5",
+            variant === "avatar" && "rounded-full p-1 pe-2",
+            !collapsed && !variant && "min-h-[52px] w-full gap-2.5 rounded-md p-2 pe-3",
           )}
         >
           <Avatar name={currentDoctor.displayName} src={currentDoctor.avatarUrl} size="md" />
-          {!collapsed && (
+          {variant === "avatar" && <ChevronDown className="h-4 w-4 shrink-0 text-muted" aria-hidden />}
+          {!collapsed && !variant && (
             <>
               <span className="min-w-0 flex-1 truncate font-semibold text-ink">
                 {currentDoctor.displayName}
@@ -142,7 +152,6 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
   );
   // רוב המשתמשים מנהלים מנתחים בודדים; חיפוש נחוץ רק ברשימה ארוכה
   const showSearch = managed.length > 10;
-  const activeDoctor = managed.find((d) => d.id === doctorId);
   const visibleDoctors = useMemo(() => {
     const q = query.trim();
     return q ? managed.filter((d) => d.displayName.includes(q)) : managed;
@@ -319,52 +328,7 @@ export function DoctorNav({ doctorId }: { doctorId: string }) {
         >
           <BrandMark />
         </Link>
-        <div className="flex items-center gap-2">
-          <Dropdown
-            portal
-            align="start"
-            menuClassName="w-[min(92vw,320px)] p-1"
-            trigger={
-              <button
-                type="button"
-                aria-label={t.ui.a11y.pickSurgeon(doctorId === "all" ? t.schedule.allDoctors : activeDoctor?.displayName ?? "")}
-                className="flex min-h-[44px] max-w-44 items-center gap-2 rounded-md border border-line bg-surface px-2.5 font-semibold text-ink transition-colors duration-fast hover:border-primary-300"
-              >
-                {doctorId === "all" ? (
-                  <AllDoctorsAvatar size="sm" />
-                ) : (
-                  <Avatar name={activeDoctor?.displayName ?? ""} src={activeDoctor?.avatarUrl} size="sm" />
-                )}
-                <span className="min-w-0 flex-1 truncate text-caption">
-                  {doctorId === "all" ? t.schedule.allDoctors : activeDoctor?.displayName}
-                </span>
-                <ChevronDown className="h-4 w-4 shrink-0 text-muted" aria-hidden />
-              </button>
-            }
-          >
-            <Link
-              to="/doctor/all/schedule"
-              className="flex min-h-[44px] items-center gap-2.5 rounded-md px-3 text-body transition-colors duration-fast hover:bg-surface-2"
-            >
-              <AllDoctorsAvatar size="sm" />
-              {t.schedule.allDoctors}
-            </Link>
-            {managed.map((d) => (
-              <Link
-                key={d.id}
-                to={`/doctor/${d.id}/schedule`}
-                className={cn(
-                  "flex min-h-[44px] items-center gap-2.5 rounded-md px-3 transition-colors duration-fast",
-                  d.id === doctorId ? "bg-primary-50 font-semibold text-primary-800" : "text-body hover:bg-surface-2",
-                )}
-              >
-                <Avatar name={d.displayName} src={d.avatarUrl} size="sm" />
-                <span className="min-w-0 flex-1 truncate">{d.displayName}</span>
-              </Link>
-            ))}
-          </Dropdown>
-          <AccountMenu />
-        </div>
+        <AccountMenu variant="avatar" />
       </header>
 
     </>

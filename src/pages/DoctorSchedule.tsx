@@ -12,6 +12,8 @@ import {
   Mail,
 } from "lucide-react";
 import { DoctorShell } from "../components/layout/AppShell";
+import { Avatar, AllDoctorsAvatar } from "../components/data/Avatar";
+import { DoctorPicker } from "../features/doctor-schedule/DoctorPicker";
 import { ScreenHeader } from "../components/layout/ScreenHeader";
 import { Button } from "../components/primitives/Button";
 import { EmptyState } from "../components/data/EmptyState";
@@ -34,7 +36,6 @@ import {
   type FreeSlot,
 } from "../features/doctor-schedule/slots";
 import { HospitalChip } from "../components/data/Chip";
-import { Avatar, AllDoctorsAvatar } from "../components/data/Avatar";
 import { doctorById, MOCK_TODAY } from "../mock/doctors";
 import { useData } from "../state/data";
 import { useFakeLoading } from "../lib/useFakeLoading";
@@ -189,6 +190,24 @@ export function DoctorSchedule() {
     setSelectedDate(date);
   }
 
+  // שורת הפרטים של המנתח - משותפת לכותרת במובייל ובדסקטופ
+  const meta = isAll ? undefined : (
+    <span className="mt-0.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-muted">
+      <span className="flex items-center gap-1.5">
+        <ClipboardList className="h-3.5 w-3.5 shrink-0" aria-hidden />
+        <span className="tnum">{doctor.licenseNumber}</span>
+      </span>
+      <span className="flex items-center gap-1.5">
+        <Phone className="h-3.5 w-3.5 shrink-0" aria-hidden />
+        <span dir="ltr" className="tnum">{doctor.mobile}</span>
+      </span>
+      <span className="flex items-center gap-1.5">
+        <Mail className="h-3.5 w-3.5 shrink-0" aria-hidden />
+        <span dir="ltr">{doctor.email}</span>
+      </span>
+    </span>
+  );
+
   return (
     <DoctorShell
       doctorId={doctorId}
@@ -197,31 +216,31 @@ export function DoctorSchedule() {
           compact
           divider={false}
           title={isAll ? t.schedule.combinedSchedule : doctor.displayName}
-          media={
-            isAll ? (
-              <AllDoctorsAvatar size="lg" />
-            ) : (
-              <Avatar name={doctor.displayName} src={doctor.avatarUrl} size="lg" />
-            )
-          }
           titleDivider
-          meta={
-            isAll ? undefined : (
-              <div className="mt-0.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-muted">
-                <span className="flex items-center gap-1.5">
-                  <ClipboardList className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                  <span className="tnum">{doctor.licenseNumber}</span>
+          titleBlock={
+            <>
+              <h1 className="sr-only">{isAll ? t.schedule.combinedSchedule : doctor.displayName}</h1>
+
+              {/* מובייל: השם והפרטים הם כפתור אחד שפותח את רשימת המנתחים */}
+              <span className="flex min-w-0 flex-1 md:hidden">
+                <DoctorPicker doctorId={doctorId} meta={meta} />
+              </span>
+
+              {/* דסקטופ: הרשימה כבר בסרגל הצד, ולכן זו כותרת רגילה */}
+              <span className="hidden min-w-0 flex-1 items-center gap-3 md:flex">
+                {isAll ? (
+                  <AllDoctorsAvatar size="lg" />
+                ) : (
+                  <Avatar name={doctor.displayName} src={doctor.avatarUrl} size="lg" />
+                )}
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-h1 text-ink">
+                    {isAll ? t.schedule.combinedSchedule : doctor.displayName}
+                  </span>
+                  {meta}
                 </span>
-                <span className="flex items-center gap-1.5">
-                  <Phone className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                  <span dir="ltr" className="tnum">{doctor.mobile}</span>
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Mail className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                  <span dir="ltr">{doctor.email}</span>
-                </span>
-              </div>
-            )
+              </span>
+            </>
           }
           titleEnd={
             <button

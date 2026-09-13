@@ -25,6 +25,8 @@ export interface ScreenHeaderProps {
   end?: ReactNode;
   /** תמונה או סימון בתחילת שורת הכותרת */
   media?: ReactNode;
+  /** בלוק כותרת משלו - למשל כותרת שהיא כפתור בחירה. מחליף את media/title/meta */
+  titleBlock?: ReactNode;
   /** פעולה בקצה שורת הכותרת */
   titleEnd?: ReactNode;
   /** שורת פרטים מתחת לכותרת - טלפון, דוא"ל וכדומה */
@@ -49,6 +51,7 @@ export function ScreenHeader({
   start,
   end,
   media,
+  titleBlock,
   titleEnd,
   meta,
   compact,
@@ -65,11 +68,15 @@ export function ScreenHeader({
           titleDivider && "border-b border-line pb-3",
         )}
       >
-        {media}
-        <div className="min-w-0 flex-1">
-          <h1 className={cn("truncate", compact ? "text-h1 text-ink" : "text-display text-ink")}>{title}</h1>
-          {meta}
-        </div>
+        {titleBlock ?? (
+          <>
+            {media}
+            <div className="min-w-0 flex-1">
+              <h1 className={cn("truncate", compact ? "text-h1 text-ink" : "text-display text-ink")}>{title}</h1>
+              {meta}
+            </div>
+          </>
+        )}
         {titleEnd}
       </div>
       {subtitle && <p className="mt-1 text-body text-muted">{subtitle}</p>}
