@@ -1,6 +1,5 @@
 import { Sheet } from "../../components/overlay/Sheet";
 import { AppointmentDetailsContent } from "./AppointmentDetailsContent";
-import { formatFullDate } from "../../lib/date";
 import type { Appointment } from "../../types";
 
 /**
@@ -23,9 +22,6 @@ export function AppointmentDetailsSheet({
         <div className="flex flex-col gap-0.5">
           <h2 className="text-h2 text-ink">{appointment.doctorName}</h2>
           <span className="text-muted">{appointment.title}</span>
-          <span className="mt-1 text-caption text-muted">
-            {formatFullDate(appointment.date)} · <span className="tnum">{appointment.time}</span>
-          </span>
         </div>
       }
     >
