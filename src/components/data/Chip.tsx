@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { cn } from "../../lib/cn";
 import type { Appointment, Hospital } from "../../types";
 import { HOSPITALS } from "../../mock/hospitals";
+import { CentreSignature } from "./CentreArt";
 import { t } from "../../i18n";
 
 /* ---------- צ'יפ כללי ---------- */
@@ -50,9 +51,9 @@ export function Chip({ color = "neutral", onRemove, className, children, ...rest
 /* ---------- צ'יפ בית חולים ---------- */
 
 /**
- * סמל medica ושם בית החולים, על גוון ייעודי לכל מרכז.
- * הלוגו המלא לא שימש כאן: הוא נושא את המילה "Medica" ולא את שם בית החולים,
- * ובגודל צ'יפ שני המרכזים נראו זהים.
+ * חתימת המרכז על גוון ייעודי לכל מרכז: הלוגו הרשמי עצמו, בלבן.
+ * הצבע הוא מה שמאפשר לסרוק יום שלם במבט אחד, והלוגו נותן את הזהות -
+ * ראו הערה ב-CentreSignature על ההבדל בין הלוקאפ העברי לאנגלי.
  */
 export function HospitalChip({
   hospital,
@@ -69,19 +70,14 @@ export function HospitalChip({
     <span
       title={info.fullName}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full font-semibold text-white",
+        "inline-flex items-center gap-1.5 rounded-full",
         info.chipClass,
-        compact ? "px-2 py-0.5 text-caption" : "min-h-7 px-2.5 py-1 text-caption",
+        compact ? "px-2.5 py-1" : "min-h-7 px-3 py-1.5",
         className,
       )}
     >
-      <img
-        src="/brand/medica-mark.svg"
-        alt=""
-        aria-hidden
-        className={cn("w-auto brightness-0 invert", compact ? "h-3" : "h-3.5")}
-      />
-      {info.name}
+      <CentreSignature hospital={hospital} tone="white" height={compact ? 11 : 13} />
+      <span className="sr-only">{info.name}</span>
     </span>
   );
 }

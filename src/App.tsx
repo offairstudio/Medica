@@ -22,6 +22,7 @@ import { AppointmentDetailsSheet } from "./features/patient-appointments/Appoint
 import { appointments } from "./mock/appointments";
 import { PatientResults } from "./pages/PatientResults";
 import { KitchenSink } from "./pages/KitchenSink";
+import LogoLab from "./pages/LogoLab";
 import { NoAccess } from "./pages/NoAccess";
 import { NotFound } from "./pages/NotFound";
 
@@ -99,6 +100,7 @@ function AppRoutes() {
 
         {/* פיתוח */}
         <Route path="/kitchen-sink" element={<KitchenSink />} />
+        <Route path="/logo-lab" element={<LogoLab />} />
         <Route path="/no-access" element={<NoAccess />} />
 
         <Route path="*" element={<NotFound />} />
