@@ -220,6 +220,7 @@ export const heStrings = {
     execution: "ביצוע",
     documents: "מסמכים",
     edit: "עריכה",
+    when: "מועד ומקום",
     noDocuments: "לא צורפו מסמכים",
   },
 
@@ -399,6 +400,10 @@ export const heStrings = {
       },
     },
     fields: {
+      date: "תאריך",
+      time: "שעה",
+      duration: "משך",
+      centre: "מרכז",
       fullName: "שם מלא",
       idNumber: "ת.ז / דרכון",
       phone: "טלפון",

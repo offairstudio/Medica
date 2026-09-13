@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Pencil } from "lucide-react";
 import { Sheet } from "../../components/overlay/Sheet";
+import { HOSPITALS } from "../../mock/hospitals";
 import { Button } from "../../components/primitives/Button";
 import { useToast } from "../../components/overlay/Toast";
 import { useData } from "../../state/data";
@@ -88,6 +89,8 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
       open
       onClose={onClose}
       title={title}
+      // הזהות של המרכז - בגוון של ראש המגירה
+      headerClassName={HOSPITALS[surgery.hospital].softClass}
       size="xl"
       footer={
         editing && draft ? (

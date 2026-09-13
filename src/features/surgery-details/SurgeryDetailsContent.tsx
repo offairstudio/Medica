@@ -29,7 +29,8 @@ import {
   Timer,
   type LucideIcon,
 } from "lucide-react";
-import { HospitalChip, Chip } from "../../components/data/Chip";
+import { Chip } from "../../components/data/Chip";
+import { CentreSignature } from "../../components/data/CentreArt";
 import { DocumentRow } from "../patient-documents/DocumentRow";
 import { HOSPITAL_LIST, HOSPITALS } from "../../mock/hospitals";
 import { Button } from "../../components/primitives/Button";
@@ -244,7 +245,10 @@ function Section({
   );
 }
 
-/** כותרת המועד - אותה שפה של בלוק הזמן ביומן, בצפייה ובעריכה כאחד */
+/**
+ * מועד הניתוח והמרכז שבו הוא מתקיים - אותה הגשה של פרטי התור באזור המטופל:
+ * שורות עם אייקון ותווית. הצבע של המרכז יושב בראש המגירה, ולכן הכרטיס נקי.
+ */
 function SurgeryHeadline({
   date,
   startTime,
@@ -262,28 +266,33 @@ function SurgeryHeadline({
   const doctor = doctorById(doctorId);
 
   return (
-    <div className={cn("flex items-start gap-4 rounded-lg p-4", hospital.softClass)}>
-      <span aria-hidden className={cn("w-1 shrink-0 self-stretch rounded-full", hospital.accentClass)} />
-      <div className="min-w-0 flex-1">
-        <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <span className="text-h3 text-ink">{date ? formatFullDate(date) : "—"}</span>
-          <span dir="ltr" className={cn("text-h3 font-bold tnum", hospital.textClass)}>
+    <Section title={t.surgeryView.when}>
+      <dl>
+        <DetailRow icon={CalendarDays} label={t.ui.fields.date}>
+          {date ? formatFullDate(date) : "—"}
+        </DetailRow>
+        <DetailRow icon={Clock} label={t.ui.fields.time}>
+          <span dir="ltr" className="tnum">
             {startTime ? timeRange(startTime, durationMinutes) : "—"}
           </span>
-        </p>
-        <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-muted">
-          <HospitalChip hospital={hospitalKey} compact />
+        </DetailRow>
+        <DetailRow icon={Timer} label={t.ui.fields.duration}>
           <span className="tnum">{t.ui.fmt.minutes(durationMinutes)}</span>
-          {doctor && (
-            <span>
-              <span className="font-semibold text-ink">{doctor.displayName}</span>
-              {" · "}
-              {departmentName(doctor.departmentId)}
-            </span>
-          )}
-        </p>
-      </div>
-    </div>
+        </DetailRow>
+        <DetailRow icon={Hospital} label={t.ui.fields.centre}>
+          <span className="inline-flex items-center gap-1.5">
+            <CentreSignature hospital={hospitalKey} tone="centre" height={12} />
+            <span className="sr-only">{hospital.name}</span>
+          </span>
+        </DetailRow>
+        {doctor && (
+          <DetailRow icon={Stethoscope} label={t.ui.fields.surgeon}>
+            {doctor.displayName}
+            <span className="font-normal text-muted"> · {departmentName(doctor.departmentId)}</span>
+          </DetailRow>
+        )}
+      </dl>
+    </Section>
   );
 }
 

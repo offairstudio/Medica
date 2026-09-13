@@ -220,6 +220,7 @@ export const enStrings: Strings = {
     execution: "Execution",
     documents: "Documents",
     edit: "Edit",
+    when: "Time and place",
     noDocuments: "No documents attached",
   },
 
@@ -399,6 +400,10 @@ export const enStrings: Strings = {
       },
     },
     fields: {
+      date: "Date",
+      time: "Time",
+      duration: "Duration",
+      centre: "Centre",
       fullName: "Full name",
       idNumber: "ID / passport",
       phone: "Phone",
