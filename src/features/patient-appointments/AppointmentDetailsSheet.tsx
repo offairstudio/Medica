@@ -23,7 +23,7 @@ export function AppointmentDetailsSheet({
       headerClassName={HOSPITALS[appointment.hospital].softClass}
       titleSlot={
         <div className="flex flex-col gap-0.5">
-          <h2 className="text-h2 text-ink">{appointment.doctorName}</h2>
+          <h2 className="text-h2 font-bold text-ink">{appointment.doctorName}</h2>
           <span className="text-muted">{appointment.title}</span>
         </div>
       }

@@ -128,7 +128,7 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
       title={title}
       titleSlot={
         <div className="min-w-0">
-          <h2 className="truncate text-h2 text-ink">{patientName}</h2>
+          <h2 className="truncate text-h2 font-bold text-ink">{patientName}</h2>
           <span className="block truncate text-muted">{procedureName}</span>
           <span className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
             <span className="tnum rounded-full bg-surface px-2 py-0.5 font-semibold">

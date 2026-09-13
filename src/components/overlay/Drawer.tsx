@@ -79,7 +79,7 @@ export function Drawer({ open, onClose, title, side = "end", children }: DrawerP
         )}
       >
         <div className="flex items-center justify-between border-b border-line bg-surface-2/60 px-5 py-4">
-          <h2 className="text-h3 text-ink">{title}</h2>
+          <h2 className="text-h3 font-bold text-ink">{title}</h2>
           <button
             type="button"
             onClick={requestClose}

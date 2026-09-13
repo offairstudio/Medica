@@ -157,7 +157,7 @@ export function Sheet({
           )}
         >
           <div className="min-w-0 flex-1">
-            {titleSlot ?? <h2 className="text-h2 text-ink">{title}</h2>}
+            {titleSlot ?? <h2 className="text-h2 font-bold text-ink">{title}</h2>}
           </div>
           <button
             type="button"

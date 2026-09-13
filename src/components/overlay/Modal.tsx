@@ -85,7 +85,7 @@ export function Modal({ open, onClose, title, size = "md", children, footer }: M
         )}
       >
         <div className="flex items-center justify-between border-b border-line bg-surface-2/60 px-6 py-4">
-          <h2 className="text-h2 text-ink">{title}</h2>
+          <h2 className="text-h2 font-bold text-ink">{title}</h2>
           <button
             type="button"
             onClick={onClose}
