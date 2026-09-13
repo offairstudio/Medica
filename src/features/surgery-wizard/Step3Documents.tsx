@@ -28,7 +28,7 @@ export function Step3Documents({ state, errors, onChange }: Step3Props) {
     <div className="flex flex-col gap-6">
       {/* אזור עליון - חובה */}
       <div data-error={errors.anamnesis ? "true" : undefined}>
-        <SectionCard title={s3.anamnesisLabel}>
+        <SectionCard title={`${s3.anamnesisLabel} *`}>
           <FileUpload
             value={state.anamnesisFile}
             onChange={(f) => onChange({ anamnesisFile: f })}

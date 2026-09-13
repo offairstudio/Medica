@@ -1,5 +1,6 @@
 import { useId, type InputHTMLAttributes } from "react";
 import { cn } from "../../lib/cn";
+import { RequiredMark } from "../form/RequiredMark";
 
 export interface RadioProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
@@ -47,6 +48,8 @@ export interface RadioGroupProps {
   error?: string;
   inline?: boolean;
   className?: string;
+  /** שדה חובה - מסומן בכוכבית לצד התווית */
+  required?: boolean;
 }
 
 export function RadioGroup({
@@ -58,14 +61,20 @@ export function RadioGroup({
   error,
   inline = true,
   className,
+  required,
 }: RadioGroupProps) {
+  const errorId = `${useId()}-error`;
   return (
-    <fieldset className={cn("flex flex-col gap-1", className)}>
+    <fieldset
+      className={cn("flex flex-col gap-1", className)}
+      aria-describedby={error ? errorId : undefined}
+    >
       {label && (
         <legend
           className={cn("mb-1 text-caption font-semibold", error ? "text-danger" : "text-body")}
         >
           {label}
+          {required && <RequiredMark />}
         </legend>
       )}
       <div className={cn("flex gap-x-5 gap-y-0", inline ? "flex-row flex-wrap" : "flex-col")}>
@@ -81,7 +90,11 @@ export function RadioGroup({
           />
         ))}
       </div>
-      {error && <p className="text-caption text-danger">{error}</p>}
+      {error && (
+        <p id={errorId} className="text-caption text-danger">
+          {error}
+        </p>
+      )}
     </fieldset>
   );
 }

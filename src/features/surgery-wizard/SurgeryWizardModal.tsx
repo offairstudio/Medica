@@ -216,7 +216,10 @@ function WizardInner({
         </div>
       }
     >
-      <div ref={bodyRef}>{stepContent[step]}</div>
+      <div ref={bodyRef}>
+        <p className="mb-4 text-caption text-muted">{t.common.requiredNote}</p>
+        {stepContent[step]}
+      </div>
     </Sheet>
 
     <Modal

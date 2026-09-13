@@ -451,7 +451,7 @@ export function DoctorSchedule() {
                       <button
                         type="button"
                         onClick={() => setWizardPrefill({ date: selectedDate })}
-                        className="font-semibold text-primary-600 underline underline-offset-2 transition-colors duration-fast hover:text-primary-800"
+                        className="inline-flex min-h-[24px] items-center rounded font-semibold text-primary-600 underline underline-offset-2 transition-colors duration-fast hover:text-primary-800"
                       >
                         {t.schedule.clickHere}
                       </button>

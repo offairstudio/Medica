@@ -1,5 +1,6 @@
 import { forwardRef, useId, type InputHTMLAttributes, type ReactNode } from "react";
 import { cn } from "../../lib/cn";
+import { RequiredMark } from "../form/RequiredMark";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -10,10 +11,12 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   tall?: boolean;
   /** שדה שקט - נראה כמו טקסט עד לריחוף או מיקוד */
   quiet?: boolean;
+  /** שדה חובה - מסומן בכוכבית לצד התווית */
+  required?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, hint, icon, tall, quiet, className, id: idProp, ...rest }, ref) => {
+  ({ label, error, hint, icon, tall, quiet, required, className, id: idProp, ...rest }, ref) => {
     const autoId = useId();
     const id = idProp ?? autoId;
     const describedBy = error ? `${id}-error` : hint ? `${id}-hint` : undefined;
@@ -23,6 +26,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label htmlFor={id} className={cn("text-caption font-semibold", error ? "text-danger" : "text-body")}>
             {label}
+            {required && <RequiredMark />}
           </label>
         )}
         <div className="relative">
@@ -34,6 +38,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             id={id}
+            aria-required={required || undefined}
             aria-invalid={error ? true : undefined}
             aria-describedby={describedBy}
             className={cn(

@@ -69,7 +69,7 @@ export function Table<T>({ columns, rows, rowKey, caption, onRowClick, empty, fo
                   <button
                     type="button"
                     onClick={() => toggleSort(col.key)}
-                    className="inline-flex items-center gap-1 transition-opacity duration-fast hover:opacity-80"
+                    className="inline-flex min-h-[24px] items-center gap-1 py-0.5 transition-opacity duration-fast hover:opacity-80"
                   >
                     {col.header}
                     {sort?.key === col.key &&

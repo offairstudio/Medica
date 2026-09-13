@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useId } from "react";
 import { CalendarDays } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { RequiredMark } from "./RequiredMark";
 import { t } from "../../i18n";
 import { MonthCalendar } from "../calendar/MonthCalendar";
 import { formatNumericDate } from "../../lib/date";
@@ -16,6 +17,8 @@ export interface DatePickerProps {
   className?: string;
   /** שדה שקט - נראה כמו טקסט עד לריחוף או מיקוד */
   quiet?: boolean;
+  /** שדה חובה - מסומן בכוכבית לצד התווית */
+  required?: boolean;
 }
 
 export function DatePicker({
@@ -26,7 +29,9 @@ export function DatePicker({
   placeholder = t.ui.a11y.pickDate,
   className,
   quiet,
+  required,
 }: DatePickerProps) {
+  const errorId = `${useId()}-error`;
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -51,13 +56,16 @@ export function DatePicker({
       {label && (
         <span className={cn("text-caption font-semibold", error ? "text-danger" : "text-body")}>
           {label}
+          {required && <RequiredMark />}
         </span>
       )}
       <button
         type="button"
         aria-haspopup="dialog"
         aria-expanded={open}
+        aria-required={required || undefined}
         aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
         onClick={() => setOpen((o) => !o)}
         className={cn(
           "flex w-full items-center gap-2 rounded-md border text-body transition-colors duration-fast",
@@ -90,7 +98,11 @@ export function DatePicker({
         </div>
       )}
 
-      {error && <p className="text-caption text-danger">{error}</p>}
+      {error && (
+        <p id={errorId} className="text-caption text-danger">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

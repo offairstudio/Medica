@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useId } from "react";
 import { Clock } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { RequiredMark } from "./RequiredMark";
 import { t } from "../../i18n";
 import type { Time } from "../../types";
 
@@ -16,6 +17,8 @@ export interface TimePickerProps {
   className?: string;
   /** שדה שקט - נראה כמו טקסט עד לריחוף או מיקוד */
   quiet?: boolean;
+  /** שדה חובה - מסומן בכוכבית לצד התווית */
+  required?: boolean;
 }
 
 function buildOptions(from: Time, to: Time, step: number): Time[] {
@@ -38,7 +41,9 @@ export function TimePicker({
   to = "22:00",
   className,
   quiet,
+  required,
 }: TimePickerProps) {
+  const errorId = `${useId()}-error`;
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const options = buildOptions(from, to, stepMinutes);
@@ -64,13 +69,16 @@ export function TimePicker({
       {label && (
         <span className={cn("text-caption font-semibold", error ? "text-danger" : "text-body")}>
           {label}
+          {required && <RequiredMark />}
         </span>
       )}
       <button
         type="button"
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-required={required || undefined}
         aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
         onClick={() => setOpen((o) => !o)}
         className={cn(
           "flex w-full items-center gap-2 rounded-md border text-body transition-colors duration-fast",
@@ -113,7 +121,11 @@ export function TimePicker({
         </ul>
       )}
 
-      {error && <p className="text-caption text-danger">{error}</p>}
+      {error && (
+        <p id={errorId} className="text-caption text-danger">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

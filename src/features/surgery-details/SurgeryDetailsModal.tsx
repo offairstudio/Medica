@@ -130,15 +130,15 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
         <div className="min-w-0">
           <h2 className="truncate text-h2 font-bold text-ink">{patientName}</h2>
           <span className="block truncate text-muted">{procedureName}</span>
-          <span className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
-            <span className="tnum rounded-full bg-surface px-2 py-0.5 font-semibold">
+          <span className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-body text-muted">
+            <span className="tnum rounded-full bg-surface px-2.5 py-0.5 font-semibold">
               {t.swap.codeLabel} {surgery.code}
             </span>
             <span>{formatFullDate(surgery.date)}</span>
             <span dir="ltr" className="tnum font-semibold text-ink">
               {timeRange(surgery.startTime, surgery.durationMinutes)}
             </span>
-            <CentreSignature hospital={surgery.hospital} tone="centre" height={11} />
+            <CentreSignature hospital={surgery.hospital} tone="centre" height={14} />
           </span>
         </div>
       }

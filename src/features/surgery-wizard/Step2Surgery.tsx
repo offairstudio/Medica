@@ -65,6 +65,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
             <div className="sm:col-span-2" data-error={errors[`procedure-${i}`] ? "true" : undefined}>
               <Select
                 label={s2.surgeryName}
+                required
                 options={lookups.surgeryNames.map((n) => ({ value: n, label: n }))}
                 value={proc.name || null}
                 onChange={(v) => pickProcedureName(i, (v as string) ?? "")}
@@ -112,6 +113,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
         <div data-error={errors.date ? "true" : undefined}>
           <DatePicker
             label={s2.date}
+            required
             value={state.date}
             onChange={(d) => onChange({ date: d })}
             error={errors.date}
@@ -120,6 +122,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
         <div data-error={errors.time ? "true" : undefined}>
           <TimePicker
             label={s2.time}
+            required
             value={state.time}
             onChange={(v) => onChange({ time: v })}
             error={errors.time}
@@ -136,6 +139,7 @@ export function Step2Surgery({ state, errors, onChange }: Step2Props) {
         <div data-error={errors.duration ? "true" : undefined}>
           <Input
             label={s2.duration}
+            required
             type="number"
             inputMode="numeric"
             min={1}

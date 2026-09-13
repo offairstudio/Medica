@@ -41,7 +41,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      <div className="clinical-surface relative flex flex-1 items-start justify-center px-4 py-8 pb-14 md:w-[42%] md:items-center md:px-8 md:py-10">
+      <main className="clinical-surface relative flex flex-1 items-start justify-center px-4 py-8 pb-14 md:w-[42%] md:items-center md:px-8 md:py-10">
         {/* הלוגו בפינה העליונה של צד הטופס - נקודת הפתיחה של קריאת המסך */}
         <img
           src="/brand/medica-logo-wide.svg"
@@ -58,7 +58,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
           <LocaleToggle />
           <FontVersionToggle />
         </div>
-      </div>
+      </main>
     </div>
   );
 }

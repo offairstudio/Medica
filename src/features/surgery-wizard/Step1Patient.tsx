@@ -73,6 +73,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
         <div className="relative" data-error={errors.firstName ? "true" : undefined}>
           <Input
             label={s1.firstName}
+            required
             value={state.firstName}
             autoComplete="off"
             onChange={(e) => {
@@ -108,6 +109,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
         <div data-error={errors.lastName ? "true" : undefined}>
           <Input
             label={s1.lastName}
+            required
             value={state.lastName}
             autoComplete="off"
             onChange={(e) => onChange({ lastName: e.target.value })}
@@ -130,6 +132,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
         <div data-error={errors.idNumber ? "true" : undefined}>
           <Input
             label={s1.idNumber}
+            required
             inputMode={state.idType === "id" ? "numeric" : "text"}
             dir="ltr"
             maxLength={9}
@@ -151,6 +154,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
         <div data-error={errors.phone ? "true" : undefined}>
           <Input
             label={s1.phone}
+            required
             type="tel"
             inputMode="tel"
             dir="ltr"
@@ -207,6 +211,7 @@ export function Step1Patient({ state, errors, onChange }: Step1Props) {
           <div className="mt-2 max-w-56" data-error={errors.feeAmount ? "true" : undefined}>
             <Input
               label={s1.feeAmount}
+              required
               inputMode="numeric"
               dir="ltr"
               value={state.feeAmount}

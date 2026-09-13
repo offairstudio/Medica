@@ -55,7 +55,7 @@ export function LoginDoctor() {
 
         <Link
           to="/p/login"
-          className="text-center text-caption font-semibold text-primary-600 transition-colors duration-fast hover:text-primary-800"
+          className="inline-flex min-h-[24px] items-center justify-center self-center rounded text-caption font-semibold text-primary-600 transition-colors duration-fast hover:text-primary-800"
         >
           {t.login.patientLink}
         </Link>

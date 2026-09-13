@@ -8,6 +8,7 @@ import {
 } from "react";
 import { Check, ChevronDown, Search, X } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { RequiredMark } from "../form/RequiredMark";
 import { t } from "../../i18n";
 
 export interface SelectOption {
@@ -33,6 +34,8 @@ export interface SelectProps {
   id?: string;
   /** שדה שקט - נראה כמו טקסט עד לריחוף או מיקוד */
   quiet?: boolean;
+  /** שדה חובה - מסומן בכוכבית לצד התווית */
+  required?: boolean;
 }
 
 export function Select({
@@ -49,6 +52,7 @@ export function Select({
   className,
   id: idProp,
   quiet,
+  required,
 }: SelectProps) {
   const autoId = useId();
   const id = idProp ?? autoId;
@@ -109,6 +113,7 @@ export function Select({
           className={cn("text-caption font-semibold", error ? "text-danger" : "text-body")}
         >
           {label}
+          {required && <RequiredMark />}
         </label>
       )}
       <button
@@ -117,7 +122,9 @@ export function Select({
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-required={required || undefined}
         aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${id}-error` : undefined}
         onClick={() => setOpen((o) => !o)}
         className={cn(
           "flex w-full items-center justify-between gap-2 rounded-md border text-body transition-colors duration-fast",
@@ -197,7 +204,11 @@ export function Select({
         </div>
       )}
 
-      {error && <p className="text-caption text-danger">{error}</p>}
+      {error && (
+        <p id={`${id}-error`} className="text-caption text-danger">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

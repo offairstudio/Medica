@@ -1,5 +1,6 @@
 import { forwardRef, useId, type TextareaHTMLAttributes } from "react";
 import { cn } from "../../lib/cn";
+import { RequiredMark } from "../form/RequiredMark";
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
@@ -10,7 +11,7 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ label, error, hint, quiet, className, id: idProp, rows = 3, ...rest }, ref) => {
+  ({ label, error, hint, quiet, required, className, id: idProp, rows = 3, ...rest }, ref) => {
     const autoId = useId();
     const id = idProp ?? autoId;
     const describedBy = error ? `${id}-error` : hint ? `${id}-hint` : undefined;
@@ -19,12 +20,14 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label htmlFor={id} className={cn("text-caption font-semibold", error ? "text-danger" : "text-body")}>
             {label}
+            {required && <RequiredMark />}
           </label>
         )}
         <textarea
           ref={ref}
           id={id}
           rows={rows}
+          aria-required={required || undefined}
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
           className={cn(

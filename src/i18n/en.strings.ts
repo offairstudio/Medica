@@ -13,6 +13,7 @@ export const enStrings: Strings = {
     discardBody: "What you entered here will not be saved.",
     discardConfirm: "Leave without saving",
     keepEditing: "Keep editing",
+    requiredNote: "Fields marked with an asterisk (*) are required",
     cancel: "Cancel",
     confirm: "Confirm",
     save: "Save",
