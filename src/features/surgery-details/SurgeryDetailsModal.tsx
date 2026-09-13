@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Pencil } from "lucide-react";
 import { Sheet } from "../../components/overlay/Sheet";
 import { HOSPITALS } from "../../mock/hospitals";
+import { CentreSignature } from "../../components/data/CentreArt";
+import { formatFullDate, timeRange } from "../../lib/date";
 import { Button } from "../../components/primitives/Button";
 import { useToast } from "../../components/overlay/Toast";
 import { useData } from "../../state/data";
@@ -82,13 +84,33 @@ export function SurgeryDetailsModal({ surgeryId, startInEdit, onClose }: Surgery
     }, 400);
   }
 
-  const title = `${surgery.procedures.map((p) => p.name).join(" + ")} · ${t.swap.codeLabel} ${surgery.code}`;
+  // הכותרת עונה על "מי, מה, מתי ואיפה" עוד לפני הגלילה הראשונה:
+  // המטופל מזהה את הרשומה, הניתוח אומר מה עושים, והשורה הקצרה נושאת את השאר.
+  const patientName = `${surgery.patient.firstName} ${surgery.patient.lastName}`;
+  const procedureName = surgery.procedures.map((p) => p.name).join(" + ");
+  const title = `${patientName} · ${procedureName}`;
 
   return (
     <Sheet
       open
       onClose={onClose}
       title={title}
+      titleSlot={
+        <div className="min-w-0">
+          <h2 className="truncate text-h2 text-ink">{patientName}</h2>
+          <span className="block truncate text-muted">{procedureName}</span>
+          <span className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
+            <span className="tnum rounded-full bg-surface px-2 py-0.5 font-semibold">
+              {t.swap.codeLabel} {surgery.code}
+            </span>
+            <span>{formatFullDate(surgery.date)}</span>
+            <span dir="ltr" className="tnum font-semibold text-ink">
+              {timeRange(surgery.startTime, surgery.durationMinutes)}
+            </span>
+            <CentreSignature hospital={surgery.hospital} tone="centre" height={11} />
+          </span>
+        </div>
+      }
       // הזהות של המרכז - בגוון של ראש המגירה
       headerClassName={HOSPITALS[surgery.hospital].softClass}
       size="xl"

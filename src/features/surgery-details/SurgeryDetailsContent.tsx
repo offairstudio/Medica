@@ -9,7 +9,6 @@ import {
 import {
   Banknote,
   Bed,
-  Boxes,
   FileText,
   IdCard,
   Info,
@@ -29,10 +28,10 @@ import {
   Timer,
   type LucideIcon,
 } from "lucide-react";
+import { Avatar } from "../../components/data/Avatar";
 import { Chip } from "../../components/data/Chip";
-import { CentreSignature } from "../../components/data/CentreArt";
 import { DocumentRow } from "../patient-documents/DocumentRow";
-import { HOSPITAL_LIST, HOSPITALS } from "../../mock/hospitals";
+import { HOSPITAL_LIST } from "../../mock/hospitals";
 import { Button } from "../../components/primitives/Button";
 import { Input } from "../../components/primitives/Input";
 import { Select } from "../../components/primitives/Select";
@@ -45,12 +44,10 @@ import { FileUpload, type UploadedFile } from "../../components/form/FileUpload"
 import { documentTypeLabel, lookups } from "../../mock/lookups";
 import { doctorById, doctors } from "../../mock/doctors";
 import { departmentName } from "../../mock/departments";
-import { formatFullDate, timeRange } from "../../lib/date";
 import { formatFileSize } from "../../lib/format";
 import { cn } from "../../lib/cn";
 import { t } from "../../i18n";
-// Hospital מיובא כ-HospitalKey כדי לא להתנגש באייקון בשם הזה
-import type { Hospital as HospitalKey, MedicalDocument, RequirementKey, Surgery } from "../../types";
+import type { MedicalDocument, RequirementKey, Surgery } from "../../types";
 
 /* ============ מצב עריכה ============ */
 
@@ -203,8 +200,9 @@ function DetailRow({
 }
 
 /**
- * כרטיסיית מקטע במגירה - אותו כרטיס של מגירת התור באזור המטופל.
- * variant="accent" שמור למקטע הנחיות, בגוון המותג.
+ * כרטיסיית מקטע במגירה - אותו כרטיס של מגירת התור באזור המטופל:
+ * הכותרת יושבת בפס עליון משלה, כדי שגבול הכרטיס יהיה חד וברור.
+ * variant="accent" שמור למקטע הדרישות, בגוון המותג.
  */
 function Section({
   title,
@@ -219,85 +217,52 @@ function Section({
   className?: string;
   children: ReactNode;
 }) {
+  if (variant === "accent") {
+    return (
+      <section
+        aria-label={title}
+        className={cn("min-w-0 rounded-lg border border-primary-200 bg-primary-50 p-5", className)}
+      >
+        <h3 className="flex items-center gap-2 text-h3 text-primary-800">
+          <Info className="h-4 w-4 shrink-0 text-primary-500" aria-hidden />
+          {title}
+        </h3>
+        {hint && <p className="mt-0.5 text-caption text-muted">{hint}</p>}
+        <div className="mt-2">{children}</div>
+      </section>
+    );
+  }
+
   return (
     <section
       aria-label={title}
       className={cn(
-        "min-w-0 rounded-lg p-5",
-        variant === "accent"
-          ? "border border-primary-200 bg-primary-50"
-          : "border border-line bg-surface shadow-sm",
+        "min-w-0 overflow-hidden rounded-lg border border-line bg-surface shadow-sm",
         className,
       )}
     >
-      <h3
-        className={cn(
-          "flex items-center gap-2 text-h3",
-          variant === "accent" ? "text-primary-800" : "text-ink",
-        )}
-      >
-        {variant === "accent" && <Info className="h-4 w-4 shrink-0 text-primary-500" aria-hidden />}
-        {title}
-      </h3>
-      {hint && <p className="mt-0.5 text-caption text-muted">{hint}</p>}
-      <div className={cn(hint ? "mt-2" : "mt-1")}>{children}</div>
+      <div className="border-b border-line bg-surface-2/60 px-5 py-3.5">
+        <h3 className="text-h3 text-ink">{title}</h3>
+        {hint && <p className="mt-0.5 text-caption text-muted">{hint}</p>}
+      </div>
+      <div className="px-5 py-3">{children}</div>
     </section>
   );
 }
 
-/**
- * מועד הניתוח והמרכז שבו הוא מתקיים - אותה הגשה של פרטי התור באזור המטופל:
- * שורות עם אייקון ותווית. הצבע של המרכז יושב בראש המגירה, ולכן הכרטיס נקי.
- */
-function SurgeryHeadline({
-  date,
-  startTime,
-  durationMinutes,
-  hospitalKey,
-  doctorId,
-}: {
-  date: string | null;
-  startTime: string | null;
-  durationMinutes: number;
-  hospitalKey: HospitalKey;
-  doctorId: string;
-}) {
-  const hospital = HOSPITALS[hospitalKey];
-  const doctor = doctorById(doctorId);
-
+/** שדה דחוס: תווית קטנה מעל הערך - לפרטים שסורקים ולא קוראים אחד-אחד */
+function CompactField({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <Section title={t.surgeryView.when}>
-      <dl>
-        <DetailRow icon={CalendarDays} label={t.ui.fields.date}>
-          {date ? formatFullDate(date) : "—"}
-        </DetailRow>
-        <DetailRow icon={Clock} label={t.ui.fields.time}>
-          <span dir="ltr" className="tnum">
-            {startTime ? timeRange(startTime, durationMinutes) : "—"}
-          </span>
-        </DetailRow>
-        <DetailRow icon={Timer} label={t.ui.fields.duration}>
-          <span className="tnum">{t.ui.fmt.minutes(durationMinutes)}</span>
-        </DetailRow>
-        <DetailRow icon={Hospital} label={t.ui.fields.centre}>
-          <span className="inline-flex items-center gap-1.5">
-            <CentreSignature hospital={hospitalKey} tone="centre" height={12} />
-            <span className="sr-only">{hospital.name}</span>
-          </span>
-        </DetailRow>
-        {doctor && (
-          <DetailRow icon={Stethoscope} label={t.ui.fields.surgeon}>
-            {doctor.displayName}
-            <span className="font-normal text-muted"> · {departmentName(doctor.departmentId)}</span>
-          </DetailRow>
-        )}
-      </dl>
-    </Section>
+    <div className="min-w-0">
+      <dt className="text-caption text-muted">{label}</dt>
+      <dd className="mt-0.5 font-semibold text-ink">{children}</dd>
+    </div>
   );
 }
 
 /** תוכן הצפייה בניתוח: מועד, פרטי מטופל וניתוח, דרישות ומסמכים */
 export function SurgeryViewContent({ surgery }: { surgery: Surgery }) {
+  const doctor = doctorById(surgery.doctorId);
   const anesthesiaLabel =
     lookups.anesthesiaTypes.find((a) => a.key === surgery.anesthesia)?.label ?? "";
   const requirementLabels = surgery.requirements
@@ -306,16 +271,8 @@ export function SurgeryViewContent({ surgery }: { surgery: Surgery }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <SurgeryHeadline
-        date={surgery.date}
-        startTime={surgery.startTime}
-        durationMinutes={surgery.durationMinutes}
-        hospitalKey={surgery.hospital}
-        doctorId={surgery.doctorId}
-      />
-
-      <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
-        <Section title={t.surgeryView.patient}>
+      {/* המטופל בשורות רחבות - אותו מאמתים פרט אחרי פרט */}
+      <Section title={t.surgeryView.patient}>
           <dl>
             <DetailRow icon={UserRound} label={t.ui.fields.fullName}>
               {surgery.patient.firstName} {surgery.patient.lastName}
@@ -340,34 +297,44 @@ export function SurgeryViewContent({ surgery }: { surgery: Surgery }) {
               </DetailRow>
             )}
           </dl>
-        </Section>
+      </Section>
 
-        <Section title={t.surgeryView.execution}>
-          <dl>
-            <DetailRow icon={Syringe} label={t.ui.fields.anesthesia}>
-              {anesthesiaLabel}
-            </DetailRow>
-            <DetailRow icon={Bed} label={t.ui.fields.treatmentType}>
-              {surgery.treatmentType}
-            </DetailRow>
-            {surgery.capitalEquipment && (
-              <DetailRow icon={Package} label={t.wizard.step2.capitalEquipment}>
-                {surgery.capitalEquipment}
-              </DetailRow>
+      {/* הביצוע נסרק ולא נקרא, ולכן שדות דחוסים: תווית קטנה מעל הערך */}
+      <Section title={t.surgeryView.execution}>
+        <dl className="grid grid-cols-2 gap-x-6 gap-y-4 py-1 sm:grid-cols-3">
+          <CompactField label={t.ui.fields.surgeon}>
+            {doctor ? (
+              <span className="flex items-center gap-2">
+                <Avatar name={doctor.displayName} src={doctor.avatarUrl} size="sm" />
+                <span className="min-w-0">
+                  <span className="block truncate">{doctor.displayName}</span>
+                  <span className="block truncate text-caption font-normal text-muted">
+                    {departmentName(doctor.departmentId)}
+                  </span>
+                </span>
+              </span>
+            ) : (
+              "—"
             )}
-            {surgery.additionalEquipment && (
-              <DetailRow icon={Boxes} label={t.wizard.step2.additionalEquipment}>
-                {surgery.additionalEquipment}
-              </DetailRow>
-            )}
-            {surgery.combined && (
-              <DetailRow icon={Users} label={t.ui.fields.combined}>
-                {surgery.backupDoctorName ?? t.ui.fields.yes}
-              </DetailRow>
-            )}
-          </dl>
-        </Section>
-      </div>
+          </CompactField>
+          <CompactField label={t.ui.fields.duration}>
+            <span className="tnum">{t.ui.fmt.minutes(surgery.durationMinutes)}</span>
+          </CompactField>
+          <CompactField label={t.ui.fields.anesthesia}>{anesthesiaLabel}</CompactField>
+          <CompactField label={t.ui.fields.treatmentType}>{surgery.treatmentType}</CompactField>
+          {surgery.capitalEquipment && (
+            <CompactField label={t.wizard.step2.capitalEquipment}>{surgery.capitalEquipment}</CompactField>
+          )}
+          {surgery.additionalEquipment && (
+            <CompactField label={t.wizard.step2.additionalEquipment}>{surgery.additionalEquipment}</CompactField>
+          )}
+          {surgery.combined && (
+            <CompactField label={t.ui.fields.combined}>
+              {surgery.backupDoctorName ?? t.ui.fields.yes}
+            </CompactField>
+          )}
+        </dl>
+      </Section>
 
       {requirementLabels.length > 0 && (
         <Section title={t.wizard.step2.requirements} variant="accent">
@@ -466,14 +433,6 @@ export function SurgeryEditForm({ draft, errors, patch }: SurgeryEditFormProps) 
 
   return (
     <div className="flex flex-col gap-6">
-      <SurgeryHeadline
-        date={draft.date}
-        startTime={draft.time}
-        durationMinutes={Number(draft.duration) || 0}
-        hospitalKey={draft.hospital as HospitalKey}
-        doctorId={draft.doctorId}
-      />
-
       <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
         {/* מטופל */}
         <Section title={t.surgeryView.patient}>
