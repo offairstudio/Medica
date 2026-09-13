@@ -383,6 +383,7 @@ export const enStrings: Strings = {
     },
     table: {
       surgeon: "Surgeon",
+      filters: "Filters",
       caption: "Surgery table, with filtering and sorting",
       allProcedures: "All procedures",
       csv: {

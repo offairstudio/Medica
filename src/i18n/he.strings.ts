@@ -383,6 +383,7 @@ export const heStrings = {
     },
     table: {
       surgeon: "מנתח",
+      filters: "סינון",
       caption: "טבלת הניתוחים, כולל סינון ומיון",
       allProcedures: "כל הניתוחים",
       csv: {

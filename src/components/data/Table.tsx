@@ -43,8 +43,9 @@ export function Table<T>({ columns, rows, rowKey, caption, onRowClick, empty }: 
 
   if (rows.length === 0 && empty) return <>{empty}</>;
 
+  // הטבלה גוללת בתוך עצמה - רק כך שורת הכותרות נדבקת לראשה בזמן גלילה
   return (
-    <div className="overflow-x-auto rounded-lg border border-line bg-surface shadow-sm">
+    <div className="max-h-[70vh] overflow-auto rounded-lg border border-line bg-surface shadow-sm">
       <table className="w-full border-collapse text-body">
         <caption className="sr-only">{caption}</caption>
         <thead>

@@ -140,7 +140,16 @@ export function Dropdown({
           {item.label}
         </button>
       ))}
-      {children}
+      {/* בתוכן חופשי (קישורים) - בחירה סוגרת את התפריט, בלי לסגור בלחיצה על שדה חיפוש */}
+      {children && (
+        <div
+          onClick={(e) => {
+            if ((e.target as HTMLElement).closest("a, [data-close-menu]")) setOpen(false);
+          }}
+        >
+          {children}
+        </div>
+      )}
     </>
   );
 

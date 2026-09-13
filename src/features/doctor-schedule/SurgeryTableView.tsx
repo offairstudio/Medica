@@ -1,5 +1,15 @@
 import { useMemo, useState } from "react";
-import { Download, EllipsisVertical, Pencil, ArrowLeftRight, Trash2, Monitor, FileSpreadsheet } from "lucide-react";
+import {
+  ArrowLeftRight,
+  ChevronDown,
+  Download,
+  EllipsisVertical,
+  FileSpreadsheet,
+  Monitor,
+  Pencil,
+  SlidersHorizontal,
+  Trash2,
+} from "lucide-react";
 import { Button } from "../../components/primitives/Button";
 import { Select } from "../../components/primitives/Select";
 import { DatePicker } from "../../components/form/DatePicker";
@@ -12,6 +22,7 @@ import { HOSPITALS, HOSPITAL_LIST } from "../../mock/hospitals";
 import { doctorById } from "../../mock/doctors";
 import { lookups } from "../../mock/lookups";
 import { formatNumericDate } from "../../lib/date";
+import { cn } from "../../lib/cn";
 import { t } from "../../i18n";
 import type { ISODate, Surgery } from "../../types";
 
@@ -42,9 +53,16 @@ export function SurgeryTableView({
   const [fromDate, setFromDate] = useState<ISODate | null>(null);
   const [toDate, setToDate] = useState<ISODate | null>(null);
   const [hospitalFilter, setHospitalFilter] = useState<string | null>(null);
+  // במובייל הסינון מקופל מאחורי כפתור אחד; בדסקטופ הוא פרוס תמיד
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(30);
 
   const hasFilter = nameFilter.length > 0 || Boolean(fromDate) || Boolean(toDate) || Boolean(hospitalFilter);
+  const activeFilters =
+    (nameFilter.length > 0 ? 1 : 0) +
+    (fromDate ? 1 : 0) +
+    (toDate ? 1 : 0) +
+    (hospitalFilter ? 1 : 0);
 
   const filtered = useMemo(
     () =>
@@ -163,7 +181,12 @@ export function SurgeryTableView({
   return (
     <div className="flex flex-col gap-4">
       {/* סינון - מוחל אוטומטית בשינוי */}
-      <div className="rounded-lg border border-line bg-surface p-4 shadow-sm">
+      <div
+        className={cn(
+          "order-2 rounded-lg border border-line bg-surface p-4 shadow-sm md:order-1",
+          !filtersOpen && "hidden md:block",
+        )}
+      >
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Select
             label={t.allSurgeries.filterSurgeryName}
@@ -196,7 +219,26 @@ export function SurgeryTableView({
         )}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="order-1 flex flex-wrap items-center justify-between gap-3 md:order-2">
+        <button
+          type="button"
+          onClick={() => setFiltersOpen((open) => !open)}
+          aria-expanded={filtersOpen}
+          className="flex h-11 self-start items-center gap-2 rounded-md border border-line bg-surface px-3 font-semibold text-body transition-colors duration-fast hover:border-primary-300 md:hidden"
+        >
+          <SlidersHorizontal className="h-4 w-4 shrink-0 text-muted" aria-hidden />
+          {t.ui.table.filters}
+          {activeFilters > 0 && (
+            <span className="tnum rounded-full bg-primary-100 px-1.5 py-0.5 text-[12px] font-bold text-primary-800">
+              {activeFilters}
+            </span>
+          )}
+          <ChevronDown
+            className={cn("h-4 w-4 shrink-0 text-muted transition-transform duration-fast", filtersOpen && "rotate-180")}
+            aria-hidden
+          />
+        </button>
+
         <p className="text-caption text-muted tnum" aria-live="polite">
           {t.allSurgeries.resultsCount(filtered.length)}
         </p>
@@ -211,36 +253,38 @@ export function SurgeryTableView({
         </Button>
       </div>
 
-      <Table
-        columns={columns}
-        rows={visible}
-        rowKey={(s) => s.id}
-        onRowClick={onView}
-        caption={t.ui.table.caption}
-        empty={
-          <div className="rounded-lg border border-line bg-surface shadow-sm">
-            <EmptyState
-              illustration="search"
-              title={t.allSurgeries.emptyTitle}
-              action={
-                hasFilter ? (
-                  <Button variant="secondary" onClick={clearFilters}>
-                    {t.common.clearFilter}
-                  </Button>
-                ) : undefined
-              }
-            />
-          </div>
-        }
-      />
+      <div className="order-3 flex flex-col gap-4">
+        <Table
+          columns={columns}
+          rows={visible}
+          rowKey={(s) => s.id}
+          onRowClick={onView}
+          caption={t.ui.table.caption}
+          empty={
+            <div className="rounded-lg border border-line bg-surface shadow-sm">
+              <EmptyState
+                illustration="search"
+                title={t.allSurgeries.emptyTitle}
+                action={
+                  hasFilter ? (
+                    <Button variant="secondary" onClick={clearFilters}>
+                      {t.common.clearFilter}
+                    </Button>
+                  ) : undefined
+                }
+              />
+            </div>
+          }
+        />
 
-      {remaining > 0 && (
-        <div className="flex justify-center">
-          <Button variant="secondary" onClick={() => setVisibleCount((n) => n + 30)}>
-            {t.schedule.moreCount(remaining)}
-          </Button>
-        </div>
-      )}
+        {remaining > 0 && (
+          <div className="flex justify-center">
+            <Button variant="secondary" onClick={() => setVisibleCount((n) => n + 30)}>
+              {t.schedule.moreCount(remaining)}
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
