@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Clock, MapPin, ArrowLeft, Paperclip } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { HospitalChip } from "../../components/data/Chip";
+import { HOSPITALS } from "../../mock/hospitals";
 import { formatDateBlock } from "../../lib/date";
 import { he } from "../../i18n/he";
 import type { Appointment } from "../../types";
@@ -22,18 +24,23 @@ export interface AppointmentCardProps {
 export function AppointmentCard({ appointment, muted, featured, featuredLabel, featuredBadge, extra }: AppointmentCardProps) {
   const location = useLocation();
   const { day, month } = formatDateBlock(appointment.date);
+  // הכרטיס נושא את זהות המרכז שבו מתקיים הטיפול, כמו רשומת ניתוח ביומן המנתח
+  const hospital = HOSPITALS[appointment.hospital];
 
   return (
     <Link
       to={`/p/appointment/${appointment.id}`}
       state={{ background: location }}
       className={cn(
-        "group block rounded-lg border bg-surface p-5 shadow-sm transition-all duration-fast hover:border-primary-300 hover:shadow-md",
-        featured ? "border-primary-300 bg-gradient-to-l from-primary-50 to-white ring-1 ring-primary-100" : "border-line",
+        "group block rounded-lg p-5 transition-all duration-fast hover:shadow-md",
+        // תורים קודמים נשארים מאופקים; תור עתידי נצבע בגוון המרכז
+        muted
+          ? "border border-line bg-surface shadow-sm"
+          : cn(hospital.softClass, featured && "ring-1 ring-inset ring-white/60"),
       )}
     >
       {featured && (featuredBadge || featuredLabel) && (
-        <span className="mb-4 flex items-center justify-between gap-2 border-b border-primary-100 pb-3">
+        <span className="mb-4 flex items-center justify-between gap-2 border-b border-white/70 pb-3">
           {featuredBadge && (
             <span className="rounded-full bg-primary-700 px-3 py-1 text-caption font-semibold text-white">
               {featuredBadge}
@@ -45,22 +52,31 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel, f
         </span>
       )}
       <div className="flex items-start gap-4">
+        {/* פס בצבע המרכז - אותו סימון של בלוק זמן ביומן המנתח */}
+        <span
+          aria-hidden
+          className={cn(
+            "w-1 shrink-0 self-stretch rounded-full",
+            muted ? "bg-line" : hospital.accentClass,
+          )}
+        />
+
         {/* בלוק תאריך */}
         <span
           className={cn(
             "flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-md",
-            muted ? "bg-surface-2" : "bg-primary-100",
+            muted ? "bg-surface-2" : undefined,
           )}
         >
           <span
             className={cn(
               "text-h2 font-bold leading-none tnum",
-              muted ? "text-body" : "text-primary-700",
+              muted ? "text-body" : hospital.textClass,
             )}
           >
             {day}
           </span>
-          <span className={cn("text-[12px] font-semibold", muted ? "text-muted" : "text-primary-600")}>
+          <span className={cn("text-[12px] font-semibold", muted ? "text-muted" : hospital.textClass)}>
             {month}
           </span>
         </span>
@@ -71,6 +87,7 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel, f
           </span>
           <span className="mt-0.5 block truncate text-muted">{appointment.title}</span>
           <span className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-muted">
+            <HospitalChip hospital={appointment.hospital} compact />
             <span className="flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" aria-hidden />
               <span className="tnum">{appointment.time}</span>
@@ -96,10 +113,7 @@ export function AppointmentCard({ appointment, muted, featured, featuredLabel, f
 
       {extra && (
         <span
-          className={cn(
-            "mt-4 block border-t pt-4",
-            featured ? "border-primary-100" : "border-line",
-          )}
+          className={cn("mt-4 block border-t pt-4", muted ? "border-line" : "border-white/70")}
         >
           {extra}
         </span>
