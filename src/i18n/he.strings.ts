@@ -279,7 +279,7 @@ export const heStrings = {
       time: "שעה",
       doctor: "רופא",
       department: "מחלקה",
-      hospital: "בית חולים",
+      hospital: "מרכז",
       address: "כתובת",
       location: "מיקום",
     },

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Building2, CalendarDays, Clock, FileText, MapPin, MessageSquareText, Info, X } from "lucide-react";
+import { CalendarDays, Clock, DoorOpen, FileText, Hospital, MapPin, MessageSquareText, Info, X } from "lucide-react";
 import { Button } from "../../components/primitives/Button";
 import { FileUpload, type UploadedFile } from "../../components/form/FileUpload";
 import { useToast } from "../../components/overlay/Toast";
 import { DocumentRow } from "../patient-documents/DocumentRow";
-import { HospitalChip } from "../../components/data/Chip";
+import { CentreSignature } from "../../components/data/CentreArt";
 import { HOSPITALS } from "../../mock/hospitals";
 import { cn } from "../../lib/cn";
 import { formatFullDate } from "../../lib/date";
@@ -27,8 +27,19 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
       label: t.patient.details.time,
       value: <span className="tnum">{appointment.time}</span>,
     },
+    {
+      icon: Hospital,
+      label: t.patient.details.hospital,
+      // הצבע כבר נמצא ברקע של ראש הכרטיס, ולכן כאן הלוגו מופיע בצבע המרכז על לבן
+      value: (
+        <span className="inline-flex items-center gap-1.5">
+          <CentreSignature hospital={appointment.hospital} tone="centre" height={12} />
+          <span className="sr-only">{HOSPITALS[appointment.hospital].name}</span>
+        </span>
+      ),
+    },
     { icon: MapPin, label: t.patient.details.address, value: HOSPITALS[appointment.hospital].address },
-    { icon: Building2, label: t.patient.details.location, value: appointment.location },
+    { icon: DoorOpen, label: t.patient.details.location, value: appointment.location },
   ];
 
   const prep = appointment.preparation ?? [];
@@ -46,9 +57,6 @@ export function AppointmentDetailsContent({ appointment }: { appointment: Appoin
           <span aria-hidden className={cn("w-1 shrink-0 self-stretch rounded-full", hospital.accentClass)} />
           <div className="min-w-0 flex-1">
             <h3 className="text-h3 text-ink">{t.patient.detailsTitle}</h3>
-            <div className="mt-2">
-              <HospitalChip hospital={appointment.hospital} compact />
-            </div>
           </div>
         </div>
 
