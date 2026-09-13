@@ -190,6 +190,17 @@ export function DoctorSchedule() {
     setSelectedDate(date);
   }
 
+  // "שינוי הל\"ז" - בדסקטופ בשורת הכותרת, ובמובייל בסוף סרגל הימים
+  const changeScheduleButton = (
+    <button
+      type="button"
+      onClick={() => toast("info", t.ui.schedule.swapNotInPrototype)}
+      className="inline-flex h-10 shrink-0 items-center rounded-md border border-line px-3 font-semibold text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
+    >
+      {t.schedule.changeSchedule}
+    </button>
+  );
+
   // שורת הפרטים של המנתח - משותפת לכותרת במובייל ובדסקטופ
   const meta = isAll ? undefined : (
     <span className="mt-0.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-muted">
@@ -242,15 +253,7 @@ export function DoctorSchedule() {
               </span>
             </>
           }
-          titleEnd={
-            <button
-              type="button"
-              onClick={() => toast("info", t.ui.schedule.swapNotInPrototype)}
-              className="inline-flex h-10 shrink-0 items-center rounded-md border border-line px-3 font-semibold text-body transition-colors duration-fast hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
-            >
-              {t.schedule.changeSchedule}
-            </button>
-          }
+          titleEnd={<span className="hidden md:inline-flex">{changeScheduleButton}</span>}
           start={
             isAll ? null : (
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 py-1">
@@ -310,6 +313,8 @@ export function DoctorSchedule() {
               >
                 <CalendarDays className="h-5 w-5" aria-hidden />
               </button>
+
+              <span className="ms-auto md:hidden">{changeScheduleButton}</span>
             </div>
             )
           }
