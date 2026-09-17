@@ -82,7 +82,7 @@ export const HOSPITALS: Record<Hospital, HospitalInfo> = {
   },
   rmc: {
     key: "rmc",
-    name: m("medica עפולה", "medica Afula"),
+    name: m("medica עפולה RMC", "medica Afula RMC"),
     fullName: m("medica RMC, עפולה", "medica RMC, Afula"),
     address: m("יהושע חנקין 5, עפולה", "5 Yehoshua Hankin St, Afula"),
     chipClass: "bg-hospital-rmc",
