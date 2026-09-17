@@ -8,7 +8,6 @@ import {
   ClipboardList,
   Languages,
   LogOut,
-  Type,
   UserRound,
 } from "lucide-react";
 import { cn } from "../../lib/cn";
@@ -16,7 +15,6 @@ import { currentPatient } from "../../mock/patients";
 import { appointments } from "../../mock/appointments";
 import { t } from "../../i18n";
 import { currentLocale, otherLocale, setLocale } from "../../i18n/locale";
-import { applyFont, currentFont, otherFont } from "../../lib/font";
 import { BrandMark } from "./BrandMark";
 import { Dropdown } from "../overlay/Dropdown";
 import { ProfileDrawer } from "../../features/patient-profile/ProfileDrawer";
@@ -65,9 +63,6 @@ function AccountMenu({
   variant: "sidebar" | "collapsed" | "mobile";
 }) {
   const navigate = useNavigate();
-  // גרסת הפונט נשמרת בסטייט מקומי כדי שתווית הפריט תתעדכן מיד אחרי המעבר
-  const [font, setFont] = useState(() => currentFont());
-  const nextFont = otherFont(font);
   const initials = `${currentPatient.firstName[0]}${currentPatient.lastName[0]}`;
   const fullName = `${currentPatient.firstName} ${currentPatient.lastName}`;
   const iconOnly = variant === "collapsed";
@@ -122,15 +117,6 @@ function AccountMenu({
           label: `${t.ui.auth.language}: ${otherLocale(currentLocale()).name}`,
           icon: <Languages />,
           onSelect: () => setLocale(otherLocale(currentLocale()).key),
-        },
-        {
-          key: "font",
-          label: `${t.ui.auth.font}: ${nextFont.name}`,
-          icon: <Type />,
-          onSelect: () => {
-            applyFont(nextFont);
-            setFont(nextFont);
-          },
         },
         {
           key: "logout",
