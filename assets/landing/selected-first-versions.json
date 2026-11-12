@@ -1,0 +1,27 @@
+[
+  {
+    "key": "orthopedics",
+    "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-8f7cbede-c474-404a-a801-8ba8587ce5bf.png",
+    "webAsset": "public/landing/specialties/orthopedics-v5-first.jpg"
+  },
+  {
+    "key": "eyes",
+    "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-7e59e5a4-b0ce-452b-b9ce-51b1a46c57c5.png",
+    "webAsset": "public/landing/specialties/eyes-v5-first.jpg"
+  },
+  {
+    "key": "surgery",
+    "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-102f8ca2-c8ba-4fa0-b971-9becfe6209dc.png",
+    "webAsset": "public/landing/specialties/surgery-v5-first.jpg"
+  },
+  {
+    "key": "cardiology",
+    "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-89b7bc64-3c03-4ce3-904c-49aa6032d413.png",
+    "webAsset": "public/landing/specialties/cardiology-v5-first.jpg"
+  },
+  {
+    "key": "urology",
+    "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-6e667b50-53c9-46fa-8e82-60ee758659bb.png",
+    "webAsset": "public/landing/specialties/urology-v5-first.jpg"
+  }
+]

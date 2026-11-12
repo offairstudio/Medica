@@ -1,0 +1,70 @@
+{
+  "assets": [
+    {
+      "key": "orthopedics",
+      "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-42322660-119b-44c9-a995-cf9a734ba53d.png",
+      "source": "public/landing/orthopedics-source.jpg",
+      "sourceUrl": "https://www.elishahospital.com/wp-content/uploads/2022/08/VELYS-03.jpg",
+      "webAsset": "public/landing/specialties/orthopedics-v5.jpg"
+    },
+    {
+      "key": "eyes",
+      "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-ecd7463c-76f9-4d03-b828-94b3e618627f.png",
+      "source": "public/landing/rmc-1-source.jpg",
+      "sourceUrl": "https://rmc-med.co.il/wp-content/uploads/2021/05/1.jpg",
+      "webAsset": "public/landing/specialties/eyes-v5.jpg"
+    },
+    {
+      "key": "cardiology",
+      "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-aadf8cc0-9984-43f1-993f-108f2116ee61.png",
+      "source": "assets/landing/sources/gallery-IMG_0385.jpg",
+      "sourceUrl": "https://www.elishahospital.com/wp-content/uploads/2018/08/IMG_0385.jpg",
+      "webAsset": "public/landing/specialties/cardiology-v5.jpg"
+    },
+    {
+      "key": "urology",
+      "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-a6a5f7cf-c75e-467b-97c4-4248424f077e.png",
+      "source": "public/landing/raphael-a43cbd2b3d9df21e.jpg",
+      "sourceUrl": "https://www.raphaelhospitals.co.il/media/c0ynsg3i/davinchi_p.jpg",
+      "webAsset": "public/landing/specialties/urology-v5.jpg"
+    },
+    {
+      "key": "ent",
+      "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-2b15ae3a-233c-4876-9cf0-b993afd37391.png",
+      "source": "assets/landing/sources/ent-raphael.png",
+      "sourceUrl": "https://www.raphaelhospitals.co.il/media/il2cquy2/עיצוב-ללא-שם-38.png",
+      "webAsset": "public/landing/specialties/ent-v5.jpg"
+    },
+    {
+      "key": "surgery",
+      "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-3e53dcf0-dc1f-417a-8c0c-2fb159b29af0.png",
+      "source": "public/landing/elisha-10-source.jpg",
+      "sourceUrl": "https://www.elishahospital.com/wp-content/uploads/2021/08/10.jpg",
+      "webAsset": "public/landing/specialties/surgery-v5.jpg"
+    },
+    {
+      "key": "bariatric",
+      "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-e97531d5-7cc0-42b9-93d7-90c3b42b1045.png",
+      "source": "public/landing/raphael-354e3cf81b2f4c5c.jpg",
+      "sourceUrl": "https://www.raphaelhospitals.co.il/media/rgbklkfv/duodenum_bypass_p.jpg",
+      "webAsset": "public/landing/specialties/bariatric-v5.jpg"
+    },
+    {
+      "key": "pain",
+      "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-9a0f6a69-a0d4-4659-a5d5-5ba7e815bcab.png",
+      "source": "assets/landing/sources/gallery-IMG_0361.jpg",
+      "sourceUrl": "https://www.elishahospital.com/wp-content/uploads/2018/08/IMG_0361.jpg",
+      "webAsset": "public/landing/specialties/pain-v5.jpg"
+    },
+    {
+      "key": "gastro",
+      "path": "/Users/oferbroide/.codex/generated_images/01a1cea4-de85-75f1-82dc-085dac6bc6c1/exec-bcb319d1-33f8-4bd4-accf-d3ad25cfd931.png",
+      "source": "assets/landing/sources/endoscopy-elisha.jpg",
+      "sourceUrl": "https://www.elishahospital.com/wp-content/uploads/2018/05/Endoscopy-11111111.jpg",
+      "webAsset": "public/landing/specialties/gastro-v5.jpg"
+    }
+  ],
+  "prompt": "Use case: photo-based editorial retouch, identity-preserve. The supplied ORIGINAL COMPANY PHOTOGRAPH is the sole source of content. Reproduce this exact photograph as a landscape 2:1 website card image. Preserve the real people and exact facial identities, ages, poses, existing number of people, existing hands, exact equipment and geometry, exact room and activity. NO invented people, no new objects, no new equipment, no new procedures or changed setting. Use a wider framing from the provided photograph and conservative photographic restoration/upscaling to make it suitable for a horizontal card, with only minimal neutral background continuation if indispensable. Keep faces, heads and meaningful equipment readable with a little headroom; never enlarge a portrait then cut off heads. Match source composition and authenticity; clean neutral whites, natural medical blues, restrained soft navy shadows, realistic skin and fine photographic texture. Do not add anything beyond the original photograph's content, no fantasy reconstruction. No added text, no watermark, no collage or borders. Return only the edited horizontal photograph.",
+  "tool": "Built-in image_gen",
+  "aspectRatio": "2:1"
+}

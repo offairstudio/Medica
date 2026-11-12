@@ -1,0 +1,12 @@
+# Keep source footage and working documentation out of the shared demo deployment.
+assets/
+docs/
+.git/
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+
+.backups/
+.claude/
+VERCEL-RECOVERY.json

@@ -10,6 +10,7 @@ import {
   LogOut,
   Search,
   Smartphone,
+  Type,
 } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { Avatar, AllDoctorsAvatar } from "../data/Avatar";
@@ -22,6 +23,7 @@ import { useData } from "../../state/data";
 import { formatPhone } from "../../lib/format";
 import { t } from "../../i18n";
 import { currentLocale, otherLocale, setLocale } from "../../i18n/locale";
+import { applyFont, currentFont, otherFont } from "../../lib/font";
 
 const STORAGE_KEY = "medica:doctor-nav-collapsed";
 
@@ -42,6 +44,9 @@ function AccountMenu({
   variant?: "avatar";
 }) {
   const navigate = useNavigate();
+  // גרסת הפונט נשמרת בסטייט מקומי כדי שתווית הפריט תתעדכן מיד אחרי המעבר
+  const [font, setFont] = useState(() => currentFont());
+  const nextFont = otherFont(font);
 
   return (
     <Dropdown
@@ -106,6 +111,15 @@ function AccountMenu({
           label: `${t.ui.auth.language}: ${otherLocale(currentLocale()).name}`,
           icon: <Languages />,
           onSelect: () => setLocale(otherLocale(currentLocale()).key),
+        },
+        {
+          key: "font",
+          label: `${t.ui.auth.font}: ${nextFont.name}`,
+          icon: <Type />,
+          onSelect: () => {
+            applyFont(nextFont);
+            setFont(nextFont);
+          },
         },
         {
           key: "logout",

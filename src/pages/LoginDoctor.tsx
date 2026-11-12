@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IdCard } from "lucide-react";
 import { AuthLayout } from "../features/auth/AuthLayout";
 import { Input } from "../components/primitives/Input";
@@ -28,7 +28,7 @@ export function LoginDoctor() {
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout audience="doctor">
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
         <div>
           <h1 className="text-h1 text-ink">{t.login.doctorTitle}</h1>
@@ -53,12 +53,7 @@ export function LoginDoctor() {
           {t.common.continue}
         </Button>
 
-        <Link
-          to="/p/login"
-          className="inline-flex min-h-[24px] items-center justify-center self-center rounded text-caption font-semibold text-primary-600 transition-colors duration-fast hover:text-primary-800"
-        >
-          {t.login.patientLink}
-        </Link>
+
       </form>
     </AuthLayout>
   );

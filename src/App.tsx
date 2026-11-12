@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 import { ToastProvider } from "./components/overlay/Toast";
 import { DataProvider } from "./state/data";
-import { Start } from "./pages/Start";
+import { Landing } from "./pages/Landing";
 import { LoginDoctor } from "./pages/LoginDoctor";
 import { LoginPatient } from "./pages/LoginPatient";
 import { Verify } from "./pages/Verify";
@@ -74,9 +74,8 @@ function AppRoutes() {
   return (
     <>
       <Routes location={background ?? location}>
-        {/* מסך בחירה מקדים: פונט, שפה וכניסה לאזור - לפני מסכי המוצר */}
-        <Route path="/" element={<Navigate to="/start" replace />} />
-        <Route path="/start" element={<Start />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/landing" element={<Landing />} />
 
         {/* מנתח */}
         <Route path="/login" element={<LoginDoctor />} />

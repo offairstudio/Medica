@@ -78,7 +78,7 @@ export function Verify({ audience }: { audience: "doctor" | "patient" }) {
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout audience={audience}>
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
         <div className="text-center">
           <h1 className="text-h1 text-ink">{t.otp.title}</h1>

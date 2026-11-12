@@ -42,3 +42,10 @@
 ## סמל המותג (`public/brand/`)
 
 מתוך קובץ ה-Figma של Medica.
+
+
+## Diagnostics background video
+- Edward Jenner / Pexels: https://www.pexels.com/video/a-man-in-the-laboratory-looking-through-a-microscope-4120950/
+- License: https://www.pexels.com/license/
+- Stock laboratory footage; does not depict Medica's actual laboratory.
+- Locally encoded at 1280px, muted; poster extracted from the same clip.

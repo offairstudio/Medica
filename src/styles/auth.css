@@ -1,0 +1,15 @@
+/* A short staged entrance; the final state remains visible if motion is disabled. */
+@keyframes auth-scene-arrive {
+  from { opacity: 0; transform: scale(1.035); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes auth-content-arrive {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .medica-auth .auth-scene-image { animation: auth-scene-arrive 1.1s cubic-bezier(.22,1,.36,1) both; }
+  .medica-auth .auth-brand-entry { animation: auth-content-arrive .75s cubic-bezier(.22,1,.36,1) .12s both; }
+  .medica-auth .auth-form-entry { animation: auth-content-arrive .85s cubic-bezier(.22,1,.36,1) .24s both; }
+  .medica-auth .auth-scene-caption { animation: auth-content-arrive .9s cubic-bezier(.22,1,.36,1) .36s both; }
+}

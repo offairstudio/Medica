@@ -1,0 +1,1114 @@
+{
+  "deployment": "dpl_5yNwd4bFSFaLKTyxs9AtauDuzFzQ",
+  "url": "https://medica-vert-iota.vercel.app",
+  "files": [
+    {
+      "path": ".claude/launch.json",
+      "uid": "01decd9c6b09df6ca48c8e0a08ccac79bb909f45"
+    },
+    {
+      "path": ".vercelignore",
+      "uid": "b6a88497705f9cf083cbc5534f76f9871d129a56"
+    },
+    {
+      "path": "MEDICA_SPEC.md",
+      "uid": "fa532ae70b220b65c641b0e65744df7585f95f96"
+    },
+    {
+      "path": "README.md",
+      "uid": "87b218368572a346676a14b1834c47c8fe88179c"
+    },
+    {
+      "path": "index.html",
+      "uid": "772e211ca0244abd986634972a7c64bdf120b048"
+    },
+    {
+      "path": "package-lock.json",
+      "uid": "606b70ad6fb71153105eaef7f6584a48fc096f4b"
+    },
+    {
+      "path": "package.json",
+      "uid": "b38ec4fc95149c19a28184d67c73ee1d035a327e"
+    },
+    {
+      "path": "postcss.config.js",
+      "uid": "50423d11f317aef9d5fcfb2563b2a501b344dcd5"
+    },
+    {
+      "path": "public/SOURCES.md",
+      "uid": "4099e2b00e44a11cb26308c2c89c976048621c97"
+    },
+    {
+      "path": "public/avatars/doc-1.jpg",
+      "uid": "0a402dbac86b9999da5024aaf4b0a1319e9f1d24"
+    },
+    {
+      "path": "public/avatars/doc-10.jpg",
+      "uid": "a127e2f58709cc9c3d07977765958eb038fd0663"
+    },
+    {
+      "path": "public/avatars/doc-11.jpg",
+      "uid": "02c79edaad9bdd089e29c7215be0bbb1c021c89b"
+    },
+    {
+      "path": "public/avatars/doc-12.jpg",
+      "uid": "77c2da6eec0a282cfa3ac317425b93ee0742bb1c"
+    },
+    {
+      "path": "public/avatars/doc-14.jpg",
+      "uid": "0a5fdae84e2d913b48bc44aada73045a0f8359da"
+    },
+    {
+      "path": "public/avatars/doc-15.jpg",
+      "uid": "61940af84bfa358d0701ef1b4e390c47716fac56"
+    },
+    {
+      "path": "public/avatars/doc-16.jpg",
+      "uid": "251dfcce986cfeffdb881884a4234104fa42664a"
+    },
+    {
+      "path": "public/avatars/doc-17.jpg",
+      "uid": "05172f30defff04906416ed067ca429852008bf3"
+    },
+    {
+      "path": "public/avatars/doc-18.jpg",
+      "uid": "a0a2b757a71f47bbaf4fcde1871119e0c6af4093"
+    },
+    {
+      "path": "public/avatars/doc-19.jpg",
+      "uid": "b06cc23a9188c31a352626d2c057cf11e6916b5a"
+    },
+    {
+      "path": "public/avatars/doc-2.jpg",
+      "uid": "08d17c5423c11e1e21292c394bfb8e4bdb9fa452"
+    },
+    {
+      "path": "public/avatars/doc-20.jpg",
+      "uid": "13e033f9e7c8c8cb15e4bf13ab2b9291b7c733a8"
+    },
+    {
+      "path": "public/avatars/doc-22.jpg",
+      "uid": "a25c66a4b9f0cf859b863eee0cf3193577921541"
+    },
+    {
+      "path": "public/avatars/doc-23.jpg",
+      "uid": "281f59ba8e254b752d80aab0058641a5ff247f92"
+    },
+    {
+      "path": "public/avatars/doc-24.jpg",
+      "uid": "2cf33ab556bebf43caab842b118f9713eb7e0395"
+    },
+    {
+      "path": "public/avatars/doc-25.jpg",
+      "uid": "2531e8d77034738d96d83dc8d56a3f7684df55ac"
+    },
+    {
+      "path": "public/avatars/doc-26.jpg",
+      "uid": "01c429819c7619d415c40435bdaed0a29d3989e6"
+    },
+    {
+      "path": "public/avatars/doc-28.jpg",
+      "uid": "eeb7b4b193159421fc42a863a5908923fef7e25f"
+    },
+    {
+      "path": "public/avatars/doc-29.jpg",
+      "uid": "2fb8527dcbde4f680ed1206a899be8b6532e0d0a"
+    },
+    {
+      "path": "public/avatars/doc-3.jpg",
+      "uid": "b41565dd1fbc18fcd0fe6d616314784183a27458"
+    },
+    {
+      "path": "public/avatars/doc-30.jpg",
+      "uid": "2cf4c85eee157fc86db44f6e41226a7adf41dd1d"
+    },
+    {
+      "path": "public/avatars/doc-31.jpg",
+      "uid": "d2a4ac0c3f12aae1ae2646524878647dbcf9db57"
+    },
+    {
+      "path": "public/avatars/doc-32.jpg",
+      "uid": "ba53b5b2303903ca03fc2dd8b04ea5256afdcba9"
+    },
+    {
+      "path": "public/avatars/doc-34.jpg",
+      "uid": "307b9d6f7d66a61c9722f3ddbf2ce3792fcb86db"
+    },
+    {
+      "path": "public/avatars/doc-35.jpg",
+      "uid": "d14f76c5c86455b17a5887c158220d9b1bc9f1b1"
+    },
+    {
+      "path": "public/avatars/doc-36.jpg",
+      "uid": "2dc6f62e0252e8c6265c238dcdb18832a66e9f7e"
+    },
+    {
+      "path": "public/avatars/doc-5.jpg",
+      "uid": "b68d493b19ffcaa0b7035e3c03ea6c20cb8968a1"
+    },
+    {
+      "path": "public/avatars/doc-6.jpg",
+      "uid": "655bdad3c162291a8b534168e3539cf26daef055"
+    },
+    {
+      "path": "public/avatars/doc-7.jpg",
+      "uid": "6e467942ae0d7ba11578a419aecfeb8fde366ce9"
+    },
+    {
+      "path": "public/avatars/doc-9.jpg",
+      "uid": "ebe8d726f875e4416586ddabe188e78110bf7b8f"
+    },
+    {
+      "path": "public/avatars/generated/doctor-1.png",
+      "uid": "1cd3645cc57b0b1e873b572a594588192864a5c6"
+    },
+    {
+      "path": "public/avatars/generated/doctor-2.png",
+      "uid": "e44f3c3a588c863ef8210b4483a56a5ff677fdc9"
+    },
+    {
+      "path": "public/avatars/generated/doctor-3.png",
+      "uid": "60e7b7f7489a484d4b77ec506e2283db94a40435"
+    },
+    {
+      "path": "public/avatars/generated/doctor-4.png",
+      "uid": "75f8352db634348e3688c4ff4a3c9a0275035478"
+    },
+    {
+      "path": "public/avatars/generated/doctor-5.png",
+      "uid": "bebafbff039a93139f732fbf37e52bca31c1a6ab"
+    },
+    {
+      "path": "public/avatars/generated/doctor-6.png",
+      "uid": "3cfb6855035223726a1dd5ef7cd47f2a8c4e871c"
+    },
+    {
+      "path": "public/avatars/generated/doctor-7.png",
+      "uid": "0e57b7acd7f477ff0205cc1b8f8bce3fd844e151"
+    },
+    {
+      "path": "public/avatars/generated/doctor-8.png",
+      "uid": "c6e1130828671610f3e0680b05801a2e2fc9fe25"
+    },
+    {
+      "path": "public/avatars/generated/doctor-9.png",
+      "uid": "50a25cdf442797f3213d30fe58328e94382da7a0"
+    },
+    {
+      "path": "public/avatars/generated/doctor-portrait-sheet.png",
+      "uid": "2036405cd7e0071719acbfb0122231156d37a1c8"
+    },
+    {
+      "path": "public/brand/SOURCES.md",
+      "uid": "bd70d71f0baa3463e79f69fd1592696006843d87"
+    },
+    {
+      "path": "public/brand/centres/elisha-en.svg",
+      "uid": "c9b890a012b21ede021f9bcb6c7453d4f8798047"
+    },
+    {
+      "path": "public/brand/centres/elisha-name.svg",
+      "uid": "2c9870792f7d3628a1b8653d48d0773565108cee"
+    },
+    {
+      "path": "public/brand/centres/elisha-stacked.svg",
+      "uid": "a92fa01a573084f461a26fce74440feaa9a45675"
+    },
+    {
+      "path": "public/brand/centres/elisha-wide.png",
+      "uid": "86b17b6776c51d2812640b6cf6231a52814585cb"
+    },
+    {
+      "path": "public/brand/centres/refael-compact.svg",
+      "uid": "4847906a3a6d3f011eebe41ea27fa4d36c574749"
+    },
+    {
+      "path": "public/brand/centres/refael-en.svg",
+      "uid": "470e661b879b553ccb5865479f10b5d3d0006383"
+    },
+    {
+      "path": "public/brand/centres/refael-name.svg",
+      "uid": "fbdd6989ad1d3ef66588189a206216a8cb3da78c"
+    },
+    {
+      "path": "public/brand/centres/refael-wide.svg",
+      "uid": "d4c8eecfcbe01c349d444bdd43f89181eec8e7d9"
+    },
+    {
+      "path": "public/brand/centres/rmc-compact.svg",
+      "uid": "1df8fa3f881192946192f943bc11ab7ca81c5177"
+    },
+    {
+      "path": "public/brand/centres/rmc-en.svg",
+      "uid": "9656fbbe56f031d7010d7cd69f455bcb6bcfbdd0"
+    },
+    {
+      "path": "public/brand/centres/rmc-name.svg",
+      "uid": "1800d8cd9f612f8124b9e9682abdce76554eb9a7"
+    },
+    {
+      "path": "public/brand/centres/rmc-wide.svg",
+      "uid": "0a4ae8b40b096983bcbf238fb67cbd769a990b87"
+    },
+    {
+      "path": "public/brand/centres/telaviv-compact.svg",
+      "uid": "7e9b86812799839046e563cb8785877172d59120"
+    },
+    {
+      "path": "public/brand/centres/telaviv-en.svg",
+      "uid": "4f2bf183ada7d6e491a6884ea794b145a77ca4df"
+    },
+    {
+      "path": "public/brand/centres/telaviv-name.svg",
+      "uid": "d0a5944966e78c8744130ae107157fd47bfeeaf6"
+    },
+    {
+      "path": "public/brand/centres/telaviv-wide.svg",
+      "uid": "1c89b8c747b55ffa4ca26b72fc4f07731040f0cc"
+    },
+    {
+      "path": "public/brand/medica-auth-doctors-v1.webp",
+      "uid": "881be35b388cbc4628fd8dffc0d3bc6b4d1ff007"
+    },
+    {
+      "path": "public/brand/medica-auth-hero-v1.png",
+      "uid": "2c30b55ee7e6113573b2e0ff8c9a36585eafa5a9"
+    },
+    {
+      "path": "public/brand/medica-auth-lounge-v2.jpg",
+      "uid": "232c97843f294409809b422e65f0bcd3fb355cae"
+    },
+    {
+      "path": "public/brand/medica-auth-operating-room-empty-v2.webp",
+      "uid": "bf76c26cd2239662d19ba3b2ae49590856bc5c5f"
+    },
+    {
+      "path": "public/brand/medica-auth-operating-room-v1.webp",
+      "uid": "fdd012e80e6250f2c5e26be66efabb7e11c3d3fd"
+    },
+    {
+      "path": "public/brand/medica-elisha-logo.png",
+      "uid": "9c2cb2341c7a1ed6f94821384d4bebe6dd43cabb"
+    },
+    {
+      "path": "public/brand/medica-logo-no-tagline.svg",
+      "uid": "a18c21be941e3ff163a8885283f2166c3f30c22a"
+    },
+    {
+      "path": "public/brand/medica-logo-wide.svg",
+      "uid": "9e274ad6e0ed5e9628a8c58888306a277ea07f07"
+    },
+    {
+      "path": "public/brand/medica-logo.svg",
+      "uid": "a1f94de0f93c764c5c905c3573c926502984b20b"
+    },
+    {
+      "path": "public/brand/medica-mark.svg",
+      "uid": "a43c25f5c6fda5e5883766045b4e70dfb6267cf9"
+    },
+    {
+      "path": "public/brand/medica-raphael-logo.png",
+      "uid": "efee17afad46f4f694d5fc491bff7ae0a15b9cfd"
+    },
+    {
+      "path": "public/brand/medica-rmc-logo.png",
+      "uid": "6057790482b6dd3a2d1239547bf8036ffa003558"
+    },
+    {
+      "path": "public/brand/patient-welcome-care-v3.jpg",
+      "uid": "1570fb83ed03c6160a3d7c048579c9c6a734c7ef"
+    },
+    {
+      "path": "public/landing/figma/logo-elisha.png",
+      "uid": "86b17b6776c51d2812640b6cf6231a52814585cb"
+    },
+    {
+      "path": "public/landing/figma/surgery.png",
+      "uid": "f696db41609aa469e18e10b24a74c8a0641d786d"
+    },
+    {
+      "path": "public/landing/figma/ent.png",
+      "uid": "6b119807085647ad161b0ed307caf25a90702ed0"
+    },
+    {
+      "path": "public/landing/figma/bariatric.png",
+      "uid": "e5a529ddbb88bc265367f7545354a2ad24fc2dcc"
+    },
+    {
+      "path": "public/landing/figma/cardiology.png",
+      "uid": "51fe5a6142f1cf41f06fab638ef195ed4a817602"
+    },
+    {
+      "path": "public/landing/figma/eyes.png",
+      "uid": "4edd53a5795f489f091a927d40201430769aaea1"
+    },
+    {
+      "path": "public/landing/figma/gastro.png",
+      "uid": "91f19dc54e26a90553300280318eafb43656dd5d"
+    },
+    {
+      "path": "public/landing/figma/hero.png",
+      "uid": "d9ab1a1b555d52ca73947a8f3ed8774e6fd7e664"
+    },
+    {
+      "path": "public/landing/figma/hospital-refael.png",
+      "uid": "c26c16869671f558cf2f274f22b395c28d6471c0"
+    },
+    {
+      "path": "public/landing/figma/logo-refael.png",
+      "uid": "4d851244d529b08769f85d56361bbb5bd3818d64"
+    },
+    {
+      "path": "public/landing/figma/logo-rmc.png",
+      "uid": "5312f6bdf8c6d05be50b6b48662a98c5b3a12fdf"
+    },
+    {
+      "path": "public/landing/figma/logo-telaviv.png",
+      "uid": "fe6cb965a68c4ebb644691fbe7116fe6b392fa63"
+    },
+    {
+      "path": "public/landing/figma/medica.png",
+      "uid": "550c4d30bb0dd18f7745afafd86870617c59e507"
+    },
+    {
+      "path": "public/landing/figma/orthopedics.png",
+      "uid": "a48d36085bd4cf2c2aca261110e820540a0072f4"
+    },
+    {
+      "path": "public/landing/figma/pain.png",
+      "uid": "c14ee3a3371b6632e367019dbae14966f583a9ca"
+    },
+    {
+      "path": "public/landing/figma/patient-home.png",
+      "uid": "8c3fec8d4b1a26e6a67aea0b36ca277cb5cc6a6b"
+    },
+    {
+      "path": "public/landing/figma/person.svg",
+      "uid": "4f6ffc263a0e053f5ce3aed9c2db7bafb6188813"
+    },
+    {
+      "path": "public/landing/figma/urology.png",
+      "uid": "f1dde0354660e44e0b6df00ea51fa515aaa6bbe0"
+    },
+    {
+      "path": "public/landing/figma/white-elisha.png",
+      "uid": "4799d9f96710aa3f9030e3c8d80309bd64dafe73"
+    },
+    {
+      "path": "public/landing/figma/white-refael.png",
+      "uid": "6c4a3e118420c6fd87a0ec8427adc3a08d3f116a"
+    },
+    {
+      "path": "public/landing/figma/white-rmc.png",
+      "uid": "9b6ff81c9f48a6d5b6134302aa4f901e93c08acf"
+    },
+    {
+      "path": "public/landing/figma/white-telaviv.png",
+      "uid": "f08ca19781fd86550f007f19bbf253f450f9256d"
+    },
+    {
+      "path": "public/landing/SOURCES.md",
+      "uid": "75e530aaa7ddf04342dc026c7f4db7a5d6f0d548"
+    },
+    {
+      "path": "public/landing/cardiology-doctor-source.jpg",
+      "uid": "97240cb20e66f1c9d05fe170ef31b4bce3d477ef"
+    },
+    {
+      "path": "public/landing/centre-telaviv-original.jpg",
+      "uid": "69052ce4eeb9208a80b3a6b37a67e508b10ce94b"
+    },
+    {
+      "path": "public/landing/elisha-10-source.jpg",
+      "uid": "f696db41609aa469e18e10b24a74c8a0641d786d"
+    },
+    {
+      "path": "public/landing/elisha-exterior-source.jpg",
+      "uid": "9a3e4534d6840055260accd56789ef2141ef5398"
+    },
+    {
+      "path": "public/landing/ent-doctor-source.jpg",
+      "uid": "6b119807085647ad161b0ed307caf25a90702ed0"
+    },
+    {
+      "path": "public/landing/raphael-354e3cf81b2f4c5c.jpg",
+      "uid": "e5a529ddbb88bc265367f7545354a2ad24fc2dcc"
+    },
+    {
+      "path": "public/landing/gastro-doctor-source.jpg",
+      "uid": "91f19dc54e26a90553300280318eafb43656dd5d"
+    },
+    {
+      "path": "public/landing/raphael-13a563c5b3c4112a.jpg",
+      "uid": "d9ab1a1b555d52ca73947a8f3ed8774e6fd7e664"
+    },
+    {
+      "path": "public/landing/raphael-909c9066c3849135.jpg",
+      "uid": "c26c16869671f558cf2f274f22b395c28d6471c0"
+    },
+    {
+      "path": "public/landing/pain-doctor-source.jpg",
+      "uid": "c14ee3a3371b6632e367019dbae14966f583a9ca"
+    },
+    {
+      "path": "public/landing/orthopedics-source.jpg",
+      "uid": "c4ca9266847d0356b70cfeb3e8e8367dd49c1757"
+    },
+    {
+      "path": "public/landing/patient-results-desktop.jpg",
+      "uid": "3e148364037a413655a1e66a2e3ba79ac0fe57ce"
+    },
+    {
+      "path": "public/landing/patient-results-mobile.jpg",
+      "uid": "b8379ebb898a528e82169c280a3391f3985388f2"
+    },
+    {
+      "path": "public/landing/product/3d/documents-v1.webp",
+      "uid": "193a9fa0bfa71ff1cf7133d5a9c849dd2a6a94b3"
+    },
+    {
+      "path": "public/landing/product/3d/results-v1.webp",
+      "uid": "4a4d8c57a59cad6e38224441bb976b3c90d7c62e"
+    },
+    {
+      "path": "public/landing/product/appointments.jpg",
+      "uid": "820d955bd7effeb9c55376cc183f315abbeb8148"
+    },
+    {
+      "path": "public/landing/product/art/documents-flat-v1.webp",
+      "uid": "4a4f4824b7b92e8b15fe78e59dbb13d88b746f34"
+    },
+    {
+      "path": "public/landing/product/art/documents-flat-v2.webp",
+      "uid": "81651729929bdd10d6e8f35c470766d3bd4051e5"
+    },
+    {
+      "path": "public/landing/product/art/results-flat-v1.webp",
+      "uid": "ccea0530ff8dc70f55b2297c99933e1f03c4f9a8"
+    },
+    {
+      "path": "public/landing/product/art/results-flat-v2.webp",
+      "uid": "155f4b8f144611d6fa94049743017be641380c51"
+    },
+    {
+      "path": "public/landing/product/documents.jpg",
+      "uid": "0d5e6444f6f79c43e8d83d656861d8fb4513110e"
+    },
+    {
+      "path": "public/landing/product/portal-presentation-v2.png",
+      "uid": "d374cc77a4a7778f2f60fd1b243d5d95a614c4f8"
+    },
+    {
+      "path": "public/landing/product/results.jpg",
+      "uid": "7afacd177d1c60e9ad362777c34188f99a8065e4"
+    },
+    {
+      "path": "public/landing/raphael-a43cbd2b3d9df21e.jpg",
+      "uid": "8297951ab29fd341aef323f133b3320974c0b636"
+    },
+    {
+      "path": "public/landing/raphael-cd34fffad377284c.jpg",
+      "uid": "92e0f800d6ee9e55d044e06e76f98eecd8863fbb"
+    },
+    {
+      "path": "public/landing/rmc-1-source.jpg",
+      "uid": "9e63fa8e0041d0f207acc12576bf0a198f3e9bfc"
+    },
+    {
+      "path": "public/landing/rmc-building-source.jpg",
+      "uid": "325327b31f584b259aa531929152315e8895aa6d"
+    },
+    {
+      "path": "public/landing/specialties/bariatric-v4.jpg",
+      "uid": "6fca6ea2c3694bc27382037dc80cc6919a929661"
+    },
+    {
+      "path": "public/landing/specialties/cardiology-v4.jpg",
+      "uid": "46ca338cb2a07d47971cc8c5cebd3487813bbe7c"
+    },
+    {
+      "path": "public/landing/specialties/ent-v4.jpg",
+      "uid": "ed2d4e573f2e93f3c2ed8094208f5f1ee17eca9e"
+    },
+    {
+      "path": "public/landing/specialties/eyes-v4.jpg",
+      "uid": "e3277131414ba14da3e47da782a55f1091863d75"
+    },
+    {
+      "path": "public/landing/specialties/gastro-v4.jpg",
+      "uid": "6478a44f2bd0e207f4c6140e45201015ecb47e8b"
+    },
+    {
+      "path": "public/landing/specialties/orthopedics-v4.jpg",
+      "uid": "c7c6ebb1cd8931d991128aa0d890f8d055f1fe3a"
+    },
+    {
+      "path": "public/landing/specialties/pain-v4.jpg",
+      "uid": "f3468943ea4c96089d89262b358983912ca979ff"
+    },
+    {
+      "path": "public/landing/specialties/surgery-v4.jpg",
+      "uid": "1735697ecad314cae5e506978d3eb5a2142c0875"
+    },
+    {
+      "path": "public/landing/specialties/urology-v4.jpg",
+      "uid": "cbffd2be86101c5955240a9da53eb28609bd46da"
+    },
+    {
+      "path": "public/landing/video/centre-elisha-v2.mp4",
+      "uid": "2b4025bc02fca74a4b0a4610d512d71196a6e42a"
+    },
+    {
+      "path": "public/landing/video/centre-elisha.jpg",
+      "uid": "11e55d9dcc7c061b1c833c6ef278a901bb0624c8"
+    },
+    {
+      "path": "public/landing/video/centre-elisha.mp4",
+      "uid": "edb93ebe14b662b7babf03c425e6488b8e50f2cb"
+    },
+    {
+      "path": "public/landing/video/centre-refael.jpg",
+      "uid": "a37e106791b83ba764819d47f9914ec15fd37d42"
+    },
+    {
+      "path": "public/landing/video/centre-refael.mp4",
+      "uid": "24f60cac3961d81fd3d1d46731460ab80bbfaed3"
+    },
+    {
+      "path": "public/landing/video/centre-rmc.jpg",
+      "uid": "760c71ef83c993e9c3d7710440b64373b929ea91"
+    },
+    {
+      "path": "public/landing/video/centre-rmc.mp4",
+      "uid": "fe8ad3ac2befcc2bf98c320f20f16fce8e235d1e"
+    },
+    {
+      "path": "public/landing/video/centre-telaviv.jpg",
+      "uid": "5fec4a6dc505d1be606e74bf5b7728e765d2b076"
+    },
+    {
+      "path": "public/landing/video/centre-telaviv.mp4",
+      "uid": "4631160e4eb04669643903cfaba9fa437fff207d"
+    },
+    {
+      "path": "public/landing/video/medica-atmosphere-poster.jpg",
+      "uid": "8b5a05744a7405f270581e9acd98ba96129852bd"
+    },
+    {
+      "path": "public/landing/video/medica-atmosphere-v2-poster.jpg",
+      "uid": "2a112f276d20687d0a384b1b7b0ec2628800db10"
+    },
+    {
+      "path": "public/landing/video/medica-atmosphere-v3-poster.jpg",
+      "uid": "2a112f276d20687d0a384b1b7b0ec2628800db10"
+    },
+    {
+      "path": "public/landing/video/medica-atmosphere-v2.mp4",
+      "uid": "4222b3041503f8eb3df9be6c941b4e444dce2cc2"
+    },
+    {
+      "path": "public/landing/video/medica-atmosphere-v3.mp4",
+      "uid": "c5fe31425f32d616251cd60acdb79033d4d78822"
+    },
+    {
+      "path": "public/landing/video/medica-atmosphere.mp4",
+      "uid": "93209c81a6fab21febe19bf33406511c8cfd1af9"
+    },
+    {
+      "path": "public/favicon.svg",
+      "uid": "22b14cb7f47b019bb5ca9840f37c238edbb1349c"
+    },
+    {
+      "path": "public/mock-files/blood-test.pdf",
+      "uid": "b88a7dc59a9e08f6219489be1bb377f0b4db9c6e"
+    },
+    {
+      "path": "public/mock-files/discharge-letter.pdf",
+      "uid": "f1c415fc7b4be4ad50d79684200c6be6071bc9fd"
+    },
+    {
+      "path": "public/mock-files/mri-result.pdf",
+      "uid": "50594dcae59595358fe53dd9f32f3da1d05fca1f"
+    },
+    {
+      "path": "public/mock-files/referral.pdf",
+      "uid": "ada080f3562f7411b278bf1a1d73eaccd5a4303e"
+    },
+    {
+      "path": "src/App.tsx",
+      "uid": "9ab55aa68adf002e9df54c5166e9d26f379f531f"
+    },
+    {
+      "path": "src/components/calendar/BlockLegend.tsx",
+      "uid": "53135f5aa439385b3ae3b8a548e28f3d7cf68141"
+    },
+    {
+      "path": "src/components/calendar/MonthCalendar.tsx",
+      "uid": "b8c2d75e2d696dcbf954848e0bc1204d012d9744"
+    },
+    {
+      "path": "src/components/data/Avatar.tsx",
+      "uid": "83c1c7d32781bec794e1dda8df8d2103ef3d1cf0"
+    },
+    {
+      "path": "src/components/data/Badge.tsx",
+      "uid": "9a36e660003651f8f4df7bcd58a47648c784c00f"
+    },
+    {
+      "path": "src/components/data/Card.tsx",
+      "uid": "40f7d0f1c8b1f04a426d61813fe1f762e0a3604c"
+    },
+    {
+      "path": "src/components/data/CentreArt.tsx",
+      "uid": "aa34383c3d23e6aaa5365d362e0ec47d60c9108a"
+    },
+    {
+      "path": "src/components/data/Chip.tsx",
+      "uid": "436913009bfe3e9993571e4b8f2f0c1eecf52fc0"
+    },
+    {
+      "path": "src/components/data/EmptyState.tsx",
+      "uid": "d50fbbdf8c2e678c79d0ee0b978c7dacb3235978"
+    },
+    {
+      "path": "src/components/data/SectionCard.tsx",
+      "uid": "37a452b9d112fc7cc9966185a3190c49c076a524"
+    },
+    {
+      "path": "src/components/data/Skeleton.tsx",
+      "uid": "4268e9d73777b82a2451d129e34cb497f2cee0ca"
+    },
+    {
+      "path": "src/components/data/Table.tsx",
+      "uid": "00e478171a5524f419697ee318e889a4e42a7068"
+    },
+    {
+      "path": "src/components/form/DatePicker.tsx",
+      "uid": "f3180ae3c32ca443453e6e07156e85f66ffcf5e7"
+    },
+    {
+      "path": "src/components/form/Field.tsx",
+      "uid": "77907cd8f1dabd4e80bccc49641df539403e4dac"
+    },
+    {
+      "path": "src/components/form/FileUpload.tsx",
+      "uid": "99c64f3db0c557de0eff90d0cfbf3084323f3083"
+    },
+    {
+      "path": "src/components/form/RequiredMark.tsx",
+      "uid": "3c3703d6bf71d02e14a1d9831ff9fbd31bc7d415"
+    },
+    {
+      "path": "src/components/form/Stepper.tsx",
+      "uid": "20a233f82629293f536930ce3a2777cc5a4936b0"
+    },
+    {
+      "path": "src/components/form/TimePicker.tsx",
+      "uid": "aade9741f265bbe636053791bce6c036a1fca603"
+    },
+    {
+      "path": "src/components/layout/AppShell.tsx",
+      "uid": "388856f0842cedc3559a3c187e23f2884fbfac28"
+    },
+    {
+      "path": "src/components/layout/BrandMark.tsx",
+      "uid": "39ab91309e3965634a6f3cf694c0eb79cfc9b72e"
+    },
+    {
+      "path": "src/components/layout/DoctorNav.tsx",
+      "uid": "98ecc2823a57bab116b71271c1bfdea6e673e163"
+    },
+    {
+      "path": "src/components/layout/PageHeader.tsx",
+      "uid": "af28d6bf1a8584c8aca012003037c8b83e51b6af"
+    },
+    {
+      "path": "src/components/layout/PatientNav.tsx",
+      "uid": "6dbb122662cd7dc557cd88b2e6dc40c4b0a16c10"
+    },
+    {
+      "path": "src/components/layout/ScreenHeader.tsx",
+      "uid": "b720a364737b165463319f469cf85c19a588c67e"
+    },
+    {
+      "path": "src/components/layout/ScrollArea.tsx",
+      "uid": "47ba596fea855f2763e90a4ffc06d40928864b0d"
+    },
+    {
+      "path": "src/components/overlay/Drawer.tsx",
+      "uid": "72a0b71772de01d0fae892445c1e87ae2d7bbbe1"
+    },
+    {
+      "path": "src/components/overlay/Dropdown.tsx",
+      "uid": "e7914b3b1fea2714839c9c71e5ea92df2a6bc3a1"
+    },
+    {
+      "path": "src/components/overlay/Modal.tsx",
+      "uid": "35fb6502e8c03c5281925abb45a74bfa97bf025c"
+    },
+    {
+      "path": "src/components/overlay/Sheet.tsx",
+      "uid": "28d9f2dd626cacce59fa4ce61e667c8099ea9694"
+    },
+    {
+      "path": "src/components/overlay/Toast.tsx",
+      "uid": "effe5768ee201ed94e1375b912741ec9dca8da0f"
+    },
+    {
+      "path": "src/components/overlay/Tooltip.tsx",
+      "uid": "9be0d9f3b9300665e7caebfb07c052c279031bbf"
+    },
+    {
+      "path": "src/components/primitives/Button.tsx",
+      "uid": "1e6b1cceeba43ec02861dc1329aa6f6acd11e8ce"
+    },
+    {
+      "path": "src/components/primitives/Checkbox.tsx",
+      "uid": "641bebebbce1efb2c16db8e1ae142bda7267ad68"
+    },
+    {
+      "path": "src/components/primitives/Input.tsx",
+      "uid": "389fe338c30a86d669931832f3a046a29c89e4f3"
+    },
+    {
+      "path": "src/components/primitives/Radio.tsx",
+      "uid": "e92f20d28eef6d014c0671ef31ba5f844fcea53a"
+    },
+    {
+      "path": "src/components/primitives/Select.tsx",
+      "uid": "3d5fd28a22d9d481c81924c89411f8a9283b42c7"
+    },
+    {
+      "path": "src/components/primitives/Textarea.tsx",
+      "uid": "d0c3e94617f75849bb40e3fd116aba8f6453a249"
+    },
+    {
+      "path": "src/components/primitives/Toggle.tsx",
+      "uid": "091b1cb6ccc05348d8d299a0c394338d15d06f3d"
+    },
+    {
+      "path": "src/features/auth/AuthLayout.tsx",
+      "uid": "7f9cc1b37d382a868e1577824ba44b9bb7d1a283"
+    },
+    {
+      "path": "src/features/auth/FontVersionToggle.tsx",
+      "uid": "124261dedb9e3a23556d53b98379c336f6798a1a"
+    },
+    {
+      "path": "src/features/auth/LocaleToggle.tsx",
+      "uid": "1a4bb65d27659da1e9e164f63524df43050323ef"
+    },
+    {
+      "path": "src/features/doctor-schedule/DoctorPicker.tsx",
+      "uid": "874d9ca41e17b59d91109a9f7817bb6a48cd33a8"
+    },
+    {
+      "path": "src/features/doctor-schedule/SurgeryRow.tsx",
+      "uid": "f44d65c00b0980597788e68813a5d31a933109b2"
+    },
+    {
+      "path": "src/features/doctor-schedule/SurgeryTableView.tsx",
+      "uid": "e6f91cab1700f538bc39cc118e3d302f10030307"
+    },
+    {
+      "path": "src/features/doctor-schedule/slots.ts",
+      "uid": "795b517bf507d210fc86f74de366603ca104abd2"
+    },
+    {
+      "path": "src/features/landing/BrandWaves.tsx",
+      "uid": "a4f56f890c74abaf8f2881acf84ae5743c07c939"
+    },
+    {
+      "path": "src/features/landing/CentreBackdrop.tsx",
+      "uid": "17e12981c6b9cdde73e78a8d177c660469da401a"
+    },
+    {
+      "path": "src/features/landing/ContactParticles.tsx",
+      "uid": "dc55581d50d0c5ec6ab8a1f8ee03c7ee9cafcf59"
+    },
+    {
+      "path": "src/features/landing/ContactSelect.tsx",
+      "uid": "baf87caaf8a0b0198a81c7a7736f1c79785d4c1b"
+    },
+    {
+      "path": "src/features/landing/DigitalExperience.tsx",
+      "uid": "26aef87e6a1002e1aeacf544f6ff21336ee78915"
+    },
+    {
+      "path": "src/features/landing/FaqItem.tsx",
+      "uid": "c772c0490fa7013611542f9b51c624a39f3077e1"
+    },
+    {
+      "path": "src/features/landing/SpecialtyCarousel.tsx",
+      "uid": "75cdf41b169a78371e0044abb1c4c1219af774bf"
+    },
+    {
+      "path": "src/features/landing/content.ts",
+      "uid": "a7de4a6479c1aedd60e54549978067af24a29c09"
+    },
+    {
+      "path": "src/features/landing/useLandingReveal.ts",
+      "uid": "7f9750d8529a30349feb1f1c618b3816273372c0"
+    },
+    {
+      "path": "src/features/landing/useScrollScene.ts",
+      "uid": "4d244e23f5d2ccf43a84c90e052de4a0c31c2f31"
+    },
+    {
+      "path": "src/features/patient-appointments/AppointmentCard.tsx",
+      "uid": "093626ef01d451ea323239c260d649259058998f"
+    },
+    {
+      "path": "src/features/patient-appointments/AppointmentDetailsContent.tsx",
+      "uid": "b4f5eb90d40da666ab08fcbd9e9f5c71c9cc13a3"
+    },
+    {
+      "path": "src/features/patient-appointments/AppointmentDetailsSheet.tsx",
+      "uid": "6c29ffda8843fd28c8a7404d0f7ed03fe21580d6"
+    },
+    {
+      "path": "src/features/patient-appointments/grouping.ts",
+      "uid": "f98f57bb00388b17296e52c29be2e1eabaac846b"
+    },
+    {
+      "path": "src/features/patient-documents/DocumentRow.tsx",
+      "uid": "15002cefc073f3b765676ada9cc4c6cb5c16ceb3"
+    },
+    {
+      "path": "src/features/patient-profile/ProfileDrawer.tsx",
+      "uid": "27c8d62f7b3bf388c1d0c1e2eebf9dffe16bff88"
+    },
+    {
+      "path": "src/features/surgery-details/SurgeryDetailsContent.tsx",
+      "uid": "5c12ae5c8b3aa8a1eeaa98c89ed1c159608bec1e"
+    },
+    {
+      "path": "src/features/surgery-details/SurgeryDetailsModal.tsx",
+      "uid": "72af1a83a8149ef5a87c915f062b7254a74c645f"
+    },
+    {
+      "path": "src/features/surgery-swap/SwapModal.tsx",
+      "uid": "c608b9e66209cd4a45a8ae8bad59bfc480494a0f"
+    },
+    {
+      "path": "src/features/surgery-wizard/Step1Patient.tsx",
+      "uid": "81be02211103114021d0f19b0ab4662a38c2a27b"
+    },
+    {
+      "path": "src/features/surgery-wizard/Step2Surgery.tsx",
+      "uid": "5d086231a98e9cf287fc1bb096ab52154ff1e547"
+    },
+    {
+      "path": "src/features/surgery-wizard/Step3Documents.tsx",
+      "uid": "ef29e459ba62acb6369622fc3fa62bdbea30ea61"
+    },
+    {
+      "path": "src/features/surgery-wizard/SurgeryWizardModal.tsx",
+      "uid": "b3972fa02e32a9584778bd02be292a655348dce5"
+    },
+    {
+      "path": "src/features/surgery-wizard/wizardState.ts",
+      "uid": "39965b3fd76410a64ad0023ce32dbd63d260dfd6"
+    },
+    {
+      "path": "src/i18n/en.strings.ts",
+      "uid": "c0f1d71953d0b03afbe22b6b95b84891612662f1"
+    },
+    {
+      "path": "src/i18n/he.strings.ts",
+      "uid": "483ec9549a88846a5b94c70951c91bc6960f051f"
+    },
+    {
+      "path": "src/i18n/index.ts",
+      "uid": "037a12bdddf744d0973a011ea5d0316f4cacc37b"
+    },
+    {
+      "path": "src/i18n/locale.ts",
+      "uid": "51a0677b6ca88d2fd2b6d3af164e2f73b3fb6360"
+    },
+    {
+      "path": "src/lib/cn.ts",
+      "uid": "08aa0e7ac808bbaadd13ddaa13ac3124da1f66d4"
+    },
+    {
+      "path": "src/lib/date.ts",
+      "uid": "ea50f45047688ef44943bd666be1ac811cda602e"
+    },
+    {
+      "path": "src/lib/font.ts",
+      "uid": "c70a3f5a54593116a3126c0ef98a6f12d4198206"
+    },
+    {
+      "path": "src/lib/format.ts",
+      "uid": "df352b1e60ef8a8c477d606dea8cd92b3246d5b2"
+    },
+    {
+      "path": "src/lib/useFakeLoading.ts",
+      "uid": "6fce5f008e9b2fbc993d80edfbf9b3339243eedc"
+    },
+    {
+      "path": "src/main.tsx",
+      "uid": "1818849c6b756e236ee6288817cd760fa490eff8"
+    },
+    {
+      "path": "src/mock/appointments.ts",
+      "uid": "36b5611d9ea0816fcb580e6f87db6a22f4d904c3"
+    },
+    {
+      "path": "src/mock/blocks.ts",
+      "uid": "5fd45b578d428f49171de1b8b46bff062bbf2bb5"
+    },
+    {
+      "path": "src/mock/departments.ts",
+      "uid": "9b16a620d9051ab3d243e9a47e0ed01cd903fa29"
+    },
+    {
+      "path": "src/mock/doctors.ts",
+      "uid": "4a653334a366d848921d2decddb694447fabf726"
+    },
+    {
+      "path": "src/mock/documents.ts",
+      "uid": "999ea9bdec0823ab709efa4446bb10b193b94750"
+    },
+    {
+      "path": "src/mock/hospitals.ts",
+      "uid": "7914d198b5b615872333b364a3bd33ba449fb637"
+    },
+    {
+      "path": "src/mock/localize.ts",
+      "uid": "1bb640b9493d303c6b5370f5b3de47cb74dddde6"
+    },
+    {
+      "path": "src/mock/lookups.ts",
+      "uid": "1a1927eb5004958e1e34e531660db7f98a028aed"
+    },
+    {
+      "path": "src/mock/patients.ts",
+      "uid": "83cc672ca82bdba88fbb2ae53359a7021f5995f4"
+    },
+    {
+      "path": "src/mock/schedulePlan.ts",
+      "uid": "b0820ac3e934d799409d60db7a8f62337d51c6c0"
+    },
+    {
+      "path": "src/mock/surgeries.ts",
+      "uid": "8f869c4ad7bf2a5afd3fc17a4beb9ef6a5d4eecf"
+    },
+    {
+      "path": "src/pages/AppointmentDetails.tsx",
+      "uid": "9d3e5093de129822eda1c410c4c84e94b36ee780"
+    },
+    {
+      "path": "src/pages/DoctorSchedule.tsx",
+      "uid": "64794fbb52869ca78a44ed6b6c2e23657791acaf"
+    },
+    {
+      "path": "src/pages/KitchenSink.tsx",
+      "uid": "81447ec73dc550f959b8ade860ef40c2e044349c"
+    },
+    {
+      "path": "src/pages/Landing.tsx",
+      "uid": "97dc0a0d7fb4e90e3c4c05c94e2bcddab73de8fd"
+    },
+    {
+      "path": "src/pages/LoginDoctor.tsx",
+      "uid": "d374986769cc53b869ed99fb97ec47dac44a3d6c"
+    },
+    {
+      "path": "src/pages/LoginPatient.tsx",
+      "uid": "f9d1f72bbba0ff5788482fdfb192c267a6c0f8f9"
+    },
+    {
+      "path": "src/pages/LogoLab.tsx",
+      "uid": "14115b5d18d48aa3da92c41aaeaa9ec800c44c94"
+    },
+    {
+      "path": "src/pages/NoAccess.tsx",
+      "uid": "5eeb7ed626db31254d5817abbc0bd2dc25f4a23a"
+    },
+    {
+      "path": "src/pages/NotFound.tsx",
+      "uid": "abb2020d59d11a90028c6351b06702b612fe391d"
+    },
+    {
+      "path": "src/pages/PatientAppointments.tsx",
+      "uid": "4aefec60e7565b167d956eb7c0aac6e32f3bfc13"
+    },
+    {
+      "path": "src/pages/PatientDashboard.tsx",
+      "uid": "3903e3384b800230cff77f707053fbe47220f07b"
+    },
+    {
+      "path": "src/pages/PatientResults.tsx",
+      "uid": "7d0c304fd9b68d9707a25e0d56d8a2c662fd6d11"
+    },
+    {
+      "path": "src/pages/SurgeryLab.tsx",
+      "uid": "f8410406caaa2d94b2bc3db37b275424993347cc"
+    },
+    {
+      "path": "src/pages/SurgeryView.tsx",
+      "uid": "bdaeb6123a9bd395474a6029ac8188a70c40f983"
+    },
+    {
+      "path": "src/pages/Verify.tsx",
+      "uid": "fcb9be12f8c3cfb0c39f38b7d5e2574d3c94ef79"
+    },
+    {
+      "path": "src/state/data.tsx",
+      "uid": "103e17b3c02fe757f32caad1cfa3dba29d1d8140"
+    },
+    {
+      "path": "src/styles/auth.css",
+      "uid": "37f4d35c6cbc179b43a4671c096165878dedcd31"
+    },
+    {
+      "path": "src/styles/globals.css",
+      "uid": "84093698ffa0a130f1d7c40e6ee93f6846faec19"
+    },
+    {
+      "path": "src/styles/landing-lower.css",
+      "uid": "183d6e2522432d9a75bf1b5816283bf0d75f6bd0"
+    },
+    {
+      "path": "src/styles/landing-motion.css",
+      "uid": "32cde5e7ceae482574fdce767d24d4e941e1ed9a"
+    },
+    {
+      "path": "src/styles/landing.css",
+      "uid": "f0fd95459b9b7812037008604bb92a50a3531182"
+    },
+    {
+      "path": "src/styles/tokens.css",
+      "uid": "3a2336f3496f08ac6c26871b9fc23606d5a1d7ad"
+    },
+    {
+      "path": "src/types/index.ts",
+      "uid": "0772982de0730894e936fa7b13c4ec5a35cd9197"
+    },
+    {
+      "path": "tailwind.config.js",
+      "uid": "2d07f13746d5bc7425a20c21b17bca4be82f3eb7"
+    },
+    {
+      "path": "tsconfig.app.json",
+      "uid": "aaebd12ee2c4354e8bbd0d9cdc8053c72be797b2"
+    },
+    {
+      "path": "tsconfig.json",
+      "uid": "916168243c072245e89f349fb50e0d11696086fb"
+    },
+    {
+      "path": "tsconfig.node.json",
+      "uid": "efeb057208b983771c291bd43e0291ca02b5738f"
+    },
+    {
+      "path": "vercel.json",
+      "uid": "c32e2b02ee04c4a56a4dda823506a45e24d3560a"
+    },
+    {
+      "path": "vite.config.ts",
+      "uid": "3cc89aff1ed1fcb01a523e2b542b91dce2a11081"
+    }
+  ]
+}

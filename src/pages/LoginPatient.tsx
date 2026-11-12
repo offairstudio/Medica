@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IdCard, Phone } from "lucide-react";
 import { AuthLayout } from "../features/auth/AuthLayout";
 import { Input } from "../components/primitives/Input";
@@ -85,12 +85,7 @@ export function LoginPatient() {
           <span dir="ltr" className="tnum font-semibold">03-697-3904</span>
         </p>
 
-        <Link
-          to="/login"
-          className="inline-flex min-h-[24px] items-center justify-center self-center rounded text-caption font-semibold text-primary-600 transition-colors duration-fast hover:text-primary-800"
-        >
-          {t.login.doctorLink}
-        </Link>
+
       </form>
     </AuthLayout>
   );
