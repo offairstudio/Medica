@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowUp, Phone, Facebook, Instagram, Youtube, Check, UserRound, Stethoscope } from "lucide-react";
+import { ArrowLeft, ArrowRight, Pause, Play, ArrowUp, Phone, Facebook, Instagram, Youtube, Check, UserRound, Stethoscope } from "lucide-react";
 import { SpecialtyCarousel } from "../features/landing/SpecialtyCarousel";
 import { FaqItem } from "../features/landing/FaqItem";
 import { DigitalExperience } from "../features/landing/DigitalExperience";
@@ -37,7 +37,31 @@ export function Landing() {
   useLandingReveal(reducedMotion);
   const heroScene = useScrollScene<HTMLDivElement>(2, reducedMotion);
   const specialtyScene = useScrollScene(specialties.length, reducedMotion, true, 110, true);
-  const centreScene = useScrollScene(centres.length, reducedMotion, true, 110, true);
+  // Centres advance independently of page scrolling, with explicit carousel controls.
+  const centreScene = useScrollScene(centres.length, true);
+  const [centresPaused, setCentresPaused] = useState(false);
+  const [centresHovered, setCentresHovered] = useState(false);
+  const [centresFocused, setCentresFocused] = useState(false);
+  const [centresVisible, setCentresVisible] = useState(false);
+  const [pageVisible, setPageVisible] = useState(!document.hidden);
+  const centreTouch = useRef<{ x: number; y: number } | null>(null);
+  const centresAuto = !reducedMotion && !centresPaused && !centresHovered && !centresFocused && centresVisible && pageVisible;
+
+  useEffect(() => {
+    const node = centreScene.ref.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(([entry]) => setCentresVisible(entry.isIntersecting), { threshold: 0.5 });
+    observer.observe(node);
+    const visibility = () => setPageVisible(!document.hidden);
+    document.addEventListener("visibilitychange", visibility);
+    return () => { observer.disconnect(); document.removeEventListener("visibilitychange", visibility); };
+  }, [centreScene.ref]);
+
+  useEffect(() => {
+    if (!centresAuto) return;
+    const timer = window.setTimeout(() => centreScene.select((centreScene.active + 1) % centres.length), 7000);
+    return () => window.clearTimeout(timer);
+  }, [centresAuto, centreScene.active, centreScene.select]);
   const orderedCentres = [centres[1], centres[0], centres[2], centres[3], centres[4]];
   const centre = orderedCentres[centreScene.active];
 
@@ -164,7 +188,7 @@ export function Landing() {
             </div>
             </div>
             <div className="ml-hero-copy" data-hero-chrome>
-              <p>בתי חולים ומרכזים רפואיים בפריסה ארצית, המעניקים מגוון שירותים רפואיים מתקדמים, בהובלת רופאים מומחים ובזמינות גבוהה.</p>
+              <p>רשת בתי חולים ומרכזים רפואיים בפריסה ארצית, המעניקים מגוון שירותים רפואיים מתקדמים, בהובלת רופאים מומחים ובזמינות גבוהה.</p>
               <div className="ml-hero-actions">
               <button className="ml-button" onClick={() => enquire()}>לתיאום תור</button>
                 <button
@@ -190,6 +214,7 @@ export function Landing() {
             {centres.map((c) => (
               <a
                 key={c.key}
+                className={c.key === "diagnostics" ? "ml-hero-diagnostics" : undefined}
                 href="#centres"
                 onClick={(event) => {
                   event.preventDefault();
@@ -224,6 +249,24 @@ export function Landing() {
         <section
           className="ml-centres-scene"
           id="centres"
+          role="region"
+          aria-roledescription="קרוסלה"
+          tabIndex={0}
+          onMouseEnter={() => setCentresHovered(true)}
+          onMouseLeave={() => setCentresHovered(false)}
+          onFocusCapture={() => setCentresFocused(true)}
+          onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setCentresFocused(false); }}
+          onKeyDown={event => {
+            if (event.target !== event.currentTarget || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+            event.preventDefault();
+            centreScene.select(event.key === "Home" ? 0 : event.key === "End" ? centres.length - 1 : (centreScene.active + (event.key === "ArrowLeft" ? 1 : -1) + centres.length) % centres.length);
+          }}
+          onTouchStart={event => { const t = event.touches[0]; centreTouch.current = { x: t.clientX, y: t.clientY }; }}
+          onTouchEnd={event => {
+            const start = centreTouch.current; centreTouch.current = null; if (!start) return;
+            const t = event.changedTouches[0], dx = t.clientX - start.x, dy = t.clientY - start.y;
+            if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) { setCentresPaused(true); centreScene.select((centreScene.active + (dx > 0 ? 1 : -1) + centres.length) % centres.length); }
+          }}
           aria-labelledby="centres-title"
           ref={centreScene.ref}
           data-scrolling={centreScene.scrolling}
@@ -246,13 +289,19 @@ export function Landing() {
                 </div>
               </div>
               <div className="ml-centre-story">
-                <div className="ml-scene-copy" key={centre.key} aria-live={centreScene.scrolling ? "off" : "polite"}>
+                <div className="ml-scene-copy" key={centre.key} aria-live={centresAuto ? "off" : "polite"}>
                   <h3>{centre.key === "diagnostics" ? centre.name : `${centre.type === "בית חולים" ? "בית החולים" : "המרכז הרפואי"} ${centre.name}`}</h3>
                   <p>{centre.about}</p>
                 </div>
                 {centre.url && <a className="ml-button ml-centre-site" href={centre.url} target="_blank" rel="noreferrer">לאתר {centre.type === "בית חולים" ? "בית החולים" : "המרכז הרפואי"} <ArrowLeft size={18} aria-hidden="true" /></a>}
 
               </div>
+            </div>
+            <div className="ml-centres-navigation" aria-label="ניווט בין סניפי הרשת">
+              <button type="button" aria-label="הסניף הקודם" onClick={() => centreScene.select((centreScene.active - 1 + centres.length) % centres.length)}><ArrowRight size={20} /></button>
+              <span className="ml-centres-current">{centre.name} · <bdi dir="ltr">{centreScene.active + 1} / {centres.length}</bdi></span>
+              <button type="button" aria-label="הסניף הבא" onClick={() => centreScene.select((centreScene.active + 1) % centres.length)}><ArrowLeft size={20} /></button>
+              {!reducedMotion && <button type="button" aria-label={centresPaused ? "הפעלת מעבר אוטומטי בין הסניפים" : "עצירת מעבר אוטומטי בין הסניפים"} aria-pressed={centresPaused} onClick={() => setCentresPaused(value => !value)}>{centresPaused ? <Play size={18} /> : <Pause size={18} />}</button>}
             </div>
           </div>
         </section>
@@ -341,7 +390,7 @@ export function Landing() {
         <BrandWaves />
         <div className="ml-footer-invitation" data-reveal><span className="ml-eyebrow">מצוינות בבריאות.</span><h2>מקום טוב להתחיל<br />להרגיש טוב יותר.</h2><button className="ml-button" onClick={() => enquire()}>לתיאום תור <ArrowLeft size={18} aria-hidden="true" /></button></div>
         <div className="ml-footer-top" data-reveal>
-          <div className="ml-footer-brand"><a href="#main" aria-label="מדיקה — חזרה לתחילת העמוד"><img src="/brand/medica-logo-no-tagline.svg" alt="מדיקה — מצוינות בבריאות" /></a><p>רשת מרכזים רפואיים.<br />אנשים, מומחיות ורפואה מתקדמת.</p>
+          <div className="ml-footer-brand"><a href="#main" aria-label="מדיקה — חזרה לתחילת העמוד"><img src="/brand/medica-logo-no-tagline.svg" alt="מדיקה — מצוינות בבריאות" /></a><p>רשת בתי חולים ומרכזים רפואיים.<br />אנשים, מומחיות ורפואה מתקדמת.</p>
             <div className="ml-footer-portals"><Link to="/p/login">כניסת מטופלים <ArrowLeft size={15} aria-hidden="true" /></Link><Link to="/login">כניסת רופאים <ArrowLeft size={15} aria-hidden="true" /></Link></div>
             <div className="ml-social-links" aria-label="מדיקה ברשתות החברתיות">
               <a href="https://www.facebook.com/medicacarecenters/" aria-label="מדיקה בפייסבוק" target="_blank" rel="noreferrer"><Facebook size={19} /></a>

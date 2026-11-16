@@ -49,3 +49,8 @@
 - License: https://www.pexels.com/license/
 - Stock laboratory footage; does not depict Medica's actual laboratory.
 - Locally encoded at 1280px, muted; poster extracted from the same clip.
+
+
+## Client-supplied images — 2026-11-15 revisions
+- `landing/specialties/womens-health-orit-golan.jpg`: DSC_4000.jpg supplied by Elodie Moshe for women's health (Orit Golan). Original photograph copied without generative edits.
+- `landing/specialties/cardiology-raphael-client.jpg`: IMG_0233 (7).HEIC supplied by Elodie for Medica Raphael catheterization room. Converted with macOS sips to JPEG and resized to 1800px; visually verified.

@@ -21,8 +21,8 @@ export const specialties = [
     overview: "ייעוץ ובירור בנושאים הקשורים לבריאות הלב. פגישה עם קרדיולוג מסייעת לרכז את המידע הרפואי ולהבין את המשך הבירור המתאים.",
     description: "ייעוץ ובירור קרדיולוגי",
     tags: ["ייעוץ קרדיולוגי", "בירור קרדיולוגי"],
-    image: "specialties/cardiology-v5-first.jpg",
-    alt: "מכשור בחדר דימות וצנתורים — עיבוד על בסיס צילום מגלריית אלישע",
+    image: "specialties/cardiology-raphael-client.jpg",
+    alt: "חדר הצנתורים בבית החולים מדיקה רפאל — צילום שסופק על ידי הלקוח",
   },
   {
     name: "אורולוגיה",
@@ -71,6 +71,14 @@ export const specialties = [
     tags: ["ייעוץ", "בדיקות מערכת העיכול"],
     image: "specialties/gastro-v5.jpg",
     alt: "ידיים וציוד אנדוסקופי — עיבוד על בסיס צילום מעמוד האנדוסקופיה באתר אלישע",
+  },
+  {
+    name: "גינקולוגיה ובריאות האישה",
+    overview: "",
+    description: "",
+    tags: [],
+    image: "specialties/womens-health-orit-golan.jpg",
+    alt: "אורית גולן לצד מסכי הדמיה — צילום שסופק על ידי הלקוח",
   },
 ];
 export const centres = [
