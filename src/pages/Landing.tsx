@@ -138,6 +138,18 @@ export function Landing() {
             alt="מדיקה — מצוינות בבריאות"
           />
         </Link>
+        <div className="ml-mobile-header-controls">
+          <button type="button" className="ml-button ml-mobile-contact" onClick={() => enquire()}>לתיאום תור</button>
+          <details className="ml-mobile-menu" onKeyDown={event => {
+            if (event.key === "Escape") { event.currentTarget.open = false; event.currentTarget.querySelector("summary")?.focus(); }
+          }} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) event.currentTarget.open = false; }}>
+            <summary aria-label="כניסה לאזור האישי"><UserRound size={22} aria-hidden="true" /></summary>
+            <nav aria-label="כניסה לאזור האישי" onClick={event => { (event.currentTarget.closest("details") as HTMLDetailsElement).open = false; }}>
+              <Link to="/p/login"><UserRound size={19} aria-hidden="true" />כניסה למטופל</Link>
+              <Link to="/login"><Stethoscope size={19} aria-hidden="true" />כניסת רופאים</Link>
+            </nav>
+          </details>
+        </div>
         <div className="ml-header-actions">
           <Link className="ml-portal-trigger ml-patient-entry" to="/p/login"><UserRound size={19} strokeWidth={1.7} aria-hidden="true" />כניסה למטופל</Link>
           <Link className="ml-portal-trigger ml-doctor-entry" to="/login"><Stethoscope size={19} strokeWidth={1.7} aria-hidden="true" />כניסת רופאים</Link>

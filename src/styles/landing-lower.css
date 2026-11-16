@@ -612,3 +612,56 @@
  .ml-centres-navigation { gap: 10px; flex-wrap: wrap; }
  .ml-centres-current { min-width: 150px; font-size: 15px; }
 }
+
+/* Mobile review: a single compact header row, centred content and a short page end. */
+.ml-mobile-header-controls { display: none; }
+@media(max-width:800px) {
+ .ml-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap; gap: 12px; padding: 10px 12px; border-radius: 24px; }
+ .ml-header > a { flex-shrink: 0; padding: 0; }
+ .ml-header .ml-logo { width: 115px; }
+ .ml-header .ml-header-actions { display: none; }
+ .ml-mobile-header-controls { display: flex; align-items: center; gap: 8px; }
+ .medica-landing .ml-mobile-contact { height: 42px; min-height: 42px; padding: 8px 15px; font-size: 15px; line-height: 24px; background: #35246e; color: white; white-space: nowrap; }
+ .ml-mobile-menu { position: relative; }
+ .ml-mobile-menu summary { list-style: none; cursor: pointer; width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: #eee8fa; color: #35246e; }
+ .ml-mobile-menu summary::-webkit-details-marker { display: none; }
+ .ml-mobile-menu summary:focus-visible { outline: 2px solid #35246e; outline-offset: 3px; }
+ .ml-mobile-menu nav { position: absolute; inset-inline-end: 0; top: calc(100% + 16px); width: 225px; padding: 10px; background: white; border: 1px solid #e7e2ef; border-radius: 18px; box-shadow: 0 12px 35px #092a4a22; display: flex; flex-direction: column; gap: 5px; }
+ .ml-mobile-menu nav a { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 10px 14px; border-radius: 10px; color: #35246e; font-size: 17px; }
+ .ml-mobile-menu nav a:hover, .ml-mobile-menu nav a:focus-visible { background: #eee8fa; }
+ .ml-hero-copy, .ml-centre-story, .ml-contact-copy { text-align: center; }
+ .ml-hero-copy p, .ml-centre-story .ml-scene-copy p { margin-inline: auto; }
+ .ml-hero-actions, .ml-contact-phone { justify-content: center; }
+ .ml-centre-story .ml-centre-site { margin-inline: auto; }
+ .ml-footer-top { align-items: center; text-align: center; }
+ .ml-footer-brand { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+ .ml-footer-portals { align-items: center; }
+ .ml-social-links { justify-content: center; }
+ .ml-footer nav { justify-items: center; }
+ .ml-footer nav > div { align-items: center; text-align: center; }
+ .ml-footer-bottom { justify-content: center; text-align: center; flex-direction: column; gap: 14px; }
+ .ml-footer-phone, .ml-footer .ml-back-top { margin-inline: 0; }
+ .ml-footer { padding-bottom: max(28px,env(safe-area-inset-bottom)); }
+}
+@media(max-width:360px) {
+ .ml-header { gap: 6px; padding-inline: 10px; }
+ .ml-header .ml-logo { width: 100px; }
+ .ml-mobile-header-controls { gap: 5px; }
+ .medica-landing .ml-mobile-contact { padding-inline: 12px; font-size: 14px; }
+}
+@media(max-width:800px) {
+ .ml-hero-brands { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px 24px; padding-inline: 24px; }
+ .ml-hero-brands img { max-height: 46px; max-width: 155px; }
+ .ml-hero-brands .ml-hero-diagnostics { width: min(170px,75%); }
+}
+
+@media(max-width:800px) {
+ .ml-contact-copy { width: 100%; align-items: center; }
+ .ml-contact-copy h2 { width: 100%; }
+ .ml-contact-phone { margin-inline: auto; width: fit-content; }
+ .ml-footer-phone, .ml-footer .ml-back-top { align-self: center; }
+ .ml-footer nav a { justify-content: center; }
+}
+@media(max-width:800px) {
+ .medica-landing .ml-footer .ml-footer-bottom > a { margin: 0; align-self: center; }
+}
